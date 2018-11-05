@@ -1,0 +1,172 @@
+html, 
+body {
+    height: 100%;
+	background: #ecf0f1;
+	color:#ecf0f1;
+	font-family: 'Roboto Mono', sans-serif;
+	font-size: 16px;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+a:visited, a {
+	color:#e67e22;
+}
+#console-title {
+	padding-left: 7px;
+	line-height: 30px;
+}
+.console-body {
+	padding: 5px;
+	top: 30px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	position: absolute;
+	font-family: 'Roboto Mono', monospace;
+	overflow-y:auto;
+}
+.console-input-symbol {
+	padding-right: 10px;
+}
+.console-input-text {
+	display:flex;
+}
+.console-input {
+	width: 100%;
+	display:flex;
+	margin-bottom: 15px;
+}
+.console-wrapper {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+.console-header {
+	background: rgb(30,30,30);
+	border-top: 5px;
+
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+	height: 30px;
+}
+.console-icon {
+	width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	margin: 7px;
+}
+.left {
+	float:left;
+}
+.right {
+	float:right;
+}
+.console-exit {
+	background: #e74c3c;
+}
+.console-maximize {
+	background: #e67e22;
+}
+.console-minimize {
+	background: rgb(211,211,211);
+}
+#console {
+    flex-direction: column;
+	background: rgb(40,40,40);
+	height: 55%;
+	width:50%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border-radius: 5px;
+	box-shadow: 0 0 5px 2px rgba(30, 30, 30, .7);
+}
+
+#cursor::before {
+  content: "";
+  position: absolute;
+  display: inline-block;
+  background-color: #c9c9c9;
+  vertical-align: top;
+  width: 8px;
+  height: 22px;
+  -webkit-animation: blink 1.1s step-end infinite;
+  animation: blink 1.1s step-end infinite;
+}
+
+@-webkit-keyframes blink {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+@keyframes blink {
+  0% { opacity: 1.0; }
+  50% { opacity: 0.0; }
+  100% { opacity: 1.0; }
+}
+
+#contact {
+	display:none;
+}
+
+#contact:target {
+    display:block;
+}
+
+pre {
+	margin: 0;
+}
+
+#broken-name {
+	display:none;
+}
+
+@media only screen and (max-width: 715px) {
+	#broken-name {display:block;}
+	#full-name {display:none;}
+}
+@media only screen and (min-width: 715px) {
+	#broken-name {display:none;}
+	#full-name {display:block;}
+}
+
+@media only screen and (min-width: 2301px) {
+	#console{ width:40%; }
+}
+@media only screen and (max-width: 2300px) {
+	#console{ width:51%; }
+}
+@media only screen and (max-width: 2000px) {
+	#console{ width:55%; }
+}
+@media only screen and (max-width: 1700px) {
+	#console{ width:60%; }
+}
+@media only screen and (max-width: 1500px) {
+	#console{ width:65%; }
+}
+@media only screen and (max-width: 1200px) {
+	#console{ width:80%; }
+}
+@media only screen and (max-width: 1000px) {
+	#console{ width:100%; }
+}
+@media only screen and (max-width: 700px) {
+	#console{ width:100%; }
+}
+
+@media only screen and (min-height: 1001px) {
+	#console{ height:50%; }
+}
+@media only screen and (max-height: 1000px) {
+	#console{ height:55%; }
+}
+@media only screen and (max-height: 800px) {
+	#console{ height:70%; }
+}
+@media only screen and (max-height: 700px) {
+	#console{ height:80%; }
+}
