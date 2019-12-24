@@ -1,0 +1,86 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Posts on /dev/jmattheis</title>
+        <link>http://example.org/posts/</link>
+        <description>Recent content in Posts on /dev/jmattheis</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
+        <atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Send Notifications to Android via REST-API</title>
+            <link>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</link>
+            <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
+            
+            <guid>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</guid>
+            <description>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
+            <content type="html"><![CDATA[<p>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.</p>
+<p>Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn't find any maintained open source project which had the functionality I wanted, so I started my own named <a href="https://gotify.net/">Gotify</a>.
+Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages. Gotify does not depend on <strong>any</strong> third-party service to function, thus does not use google services to deliver push notifications to your phone.</p>
+<p>In this blog post, I'll show you how to set up Gotify and send some messages to it.</p>
+<h2 id="setting-up-gotify">Setting Up Gotify</h2>
+<p>Gotify can be started via binary or Docker. In this tutorial, I'll use the provided Docker images as they are pretty easy to set up.</p>
+<p><a href="https://hub.docker.com/r/gotify/server">hub.docker.com/r/gotify/server</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -p 8080:80 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -v /var/gotify/data:/app/data <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -e GOTIFY_DEFAULTUSER_PASS<span style="color:#f92672">=</span>secret <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             gotify/server:2.0.6
+</code></pre></div><p>or as via docker-compose:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">version: <span style="color:#e6db74">&#39;3&#39;</span>
+ 
+services:
+  gotify:
+    image: gotify/server:<span style="color:#ae81ff">2.0</span><span style="color:#ae81ff">.6</span>
+    ports:
+      - <span style="color:#ae81ff">8080</span>:<span style="color:#ae81ff">80</span>
+    volumes:
+      - <span style="color:#e6db74">&#34;/var/gotify/data:/app/data&#34;</span>
+    environment:
+      GOTIFY_DEFAULTUSER_PASS: <span style="color:#e6db74">&#34;secret&#34;</span>
+</code></pre></div><p>(start with <code>docker-compose up -d</code>)</p>
+<p>By default, Gotify uses SQLite as database. Thus, further simplifying the setup because no separate database is needed. SQLite should work well with a small user base, however if you have many concurrent users a different database may improve performance. Besides SQLite Gotify supports PostgreSQL and MySQL/MariaDB.</p>
+<p><code>/app/data</code> contains the database file (if SQLite is used), images for applications and other stuff. In this example the directory is mounted to <code>/var/gotify/data</code> this directory should be included in a backup.</p>
+<p><code>-e GOTIFY_DEFAULTUSER_PASS=secret</code> changes the password of the default user which will be created at startup.</p>
+<p>Have a look at <a href="https://gotify.net/docs/config">gotify.net/docs/config</a> for all configuration options (like different database settings).</p>
+<h2 id="first-login--definitions">First Login / Definitions</h2>
+<p>By default, the default username/password is <code>admin</code>, however in this tutorial we changed the password to <code>secret</code>. With these credentials it's now possible to login into the WebUI at http://localhost:8080/ (use the port you specified while starting the docker container).</p>
+<p>In the UI you can configure different things.</p>
+<p><strong>Clients</strong>: A client is a device or application that can manage other clients, messages and applications. However, a client is not allowed to send messages.</p>
+<p>In this case your browser would be a client.</p>
+<p><strong>Applications</strong>: An application is a device or application that only can send messages.</p>
+<p>An application could be a raspberry pi which notifies when it reboots.</p>
+<h2 id="sending-a-message">Sending a message</h2>
+<p>You need an application to send messages to Gotify. Only the user who created the application is able to see its messages. An application can be added via:</p>
+<ul>
+<li>WebUI: click the <code>apps</code>-tab in the upper right corner when logged in and add an application</li>
+<li>REST-API: <code>curl -u admin:secret -X POST https://yourdomain.com/application -F &quot;name=test&quot; -F &quot;description=tutorial&quot;</code> See <a href="https://gotify.github.io/api-docs/">API-Docs</a></li>
+</ul>
+<p>To authenticate as an application, you need the application token. The token is returned in the REST request and is viewable in the WebUI.</p>
+<p>After copying the token you can simply use curl, HTTPie or any other http-client to push messages.</p>
+<pre><code>$ curl -X POST &quot;http://localhost/message?token=&lt;apptoken&gt;&quot; -F &quot;title=my title&quot; -F &quot;message=my message&quot; -F &quot;priority=5&quot;
+$ http -f POST &quot;http://localhost:8080/message?token=&lt;apptoken&gt;&quot; title=&quot;my title&quot; message=&quot;my message&quot; priority=&quot;5&quot;
+</code></pre><p>Replace <code>&lt;apptoken&gt;</code> with your application token, it should look like this: <code>AKTlZf.InA3uZHK</code>.</p>
+<p><code>priority</code> currently only has an effect in the android app, 0 = not intrusive 10 = very intrusive.</p>
+<p>The UI will render the message as plain text, it is possible to render it as markdown with <a href="https://gotify.net/docs/msgextras">extras</a>.</p>
+<p>You can use <a href="https://github.com/gotify/cli">gotify/cli</a> to push messages. The CLI stores url and token in a config file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gotify push -t <span style="color:#e6db74">&#34;my title&#34;</span> -p <span style="color:#ae81ff">10</span> <span style="color:#e6db74">&#34;my message&#34;</span>
+$ echo my message | gotify push
+</code></pre></div><p><a href="https://github.com/gotify/cli">Install gotify/cli</a>.</p>
+<h2 id="android-app">Android App</h2>
+<p>While the WebUI already creates notifications on new messages, Gotify also has an android app named <a href="https://github.com/gotify/android">gotify/android</a>. It is available in the <a href="https://play.google.com/store/apps/details?id=com.github.gotify">Play Store</a>, on <a href="https://f-droid.org/de/packages/com.github.gotify/">F-Droid</a> and you can download the apk <a href="https://github.com/gotify/android/releases/latest">on the releases page</a>. Setup is straight forward, enter the url to your Gotify instance and login.</p>
+<p>Be aware: By default Android kills long-running apps as they drain the battery. With enabled battery optimization, Gotify will be killed, and you won't receive any notifications.</p>
+<p>Here is one way to disable battery optimization for Gotify.</p>
+<ul>
+<li>Open &ldquo;Settings&rdquo;</li>
+<li>Search for &ldquo;Battery Optimization&rdquo;</li>
+<li>Find &ldquo;Gotify&rdquo; and disable battery optimization</li>
+</ul>
+<hr>
+<p>&hellip; and that's it! Thanks for reading my first blog post (:.</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

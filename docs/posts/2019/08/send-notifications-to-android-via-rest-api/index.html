@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="author" content="Jannis Mattheis ">
+<meta name="description" content="A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages." />
+<meta name="keywords" content="" />
+<meta name="robots" content="noodp" />
+<meta name="theme-color" content="#252627" />
+<link rel="canonical" href="http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/" />
+
+
+    <title>
+        
+            Send Notifications to Android via REST-API :: /dev/jmattheis 
+        
+    </title>
+
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.1/css/flag-icon.min.css" rel="stylesheet"
+    type="text/css">
+
+
+
+<link rel="stylesheet" href="/main.min.83486328ee059c7f46889fcde3b53ccc7c0f43167f2f03a87b420e9e5c30e5b7.css">
+
+
+
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#252627">
+    <link rel="shortcut icon" href="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#252627">
+    <meta name="theme-color" content="#252627">
+
+<meta itemprop="name" content="Send Notifications to Android via REST-API">
+<meta itemprop="description" content="A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.">
+<meta itemprop="datePublished" content="2019-08-11T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-11T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="738">
+<meta itemprop="image" content="http://example.org/"/>
+
+
+
+<meta itemprop="keywords" content="go,tutorial,gotify," /><meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="http://example.org/"/>
+
+<meta name="twitter:title" content="Send Notifications to Android via REST-API"/>
+<meta name="twitter:description" content="A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages."/>
+
+
+
+
+
+    <meta property="article:published_time" content="2019-08-11 00:00:00 &#43;0000 UTC" />
+
+
+
+
+
+
+
+
+    </head>
+
+    <body class="dark-theme">
+        <div class="container">
+            <header class="header">
+    <span class="header__inner">
+        <a href="/" style="text-decoration: none;">
+    <div class="logo">
+            <span class="logo__text">/dev/jmattheis</span>
+    </div>
+</a>
+
+
+        <span class="header__right">
+            <nav class="menu" style="padding-right: 20px">
+                <div>
+                    &nbsp; <a href="mailto:contact@jmattheis.de" target="_blank" rel="noopener" title="Email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a> &nbsp;&nbsp; <a href="https://github.com/jmattheis" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a> &nbsp;&nbsp; <a href="https://stackoverflow.com/users/4244993/jmattheis" target="_blank" rel="noopener" title="Stackoverflow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M18.986 21.865v-6.404h2.134V24H1.844v-8.539h2.13v6.404h15.012zM6.111 19.731H16.85v-2.137H6.111v2.137zm.259-4.852l10.48 2.189.451-2.07-10.478-2.187-.453 2.068zm1.359-5.056l9.705 4.53.903-1.95-9.706-4.53-.902 1.936v.014zm2.715-4.785l8.217 6.855 1.359-1.62-8.216-6.853-1.35 1.617-.01.001zM15.751 0l-1.746 1.294 6.405 8.604 1.746-1.294L15.749 0h.002z"/></svg></a> &nbsp;
+                </div>
+            </nav>
+
+            <span class="theme-toggle unselectable"><svg class="theme-toggler" width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M22 41C32.4934 41 41 32.4934 41 22C41 11.5066 32.4934 3 22
+  3C11.5066 3 3 11.5066 3 22C3 32.4934 11.5066 41 22 41ZM7 22C7
+  13.7157 13.7157 7 22 7V37C13.7157 37 7 30.2843 7 22Z"/>
+</svg>
+</span>
+        </span>
+    </span>
+</header>
+
+
+            <div class="content">
+                
+    <main class="post">
+
+        <article>
+            
+
+            <h2 class="post-title"><a href="http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/">Send Notifications to Android via REST-API</a></h2>
+
+            <div class="post-content">
+                <p>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.</p>
+<p>Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn't find any maintained open source project which had the functionality I wanted, so I started my own named <a href="https://gotify.net/">Gotify</a>.
+Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages. Gotify does not depend on <strong>any</strong> third-party service to function, thus does not use google services to deliver push notifications to your phone.</p>
+<p>In this blog post, I'll show you how to set up Gotify and send some messages to it.</p>
+<h2 id="setting-up-gotify">Setting Up Gotify</h2>
+<p>Gotify can be started via binary or Docker. In this tutorial, I'll use the provided Docker images as they are pretty easy to set up.</p>
+<p><a href="https://hub.docker.com/r/gotify/server">hub.docker.com/r/gotify/server</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -p 8080:80 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -v /var/gotify/data:/app/data <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -e GOTIFY_DEFAULTUSER_PASS<span style="color:#f92672">=</span>secret <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             gotify/server:2.0.6
+</code></pre></div><p>or as via docker-compose:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">version: <span style="color:#e6db74">&#39;3&#39;</span>
+ 
+services:
+  gotify:
+    image: gotify/server:<span style="color:#ae81ff">2.0</span><span style="color:#ae81ff">.6</span>
+    ports:
+      - <span style="color:#ae81ff">8080</span>:<span style="color:#ae81ff">80</span>
+    volumes:
+      - <span style="color:#e6db74">&#34;/var/gotify/data:/app/data&#34;</span>
+    environment:
+      GOTIFY_DEFAULTUSER_PASS: <span style="color:#e6db74">&#34;secret&#34;</span>
+</code></pre></div><p>(start with <code>docker-compose up -d</code>)</p>
+<p>By default, Gotify uses SQLite as database. Thus, further simplifying the setup because no separate database is needed. SQLite should work well with a small user base, however if you have many concurrent users a different database may improve performance. Besides SQLite Gotify supports PostgreSQL and MySQL/MariaDB.</p>
+<p><code>/app/data</code> contains the database file (if SQLite is used), images for applications and other stuff. In this example the directory is mounted to <code>/var/gotify/data</code> this directory should be included in a backup.</p>
+<p><code>-e GOTIFY_DEFAULTUSER_PASS=secret</code> changes the password of the default user which will be created at startup.</p>
+<p>Have a look at <a href="https://gotify.net/docs/config">gotify.net/docs/config</a> for all configuration options (like different database settings).</p>
+<h2 id="first-login--definitions">First Login / Definitions</h2>
+<p>By default, the default username/password is <code>admin</code>, however in this tutorial we changed the password to <code>secret</code>. With these credentials it's now possible to login into the WebUI at http://localhost:8080/ (use the port you specified while starting the docker container).</p>
+<p>In the UI you can configure different things.</p>
+<p><strong>Clients</strong>: A client is a device or application that can manage other clients, messages and applications. However, a client is not allowed to send messages.</p>
+<p>In this case your browser would be a client.</p>
+<p><strong>Applications</strong>: An application is a device or application that only can send messages.</p>
+<p>An application could be a raspberry pi which notifies when it reboots.</p>
+<h2 id="sending-a-message">Sending a message</h2>
+<p>You need an application to send messages to Gotify. Only the user who created the application is able to see its messages. An application can be added via:</p>
+<ul>
+<li>WebUI: click the <code>apps</code>-tab in the upper right corner when logged in and add an application</li>
+<li>REST-API: <code>curl -u admin:secret -X POST https://yourdomain.com/application -F &quot;name=test&quot; -F &quot;description=tutorial&quot;</code> See <a href="https://gotify.github.io/api-docs/">API-Docs</a></li>
+</ul>
+<p>To authenticate as an application, you need the application token. The token is returned in the REST request and is viewable in the WebUI.</p>
+<p>After copying the token you can simply use curl, HTTPie or any other http-client to push messages.</p>
+<pre><code>$ curl -X POST &quot;http://localhost/message?token=&lt;apptoken&gt;&quot; -F &quot;title=my title&quot; -F &quot;message=my message&quot; -F &quot;priority=5&quot;
+$ http -f POST &quot;http://localhost:8080/message?token=&lt;apptoken&gt;&quot; title=&quot;my title&quot; message=&quot;my message&quot; priority=&quot;5&quot;
+</code></pre><p>Replace <code>&lt;apptoken&gt;</code> with your application token, it should look like this: <code>AKTlZf.InA3uZHK</code>.</p>
+<p><code>priority</code> currently only has an effect in the android app, 0 = not intrusive 10 = very intrusive.</p>
+<p>The UI will render the message as plain text, it is possible to render it as markdown with <a href="https://gotify.net/docs/msgextras">extras</a>.</p>
+<p>You can use <a href="https://github.com/gotify/cli">gotify/cli</a> to push messages. The CLI stores url and token in a config file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gotify push -t <span style="color:#e6db74">&#34;my title&#34;</span> -p <span style="color:#ae81ff">10</span> <span style="color:#e6db74">&#34;my message&#34;</span>
+$ echo my message | gotify push
+</code></pre></div><p><a href="https://github.com/gotify/cli">Install gotify/cli</a>.</p>
+<h2 id="android-app">Android App</h2>
+<p>While the WebUI already creates notifications on new messages, Gotify also has an android app named <a href="https://github.com/gotify/android">gotify/android</a>. It is available in the <a href="https://play.google.com/store/apps/details?id=com.github.gotify">Play Store</a>, on <a href="https://f-droid.org/de/packages/com.github.gotify/">F-Droid</a> and you can download the apk <a href="https://github.com/gotify/android/releases/latest">on the releases page</a>. Setup is straight forward, enter the url to your Gotify instance and login.</p>
+<p>Be aware: By default Android kills long-running apps as they drain the battery. With enabled battery optimization, Gotify will be killed, and you won't receive any notifications.</p>
+<p>Here is one way to disable battery optimization for Gotify.</p>
+<ul>
+<li>Open &ldquo;Settings&rdquo;</li>
+<li>Search for &ldquo;Battery Optimization&rdquo;</li>
+<li>Find &ldquo;Gotify&rdquo; and disable battery optimization</li>
+</ul>
+<hr>
+<p>&hellip; and that's it! Thanks for reading my first blog post (:.</p>
+
+            </div>
+        </article>
+
+        <hr />
+
+        <div class="post-info">
+  				<p>
+  					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://example.org/tags/go">go</a></span><span class="tag"><a href="http://example.org/tags/tutorial">tutorial</a></span><span class="tag"><a href="http://example.org/tags/gotify">gotify</a></span>
+  				</p>
+  			</div>
+
+        
+    </main>
+
+            </div>
+
+            
+                <footer class="footer">
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Made with &#10084; by Jannis Mattheis</span>
+        </div>
+    </div>
+    <div class="footer__inner">
+        <div class="footer__content">
+            <span>Powered by <a href="http://gohugo.io">Hugo</a></span>
+            <span><a href="http://example.org//theme-license">theme license</a></span>
+        </div>
+    </div>
+</footer>
+
+            
+        </div>
+
+        
+
+
+
+
+<script type="text/javascript" src="/bundle.min.2d5469329143160ae2456a69c3c76dc2d0a3b212b46afe291a51bd68650ed6f8697e001dab54f1c272c77ce08092a8c55e5bb4314e0ee334aab4b927ec896638.js" integrity="sha512-LVRpMpFDFgriRWppw8dtwtCjshK0av4pGlG9aGUO1vhpfgAdq1TxwnLHfOCAkqjFXlu0MU4O4zSqtLkn7IlmOA=="></script>
+
+
+
+    </body>
+</html>
