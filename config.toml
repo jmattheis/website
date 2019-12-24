@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://jmattheis.de/"
 languageCode = "en-us"
 title = "/dev/jmattheis"
 theme = "modified-theme"

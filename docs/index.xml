@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Website from Jannis Mattheis. on /dev/jmattheis</title>
-    <link>http://example.org/</link>
+    <link>https://jmattheis.de/</link>
     <description>Recent content in Website from Jannis Mattheis. on /dev/jmattheis</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jmattheis.de/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Send Notifications to Android via REST-API</title>
-      <link>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</link>
+      <link>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</guid>
+      <guid>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</guid>
       <description>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
 Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
     </item>
     
     <item>
       <title>Theme License</title>
-      <link>http://example.org/theme-license/</link>
+      <link>https://jmattheis.de/theme-license/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/theme-license/</guid>
+      <guid>https://jmattheis.de/theme-license/</guid>
       <description>The MIT License (MIT)
 Original work Copyright (c) 2018 Track3Original work Copyright (c) 2019 panrModified work Copyright (c) 2019 Djordje AtlialpModified work Copyright (c) 2019 Jannis MattheisPermission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the &amp;ldquo;Software&amp;rdquo;), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</description>
     </item>

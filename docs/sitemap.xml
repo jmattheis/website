@@ -3,46 +3,46 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://example.org/tags/go/</loc>
+    <loc>https://jmattheis.de/tags/go/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/gotify/</loc>
+    <loc>https://jmattheis.de/tags/gotify/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/</loc>
+    <loc>https://jmattheis.de/posts/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</loc>
+    <loc>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/</loc>
+    <loc>https://jmattheis.de/tags/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/tags/tutorial/</loc>
+    <loc>https://jmattheis.de/tags/tutorial/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/</loc>
+    <loc>https://jmattheis.de/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://example.org/categories/</loc>
+    <loc>https://jmattheis.de/categories/</loc>
   </url>
   
   <url>
-    <loc>http://example.org/theme-license/</loc>
+    <loc>https://jmattheis.de/theme-license/</loc>
   </url>
   
 </urlset>

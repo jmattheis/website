@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>gotify on /dev/jmattheis</title>
-    <link>http://example.org/tags/gotify/</link>
+    <link>https://jmattheis.de/tags/gotify/</link>
     <description>Recent content in gotify on /dev/jmattheis</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 11 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://example.org/tags/gotify/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://jmattheis.de/tags/gotify/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Send Notifications to Android via REST-API</title>
-      <link>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</link>
+      <link>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://example.org/posts/2019/08/send-notifications-to-android-via-rest-api/</guid>
+      <guid>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</guid>
       <description>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
 Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
     </item>
