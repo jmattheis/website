@@ -1,0 +1,17 @@
+<header class="header">
+    <span class="header__inner">
+        {{ partial "logo.html" . }}
+
+        <span class="header__right">
+            <nav class="menu" style="padding-right: 20px">
+            {{- with .Site.Params.social }}
+                <div>
+                    {{ partial "social-icons.html" . }}
+                </div>
+            {{- end }}
+            </nav>
+
+            <span class="theme-toggle unselectable">{{ partial "theme-icon.html" . }}</span>
+        </span>
+    </span>
+</header>
