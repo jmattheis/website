@@ -4,13 +4,12 @@ title = "/dev/jmattheis"
 theme = "modified-theme"
 publishDir = "docs"
 
-
 PygmentsCodeFences = true
 PygmentsStyle = "monokai"
 
 rssLimit  = 20
 
-enableRobotsTXT = true
+enableRobotsTXT = false
 enableGitInfo   = false
 enableEmoji     = true
 enableMissingTranslationPlaceholders = false
