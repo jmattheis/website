@@ -1,0 +1,301 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>Blogs on /dev/jmattheis</title>
+        <link>https://jmattheis.de/blog/</link>
+        <description>Recent content in Blogs on /dev/jmattheis</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en-us</language>
+        <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0000</lastBuildDate>
+        <atom:link href="https://jmattheis.de/blog/index.xml" rel="self" type="application/rss+xml" />
+        
+        <item>
+            <title>Setup a forwarding DNS Sinkhole with DNS over TLS&amp;HTTPS</title>
+            <link>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</link>
+            <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
+            
+            <guid>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</guid>
+            <description>Install CoreDNS CoreDNS is a DNS server written in Go. It features an extensive plugin system for configuring it to your needs. In my testing, CoreDNS just worked, so I didn’t try any other DNS server.
+CoreDNS provides pre-compiled binaries and docker images. You can also build it from source.
+For the simplicity of this tutorial, I’ll use the pre-compiled binary. As of the time of writing, the latest version is 1.</description>
+            <content type="html"><![CDATA[<h2 id="install-coredns">Install CoreDNS</h2>
+<p>CoreDNS is a DNS server written in Go.
+It features an extensive plugin system for configuring it to your needs.
+In my testing, CoreDNS just worked, so I didn’t try any other DNS server.</p>
+<p>CoreDNS provides <a href="https://github.com/coredns/coredns/releases/latest">pre-compiled binaries</a>
+and <a href="https://hub.docker.com/r/coredns/coredns/">docker images</a>. 
+You can also <a href="https://github.com/coredns/coredns#compilation-from-source">build it from source</a>.</p>
+<p>For the simplicity of this tutorial, I’ll use the pre-compiled binary. As of the time of writing, the latest version is <code>1.6.6</code>.</p>
+<p>Download the archive:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget https://github.com/coredns/coredns/releases/download/v1.6.6/coredns_1.6.6_linux_amd64.tgz
+</code></pre></div><p>Extract the archive:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ tar -xvf coredns_1.6.6_linux_amd64.tgz
+</code></pre></div><p>The archive contains an executable named <code>coredns</code>, which we will later need to start the server.</p>
+<h2 id="configure-coredns">Configure CoreDNS</h2>
+<p>CoreDNS will be configured via a file that can be defined via <code>-conf</code> (default: ./Corefile). We’ll go with the default file.</p>
+<p>First, we configure a server block that matches anything,
+because we want that server to handle all queries (whether to forward or block the domain).</p>
+<p>Each server block starts with a zone and is followed by braces <code>{ .. }</code>. 
+This is mostly irrelevant for us, as we only want to forward queries 
+and not host a <a href="https://en.wikipedia.org/wiki/Name_server#Authoritative_name_server">Authoritative DNS server</a> (A server which has the original zone records for a domain).</p>
+<p>(Comments start with <code>#</code>)</p>
+<p>-&gt; File: <code>./Corefile</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># . matches everything</span>
+<span style="color:#75715e"># :53 listen on port 53 (default DNS port)</span>
+.:53 <span style="color:#f92672">{</span> <span style="color:#f92672">}</span>
+</code></pre></div><p>Now, we configure our first plugins:</p>
+<p>-&gt; File: <code>./Corefile</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.:53 <span style="color:#f92672">{</span>
+  <span style="color:#75715e"># the any plugin blocks any queries by responding with a short reply</span>
+  <span style="color:#75715e"># See https://tools.ietf.org/html/rfc8482 for more information.</span>
+  any
+
+  <span style="color:#75715e"># log errors to standard out</span>
+  errors
+
+  <span style="color:#75715e"># for better verification, we add logging of all requests</span>
+  log
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="forward-dns">Forward DNS</h3>
+<p>Next up, we configure CoreDNS to forward our queries to an existing DNS server.
+I’ll use <a href="https://developers.cloudflare.com/1.1.1.1/setting-up-1.1.1.1/">cloudflare</a> but you can choose the one you trust 
+(see f.ex: <a href="https://www.privacytools.io/providers/dns/">privacytools.io/providers/dns/</a>).</p>
+<p>-&gt; File: <code>./Corefile</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.:53 <span style="color:#f92672">{</span>
+  any
+  errors
+  log
+
+  <span style="color:#75715e"># forward is the plugin name</span>
+  <span style="color:#75715e"># the second parameter (.) is the base domain to match . = anything</span>
+  <span style="color:#75715e"># the other parameter (before the {) are the endpoints to forward to.</span>
+  <span style="color:#75715e"># tls:// means that DNS over TLS should be used for the communication</span>
+  <span style="color:#75715e"># Also supported are:</span>
+  <span style="color:#75715e"># dns:// -&gt; normal unencrypted DNS</span>
+  <span style="color:#75715e"># https:// -&gt; DNS over HTTPS</span>
+  <span style="color:#75715e"># grpc:// -&gt; DNS over gRPC</span>
+  forward . tls://1.1.1.1 tls://1.0.0.1 <span style="color:#f92672">{</span>
+
+    <span style="color:#75715e"># the server name will be used in the TLS negotiation.</span>
+    tls_servername cloudflare-dns.com
+
+    <span style="color:#75715e"># the duration for checking the health of the upstream DNS server</span>
+    health_check 60s
+
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Let’s check our configuration. Start the core DNS server with:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./coredns
+</code></pre></div><p>CoreDNS requires sudo because we use port 53, you can work around this by changing this to an unused port which is over 1000.</p>
+<p>With a started server, we can make a test request with dig:</p>
+<pre><code class="language-dns" data-lang="dns">$ dig @localhost -p 53 google.com
+; &lt;&lt;&gt;&gt; DiG 9.14.8 &lt;&lt;&gt;&gt; @localhost -p 53 google.com
+; (2 servers found)
+;; global options: +cmd
+;; Got answer:
+;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 33196
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;google.com. IN A
+
+;; ANSWER SECTION:
+google.com. 181 IN A 172.217.17.78
+
+;; Query time: 197 msec
+;; SERVER: ::1#53(::1)
+;; WHEN: Wed Dec 25 12:06:34 CET 2019
+;; MSG SIZE  rcvd: 65
+</code></pre><p>The server works, because it returned us the IP for google.com <code>172.217.17.78</code> (it may be different for you).</p>
+<h3 id="block-domains">Block Domains</h3>
+<p>Blocking domains can be done in different ways. IMO, the easiest way is by using host files.
+There are many online resources, for host files with hosts that serve malware or ads.
+In this tutorial, we use the basic version of <a href="https://github.com/StevenBlack/hosts">github.com/StevenBlack/hosts</a>.
+But first, we try out how it works.</p>
+<p>(Comments start with <code>#</code>)</p>
+<p>-&gt; File: <code>./hosts</code></p>
+<pre><code class="language-hosts" data-lang="hosts"># the host file has a really simple format.
+# it starts with an ip address followed by one or more host names.
+# In this example we resolve google.com to 0.0.0.0
+0.0.0.0 google.com
+</code></pre><p>0.0.0.0 is mostly used for blocking the domain.
+See <a href="https://github.com/StevenBlack/hosts#we-recommend-using-0000-instead-of-127001">github.com/StevenBlack/hosts</a>.</p>
+<blockquote>
+<p>We prefer to use 0.0.0.0, which is defined as a non-routable meta-address used to designate an invalid, unknown, or non-applicable target.</p>
+<p>Using 0.0.0.0 is empirically faster, possibly because there’s no wait for a timeout resolution. It also does not interfere with a web server that may be running on the local PC.</p>
+</blockquote>
+<p>-&gt; File: <code>./Corefile</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.:53 <span style="color:#f92672">{</span>
+  any
+  errors
+  log
+
+  <span style="color:#75715e"># hosts serve zone data from a hosts file</span>
+  hosts ./hosts <span style="color:#f92672">{</span>
+    <span style="color:#75715e"># fallthrough passes the request to the next plugin if it couldn’t</span>
+    <span style="color:#75715e"># be found inside the hosts file. Without this, no domain could be</span> 
+    <span style="color:#75715e"># resolved because the forward plugin will never be executed.</span>
+    fallthrough
+  <span style="color:#f92672">}</span>
+
+  forward . tls://1.1.1.1 tls://1.0.0.1 <span style="color:#f92672">{</span>
+    tls_servername cloudflare-dns.com
+    health_check 60s
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><blockquote>
+<p>The order of the plugins inside the Corefile doesn’t matter, 
+you could add the hosts plugin after the forward plugin and it would still have the same behavior.
+The ordering of the plugins is defined in <a href="https://github.com/coredns/coredns/blob/master/plugin.cfg">https://github.com/coredns/coredns/blob/master/plugin.cfg</a></p>
+</blockquote>
+<p>Start the core DNS server:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./coredns
+</code></pre></div><p>Check if google.com can be resolved.</p>
+<pre><code class="language-dns" data-lang="dns">$ dig @localhost -p 53 google.com
+[removed bloat]
+
+;; ANSWER SECTION:
+google.com. 3600 IN A 0.0.0.0
+
+[removed bloat]
+</code></pre><p>google.com resolves to <code>0.0.0.0</code> which blocks the domain.
+As we do not want to block google.com but use the host file from StevenBlack/hosts,
+we remove the old hosts file</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ rm hosts
+</code></pre></div><p>and download the hosts file from the GitHub repository:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget https://github.com/StevenBlack/hosts/raw/master/hosts
+</code></pre></div><p>After a restart of the CoreDNS server, some malicious domains will be blocked and google.com is available again.</p>
+<h3 id="dns-over-tls-dot--dns-over-https-doh">DNS over TLS (DoT) &amp; DNS over HTTPS (DoH)</h3>
+<p>For DoT/DoH to work correctly you need a domain with a valid TLS certificate,
+you can get one via certibot <a href="https://certbot.eff.org/">https://certbot.eff.org/</a> or purchase one.
+You also have to create an entry in your domain settings to point your domain (or a subdomain)
+to the server where CoreDNS is hosted on.</p>
+<p>In this tutorial we have our certificats at <code>/var/certs/full.pem</code> and <code>/var/certs/key.pem</code>.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#75715e"># add tls://.:953 to listen for DoT connections</span>
+<span style="color:#75715e"># add https://.:443 to listen for DoH connections</span>
+.:53 tls://.:953 https://.:443 <span style="color:#f92672">{</span>
+
+  <span style="color:#75715e"># add the TLS plugin with the certs</span>
+  tls /var/certs/full.pem /var/certs/key.pem
+
+  any
+  errors
+  log
+  hosts ./hosts <span style="color:#f92672">{</span>
+    fallthrough
+  <span style="color:#f92672">}</span>
+  forward . tls://1.1.1.1 tls://1.0.0.1 <span style="color:#f92672">{</span>
+    tls_servername cloudflare-dns.com
+    health_check 60s
+  <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>Restart the CoreDNS server and now it serves DoT/DoH :D.</p>
+<h4 id="use-dot-in-android">Use DoT in Android</h4>
+<ul>
+<li>Open Settings</li>
+<li>Click on <code>Network &amp; Internet</code></li>
+<li>Click on <code>Advanced</code></li>
+<li>Click on <code>Private DNS</code></li>
+<li>Enter your domain or subdomain inside <code>Private DNS provider hostname</code>.</li>
+</ul>
+<p>A log entry should appear if you open a website on your phone. I visited <code>jmattheis.de</code> and
+it created this log entry:</p>
+<pre><code>[INFO] [redacted-ip]:41938 - 0 “A IN jmattheis.de. tcp 128 true 65535” NOERROR qr,rd,ra 153 0.006815507s
+</code></pre><h3 id="cache-results">Cache results</h3>
+<p>Caching results will reduce the traffic on the upstream DNS server.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">.:53 tls://.:953 https://.:443 <span style="color:#f92672">{</span>
+  tls /var/certs/full.pem /var/certs/key.pem
+  any
+  errors
+  log
+  hosts ./hosts <span style="color:#f92672">{</span>
+    fallthrough
+  <span style="color:#f92672">}</span>
+  forward . tls://1.1.1.1 tls://1.0.0.1 <span style="color:#f92672">{</span>
+    tls_servername cloudflare-dns.com
+    health_check 60s
+  <span style="color:#f92672">}</span>
+
+  <span style="color:#75715e"># Cache for 60 seconds</span>
+  cache <span style="color:#ae81ff">60</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>]]></content>
+        </item>
+        
+        <item>
+            <title>Send Notifications to Android via REST-API</title>
+            <link>https://jmattheis.de/blog/2019/08/send-notifications-to-android-via-rest-api/</link>
+            <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
+            
+            <guid>https://jmattheis.de/blog/2019/08/send-notifications-to-android-via-rest-api/</guid>
+            <description>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
+            <content type="html"><![CDATA[<p>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.</p>
+<p>Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn't find any maintained open source project which had the functionality I wanted, so I started my own named <a href="https://gotify.net/">Gotify</a>.
+Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages. Gotify does not depend on <strong>any</strong> third-party service to function, thus does not use google services to deliver push notifications to your phone.</p>
+<p>In this blog post, I'll show you how to set up Gotify and send some messages to it.</p>
+<h2 id="setting-up-gotify">Setting Up Gotify</h2>
+<p>Gotify can be started via binary or Docker. In this tutorial, I'll use the provided Docker images as they are pretty easy to set up.</p>
+<p><a href="https://hub.docker.com/r/gotify/server">hub.docker.com/r/gotify/server</a></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker run -p 8080:80 <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -v /var/gotify/data:/app/data <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             -e GOTIFY_DEFAULTUSER_PASS<span style="color:#f92672">=</span>secret <span style="color:#ae81ff">\
+</span><span style="color:#ae81ff"></span>             gotify/server:2.0.6
+</code></pre></div><p>or as via docker-compose:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-yml" data-lang="yml">version: <span style="color:#e6db74">&#39;3&#39;</span>
+ 
+services:
+  gotify:
+    image: gotify/server:<span style="color:#ae81ff">2.0</span><span style="color:#ae81ff">.6</span>
+    ports:
+      - <span style="color:#ae81ff">8080</span>:<span style="color:#ae81ff">80</span>
+    volumes:
+      - <span style="color:#e6db74">&#34;/var/gotify/data:/app/data&#34;</span>
+    environment:
+      GOTIFY_DEFAULTUSER_PASS: <span style="color:#e6db74">&#34;secret&#34;</span>
+</code></pre></div><p>(start with <code>docker-compose up -d</code>)</p>
+<p>By default, Gotify uses SQLite as database. Thus, further simplifying the setup because no separate database is needed. SQLite should work well with a small user base, however if you have many concurrent users a different database may improve performance. Besides SQLite Gotify supports PostgreSQL and MySQL/MariaDB.</p>
+<p><code>/app/data</code> contains the database file (if SQLite is used), images for applications and other stuff. In this example the directory is mounted to <code>/var/gotify/data</code> this directory should be included in a backup.</p>
+<p><code>-e GOTIFY_DEFAULTUSER_PASS=secret</code> changes the password of the default user which will be created at startup.</p>
+<p>Have a look at <a href="https://gotify.net/docs/config">gotify.net/docs/config</a> for all configuration options (like different database settings).</p>
+<h2 id="first-login--definitions">First Login / Definitions</h2>
+<p>By default, the default username/password is <code>admin</code>, however in this tutorial we changed the password to <code>secret</code>. With these credentials it's now possible to login into the WebUI at http://localhost:8080/ (use the port you specified while starting the docker container).</p>
+<p>In the UI you can configure different things.</p>
+<p><strong>Clients</strong>: A client is a device or application that can manage other clients, messages and applications. However, a client is not allowed to send messages.</p>
+<p>In this case your browser would be a client.</p>
+<p><strong>Applications</strong>: An application is a device or application that only can send messages.</p>
+<p>An application could be a raspberry pi which notifies when it reboots.</p>
+<h2 id="sending-a-message">Sending a message</h2>
+<p>You need an application to send messages to Gotify. Only the user who created the application is able to see its messages. An application can be added via:</p>
+<ul>
+<li>WebUI: click the <code>apps</code>-tab in the upper right corner when logged in and add an application</li>
+<li>REST-API: <code>curl -u admin:secret -X POST https://yourdomain.com/application -F &quot;name=test&quot; -F &quot;description=tutorial&quot;</code> See <a href="https://gotify.github.io/api-docs/">API-Docs</a></li>
+</ul>
+<p>To authenticate as an application, you need the application token. The token is returned in the REST request and is viewable in the WebUI.</p>
+<p>After copying the token you can simply use curl, HTTPie or any other http-client to push messages.</p>
+<pre><code>$ curl -X POST &quot;http://localhost/message?token=&lt;apptoken&gt;&quot; -F &quot;title=my title&quot; -F &quot;message=my message&quot; -F &quot;priority=5&quot;
+$ http -f POST &quot;http://localhost:8080/message?token=&lt;apptoken&gt;&quot; title=&quot;my title&quot; message=&quot;my message&quot; priority=&quot;5&quot;
+</code></pre><p>Replace <code>&lt;apptoken&gt;</code> with your application token, it should look like this: <code>AKTlZf.InA3uZHK</code>.</p>
+<p><code>priority</code> currently only has an effect in the android app, 0 = not intrusive 10 = very intrusive.</p>
+<p>The UI will render the message as plain text, it is possible to render it as markdown with <a href="https://gotify.net/docs/msgextras">extras</a>.</p>
+<p>You can use <a href="https://github.com/gotify/cli">gotify/cli</a> to push messages. The CLI stores url and token in a config file.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ gotify push -t <span style="color:#e6db74">&#34;my title&#34;</span> -p <span style="color:#ae81ff">10</span> <span style="color:#e6db74">&#34;my message&#34;</span>
+$ echo my message | gotify push
+</code></pre></div><p><a href="https://github.com/gotify/cli">Install gotify/cli</a>.</p>
+<h2 id="android-app">Android App</h2>
+<p>While the WebUI already creates notifications on new messages, Gotify also has an android app named <a href="https://github.com/gotify/android">gotify/android</a>. It is available in the <a href="https://play.google.com/store/apps/details?id=com.github.gotify">Play Store</a>, on <a href="https://f-droid.org/de/packages/com.github.gotify/">F-Droid</a> and you can download the apk <a href="https://github.com/gotify/android/releases/latest">on the releases page</a>. Setup is straight forward, enter the url to your Gotify instance and login.</p>
+<p>Be aware: By default Android kills long-running apps as they drain the battery. With enabled battery optimization, Gotify will be killed, and you won't receive any notifications.</p>
+<p>Here is one way to disable battery optimization for Gotify.</p>
+<ul>
+<li>Open &ldquo;Settings&rdquo;</li>
+<li>Search for &ldquo;Battery Optimization&rdquo;</li>
+<li>Find &ldquo;Gotify&rdquo; and disable battery optimization</li>
+</ul>
+<hr>
+<p>&hellip; and that's it! Thanks for reading my first blog post (:.</p>
+]]></content>
+        </item>
+        
+    </channel>
+</rss>

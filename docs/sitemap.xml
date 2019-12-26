@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://jmattheis.de/blog/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jmattheis.de/tags/dns/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jmattheis.de/tags/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jmattheis.de/tags/tutorial/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jmattheis.de/</loc>
+    <lastmod>2019-12-26T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jmattheis.de/tags/go/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
@@ -13,27 +43,7 @@
   </url>
   
   <url>
-    <loc>https://jmattheis.de/posts/</loc>
-    <lastmod>2019-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jmattheis.de/posts/2019/08/send-notifications-to-android-via-rest-api/</loc>
-    <lastmod>2019-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jmattheis.de/tags/</loc>
-    <lastmod>2019-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jmattheis.de/tags/tutorial/</loc>
-    <lastmod>2019-08-11T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jmattheis.de/</loc>
+    <loc>https://jmattheis.de/blog/2019/08/send-notifications-to-android-via-rest-api/</loc>
     <lastmod>2019-08-11T00:00:00+00:00</lastmod>
   </url>
   

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dns on /dev/jmattheis</title>
+    <link>https://jmattheis.de/tags/dns/</link>
+    <description>Recent content in dns on /dev/jmattheis</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 26 Dec 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://jmattheis.de/tags/dns/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Setup a forwarding DNS Sinkhole with DNS over TLS&amp;HTTPS</title>
+      <link>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</link>
+      <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</guid>
+      <description>Install CoreDNS CoreDNS is a DNS server written in Go. It features an extensive plugin system for configuring it to your needs. In my testing, CoreDNS just worked, so I didn’t try any other DNS server.
+CoreDNS provides pre-compiled binaries and docker images. You can also build it from source.
+For the simplicity of this tutorial, I’ll use the pre-compiled binary. As of the time of writing, the latest version is 1.</description>
+    </item>
+    
+  </channel>
+</rss>

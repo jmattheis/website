@@ -1,7 +1,8 @@
 +++
 title = "Send Notifications to Android via REST-API"
 description = ""
-type = "post"
+type = "blog"
+toc = true
 tags = [
     "go",
     "tutorial",
