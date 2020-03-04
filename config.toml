@@ -18,7 +18,7 @@ disableSitemap = false
 disable404     = false
 disableHugoGeneratorInject = false
 [permalinks]
-  blog = "/blog/:year/:month/:title/"
+  blog = "/blog/:title/"
 
 [author]
   name = "Jannis Mattheis"

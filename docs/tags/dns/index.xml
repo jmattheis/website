@@ -13,10 +13,10 @@
     
     <item>
       <title>Setup a forwarding DNS Sinkhole with DNS over TLS&amp;HTTPS</title>
-      <link>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</link>
+      <link>https://jmattheis.de/blog/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</link>
       <pubDate>Thu, 26 Dec 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jmattheis.de/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</guid>
+      <guid>https://jmattheis.de/blog/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps/</guid>
       <description>Install CoreDNS CoreDNS is a DNS server written in Go. It features an extensive plugin system for configuring it to your needs. In my testing, CoreDNS just worked, so I didn’t try any other DNS server.
 CoreDNS provides pre-compiled binaries and docker images. You can also build it from source.
 For the simplicity of this tutorial, I’ll use the pre-compiled binary. As of the time of writing, the latest version is 1.</description>

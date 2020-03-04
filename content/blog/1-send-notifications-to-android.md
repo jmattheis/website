@@ -3,6 +3,7 @@ title = "Send Notifications to Android via REST-API"
 description = ""
 type = "blog"
 toc = true
+aliases = [ "/blog/2019/08/send-notifications-to-android-via-rest-api" ]
 tags = [
     "go",
     "tutorial",

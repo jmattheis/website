@@ -13,12 +13,12 @@
     
     <item>
       <title>Send Notifications to Android via REST-API</title>
-      <link>https://jmattheis.de/blog/2019/08/send-notifications-to-android-via-rest-api/</link>
+      <link>https://jmattheis.de/blog/send-notifications-to-android-via-rest-api/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://jmattheis.de/blog/2019/08/send-notifications-to-android-via-rest-api/</guid>
+      <guid>https://jmattheis.de/blog/send-notifications-to-android-via-rest-api/</guid>
       <description>A while ago, I wanted to get notifications when certain events occur on my servers. This could be a SSH-Login or finishing a backup.
-Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&#39;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
+Back then, I started to self-host services to be less dependent on third-parties and to gain control over my data. After some research, I couldn&amp;rsquo;t find any maintained open source project which had the functionality I wanted, so I started my own named Gotify. Gotify is a pretty simple service written in Go that exposes a WebSocket endpoint which can be used to subscribe to newly posted messages.</description>
     </item>
     
   </channel>

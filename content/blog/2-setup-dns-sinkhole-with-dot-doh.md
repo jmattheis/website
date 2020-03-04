@@ -3,6 +3,7 @@ title = "Setup a forwarding DNS Sinkhole with DNS over TLS&HTTPS"
 description = "Setup a forwarding DNS Sinkhole with DNS over TLS&HTTPS"
 toc = true
 type = "blog"
+aliases = [ "/blog/2019/12/setup-a-forwarding-dns-sinkhole-with-dns-over-tlshttps" ]
 tags = [
     "tutorial",
     "dns"
