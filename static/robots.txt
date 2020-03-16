@@ -1,3 +1,0 @@
-User-agent: *
-disallow: /theme-license/
-disallow: /theme-license
