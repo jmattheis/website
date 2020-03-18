@@ -6,7 +6,7 @@ description = "Website from Jannis Mattheis."
 Hey there! I'm Jannis Mattheis, a developer from Germany.
 
 This may seem like a normal website, but it is much more.
-This server abuses various protocols to transfer contents from my website.
+This server abuses various protocols to transfer content of my website.
 
 Currently supported are: 
   http/https, websocket, telnet/tcp, whois, dns(tcp), ftp and ssh

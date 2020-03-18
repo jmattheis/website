@@ -18,7 +18,7 @@ I'm Jannis Mattheis, a developer from Germany.
 
 This is one of my projects. 
 This server abuses various protocols to 
-transfer contents from my website.
+transfer content of my website.
 
 Currently supported are: 
   http, websocket, telnet/tcp, whois, dns(tcp), ftp and ssh
