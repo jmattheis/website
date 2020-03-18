@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	Port    string
+	Port string
 }
 
 func Listen(conf Config) {

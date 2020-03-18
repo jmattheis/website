@@ -15,7 +15,7 @@ func Handle(port string) http.HandlerFunc {
 			cmd = "http"
 		}
 		tty := &content.SingleText{
-			Protocol:      r.URL.Scheme,
+			Protocol:      r.Proto,
 			Port:          port,
 			Split:         "/",
 			CommandPrefix: cmd + " jmattheis.de/",

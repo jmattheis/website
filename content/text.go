@@ -16,8 +16,9 @@ Hey there! You've connected via %s to jmattheis.de:%s.
 
 I'm Jannis Mattheis, a developer from Germany.
 
-This is one of my projects. This server abuses various protocols
-that they will transmit this message.
+This is one of my projects. 
+This server abuses various protocols to 
+transfer contents from my website.
 
 Currently supported are: 
   http, websocket, telnet/tcp, whois, dns(tcp), ftp and ssh
@@ -32,7 +33,7 @@ Try one of the following commands for connecting to this service.
   dig        @jmattheis.de +tcp +short
   netcat      jmattheis.de 23
   ssh         jmattheis.de
-  telnet      jmattheis.de
+  telnet      jmattheis.de 23
   whois -h    jmattheis.de .
   wscat -c    jmattheis.de
 

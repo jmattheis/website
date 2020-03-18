@@ -21,6 +21,12 @@ func getFiles(conf Config) []*virtualFileInfo {
 	start := content.StartTXT(content.DnsSafeBanner, "ftp", conf.Port)
 	files := []*virtualFileInfo{
 		{
+			dir:  "/",
+			name: "blog",
+			size: 4096,
+			mode: 0666 | os.ModeDir,
+		},
+		{
 			dir:     "/",
 			name:    "start.txt",
 			size:    int64(len(start)),
@@ -40,12 +46,6 @@ func getFiles(conf Config) []*virtualFileInfo {
 			size:    int64(len(content.Cat)),
 			mode:    0666,
 			content: []byte(content.Cat),
-		},
-		{
-			dir:  "/",
-			name: "blog",
-			size: 4096,
-			mode: 0666 | os.ModeDir,
 		},
 	}
 	for _, entry := range content.BlogBox.List() {
