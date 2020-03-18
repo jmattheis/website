@@ -25,7 +25,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 
 	go func() {
 
-		var handler http.Handler = handle(conf)
+		var handler http.Handler = handle(conf.Port)
 		if manager != nil {
 			handler = manager.HTTPHandler(handler)
 		}
@@ -47,7 +47,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 	go func() {
 		server := &http.Server{
 			Addr: ":" + conf.SSLPort,
-			Handler: handle(conf),
+			Handler: handle(conf.SSLPort),
 			TLSConfig: &tls.Config{},
 		}
 		if manager == nil {
@@ -67,9 +67,9 @@ func Listen(conf Config, manager *autocert.Manager) {
 	}()
 }
 
-func handle(conf Config) http.HandlerFunc {
-	ws := websocket.Handle(conf.Port)
-	t := text.Handle(conf.Port)
+func handle(port string) http.HandlerFunc {
+	ws := websocket.Handle(port)
+	t := text.Handle(port)
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if containsHeader(r, "connection", "upgrade") &&
