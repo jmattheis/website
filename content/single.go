@@ -40,13 +40,12 @@ Read more:
 		}
 		fallthrough
 	case "blogs":
-		return txtBlogs() + fmt.Sprintf(`
-Read a post with
-  %sblog.<nr>
+		result := "Choose a blog post:\n\n"
 
-Example:
-  %sblog%s1
-`, i.CommandPrefix, i.CommandPrefix, i.Split)
+		for index, entry := range BlogBox.List() {
+			result += fmt.Sprintf("  %sblog%s%d     %s\n", i.CommandPrefix, i.Split, index, entry[2:])
+		}
+		return result + more
 	case "projects":
 		return ProjectsTXT + more
 	case "cat":

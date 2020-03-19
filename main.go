@@ -5,6 +5,7 @@ import (
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/http"
 	"github.com/jmattheis/website/logger"
+	"github.com/jmattheis/website/pop"
 	"github.com/jmattheis/website/ssh"
 	"github.com/jmattheis/website/telnet"
 	"github.com/jmattheis/website/whois"
@@ -26,6 +27,7 @@ type Config struct {
 	FTP      ftp.Config
 	SSH      ssh.Config
 	HTTP     http.Config
+	POP      pop.Config
 }
 
 var prodConf = Config{
@@ -51,6 +53,9 @@ var prodConf = Config{
 	HTTP: http.Config{
 		Port:    "80",
 		SSLPort: "443",
+	},
+	POP: pop.Config{
+		Port: "110",
 	},
 }
 
@@ -78,6 +83,9 @@ var devConf = Config{
 		Port:    "10080",
 		SSLPort: "10443",
 	},
+	POP: pop.Config{
+		Port: "10110",
+	},
 }
 
 func main() {
@@ -103,8 +111,9 @@ func main() {
 	whois.Listen(config.Whois)
 	dns.Listen(config.DNS)
 	ftp.Listen(config.FTP, certManager, config.PubIP)
-	ssh.Listen(config.SSH, )
+	ssh.Listen(config.SSH)
 	http.Listen(config.HTTP, certManager)
+	pop.Listen(config.POP)
 
 	<-make(chan struct{})
 }

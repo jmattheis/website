@@ -21,15 +21,16 @@ This server abuses various protocols to
 transfer content of my website.
 
 Currently supported are: 
-  http, websocket, telnet/tcp, whois, dns(tcp), ftp and ssh
+  http, websocket, telnet/tcp, whois, dns(tcp), ftp, pop3 and ssh
 
 You can find the source code on GitHub:
   https://github.com/jmattheis/website
 
 Try one of the following commands for connecting to this service.
 
-  curl http://jmattheis.de
   curl  ftp://jmattheis.de
+  curl http://jmattheis.de
+  curl pop3://jmattheis.de/1
   dig        @jmattheis.de +tcp +short
   netcat      jmattheis.de 23
   ssh         jmattheis.de
@@ -57,15 +58,19 @@ func txtBlog(id string) string {
 		return id + " is not a valid number"
 	}
 
+	return TXTBlogByNR(nr)
+}
+
+func TXTBlogByNR(nr int) string {
 	if len(BlogBox.List()) <= nr || nr < 0 {
-		return "blog " + id + " not found"
+		return "blog not found"
 	}
 	content, err := BlogBox.FindString(BlogBox.List()[nr])
 	if err != nil {
 		log.Error().Err(err).Msg("get blog")
 		return "something bad happend :/"
 	}
-	return content
+	return content + "\n"
 }
 
 var ProjectsTXT = `# Gotify
@@ -97,7 +102,8 @@ Website: https://traggo.net
 This service :D
 
 Source:  https://github.com/jmattheis/website
-Website: https://jmattheis.de/`
+Website: https://jmattheis.de/
+`
 
 const Cat = `                                                                     :=~,                           
                                                                     :+++.                           

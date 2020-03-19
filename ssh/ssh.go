@@ -63,6 +63,10 @@ func Listen(conf Config) {
 			}
 		}),
 	}
+	log.Info().
+		Str("on", "init").
+		Str("port", conf.Port).
+		Msg("ssh")
 	go func() {
 		if err := server.ListenAndServe(); err != nil {
 			log.Fatal().Err(err).Msg("ssh")
