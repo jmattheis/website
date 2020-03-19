@@ -53,7 +53,7 @@ Read more:
 }
 
 func (b ContentProvider) content(msgId int) string {
-	switch (msgId) {
+	switch msgId {
 	case 1:
 		return content.StartTXT(content.DnsSafeBanner, "pop3", b.Port)
 	case 2:

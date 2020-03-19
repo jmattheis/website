@@ -21,22 +21,25 @@ This server abuses various protocols to
 transfer content of my website.
 
 Currently supported are: 
-  http, websocket, telnet/tcp, whois, dns(tcp), ftp, pop3 and ssh
+  dns(tcp), ftp, http/https, imap, pop3,
+  ssh, telnet/tcp, websocket and whois
 
 You can find the source code on GitHub:
   https://github.com/jmattheis/website
 
 Try one of the following commands for connecting to this service.
 
-  curl  ftp://jmattheis.de
-  curl http://jmattheis.de
-  curl pop3://jmattheis.de/1
-  dig        @jmattheis.de +tcp +short
-  netcat      jmattheis.de 23
-  ssh         jmattheis.de
-  telnet      jmattheis.de 23
-  whois -h    jmattheis.de .
-  wscat -c    jmattheis.de
+  curl   ftp://jmattheis.de
+  curl  http://jmattheis.de
+  curl https://jmattheis.de
+  curl "imap://jmattheis.de/INBOX;UID=1" -u ":"
+  curl  pop3://jmattheis.de/1
+  dig         @jmattheis.de +tcp +short
+  netcat       jmattheis.de 23
+  ssh          jmattheis.de
+  telnet       jmattheis.de 23
+  whois -h     jmattheis.de .
+  wscat -c     jmattheis.de
 
 If you think there are protocols missing,
 send me a mail to hello@jmattheis.de :D

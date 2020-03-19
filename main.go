@@ -4,6 +4,7 @@ import (
 	"github.com/jmattheis/website/dns"
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/http"
+	"github.com/jmattheis/website/imap"
 	"github.com/jmattheis/website/logger"
 	"github.com/jmattheis/website/pop"
 	"github.com/jmattheis/website/ssh"
@@ -28,6 +29,7 @@ type Config struct {
 	SSH      ssh.Config
 	HTTP     http.Config
 	POP      pop.Config
+	IMAP     imap.Config
 }
 
 var prodConf = Config{
@@ -56,6 +58,9 @@ var prodConf = Config{
 	},
 	POP: pop.Config{
 		Port: "110",
+	},
+	IMAP: imap.Config{
+		Port: "143",
 	},
 }
 
@@ -86,6 +91,9 @@ var devConf = Config{
 	POP: pop.Config{
 		Port: "10110",
 	},
+	IMAP: imap.Config{
+		Port: "10143",
+	},
 }
 
 func main() {
@@ -114,6 +122,7 @@ func main() {
 	ssh.Listen(config.SSH)
 	http.Listen(config.HTTP, certManager)
 	pop.Listen(config.POP)
+	imap.Listen(config.IMAP)
 
 	<-make(chan struct{})
 }
