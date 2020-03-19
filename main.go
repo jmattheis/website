@@ -19,6 +19,7 @@ var (
 type Config struct {
 	AutoCert bool
 	Domain   string
+	PubIP    string
 	Telnet   telnet.Config
 	Whois    whois.Config
 	DNS      dns.Config
@@ -30,6 +31,7 @@ type Config struct {
 var prodConf = Config{
 	AutoCert: true,
 	Domain:   "jmattheis.de",
+	PubIP:    "78.47.104.216",
 	Telnet: telnet.Config{
 		Port: "23",
 	},
@@ -55,6 +57,7 @@ var prodConf = Config{
 var devConf = Config{
 	AutoCert: false,
 	Domain:   "jmattheis.de",
+	PubIP:    "127.0.0.1",
 	Telnet: telnet.Config{
 		Port: "10023",
 	},
@@ -99,7 +102,7 @@ func main() {
 	telnet.Listen(config.Telnet)
 	whois.Listen(config.Whois)
 	dns.Listen(config.DNS)
-	ftp.Listen(config.FTP, certManager)
+	ftp.Listen(config.FTP, certManager, config.PubIP)
 	ssh.Listen(config.SSH, )
 	http.Listen(config.HTTP, certManager)
 

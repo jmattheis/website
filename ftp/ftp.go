@@ -11,7 +11,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"strings"
 	"sync/atomic"
 
 	"github.com/fclairamb/ftpserver/server"
@@ -65,10 +64,11 @@ type Config struct {
 	Port string
 }
 
-func Listen(conf Config, manager *autocert.Manager) {
+func Listen(conf Config, manager *autocert.Manager, ip string) {
 	files := getFiles(conf)
 	drv := &MainDriver{
 		Server: server.Settings{
+			PublicHost: ip,
 			ListenAddr: ":" + conf.Port,
 			PassiveTransferPortRange: &server.PortRange{
 				Start: 50000,
@@ -117,27 +117,6 @@ type MainDriver struct {
 
 // GetSettings returns some general settings around the server setup
 func (driver *MainDriver) GetSettings() (*server.Settings, error) {
-
-	// This is the new IP loading change coming from Ray
-	if driver.Server.PublicHost == "" {
-		publicIP := ""
-
-		log.Debug().Str("on", "fetchexternalip").Msg("ftp")
-
-		if publicIP, err := externalIP(); err != nil {
-			log.Warn().Str("on", "fetchexternalip").Err(err).Msg("ftp")
-		} else {
-			log.Debug().Str("on", "pubip").Str("ip", publicIP).Msg("ftp")
-		}
-
-		driver.Server.PublicIPResolver = func(cc server.ClientContext) (string, error) {
-			if strings.HasPrefix(cc.RemoteAddr().String(), "127.0.0.1") {
-				return "127.0.0.1", nil
-			}
-			return publicIP, nil
-		}
-	}
-
 	return &driver.Server, nil
 }
 
