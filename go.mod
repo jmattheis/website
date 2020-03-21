@@ -14,6 +14,7 @@ require (
 	github.com/gorilla/websocket v1.4.1
 	github.com/karrick/godirwalk v1.15.5 // indirect
 	github.com/miekg/dns v1.1.28
+	github.com/prologic/go-gopher v0.0.0-20191226035442-664dbdb49f44
 	github.com/rs/zerolog v1.18.0
 	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect

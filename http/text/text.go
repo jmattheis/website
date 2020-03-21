@@ -21,11 +21,6 @@ func Handle(port string) http.HandlerFunc {
 			CommandPrefix: cmd + " jmattheis.de/",
 		}
 
-		parts := strings.Split(r.URL.Path, "/")
-		if len(parts) == 0 {
-			parts = []string{"index"}
-		}
-
 		value := tty.Get(strings.TrimPrefix(r.URL.Path, "/"))
 
 		_, _ = w.Write([]byte(value))
