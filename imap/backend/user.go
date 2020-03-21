@@ -17,7 +17,7 @@ func (u *User) Username() string {
 }
 
 func (u *User) ListMailboxes(subscribed bool) (mailboxes []backend.Mailbox, err error) {
-	return []backend.Mailbox{u.mailbox},nil
+	return []backend.Mailbox{u.mailbox}, nil
 }
 
 func (u *User) GetMailbox(name string) (mailbox backend.Mailbox, err error) {

@@ -6,8 +6,7 @@ import (
 	"net/http"
 )
 
-var upgrader = websocket.Upgrader{
-}
+var upgrader = websocket.Upgrader{}
 
 func Handle(port string) http.HandlerFunc {
 	tty := &content.InteractiveText{

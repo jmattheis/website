@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/jmattheis/website/dict"
 	"github.com/jmattheis/website/dns"
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/http"
@@ -30,6 +31,7 @@ type Config struct {
 	HTTP     http.Config
 	POP      pop.Config
 	IMAP     imap.Config
+	DICT     dict.Config
 }
 
 var prodConf = Config{
@@ -61,6 +63,9 @@ var prodConf = Config{
 	},
 	IMAP: imap.Config{
 		Port: "143",
+	},
+	DICT: dict.Config{
+		Port: "2628",
 	},
 }
 
@@ -94,6 +99,9 @@ var devConf = Config{
 	IMAP: imap.Config{
 		Port: "10143",
 	},
+	DICT: dict.Config{
+		Port: "2628",
+	},
 }
 
 func main() {
@@ -123,6 +131,7 @@ func main() {
 	http.Listen(config.HTTP, certManager)
 	pop.Listen(config.POP)
 	imap.Listen(config.IMAP)
+	dict.Listen(config.DICT)
 
 	<-make(chan struct{})
 }

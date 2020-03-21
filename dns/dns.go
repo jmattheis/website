@@ -56,7 +56,7 @@ func write(m *dns.Msg, s string) {
 				Rrtype: dns.TypeTXT,
 				Class:  dns.ClassINET,
 				Ttl:    0,
-			},})
+			}})
 	}
 }
 

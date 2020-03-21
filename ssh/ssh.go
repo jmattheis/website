@@ -35,8 +35,8 @@ func Listen(conf Config) {
 
 	server := ssh.Server{
 		IdleTimeout: time.Minute,
-		MaxTimeout: time.Minute * 10,
-		Addr: ":" + conf.Port,
+		MaxTimeout:  time.Minute * 10,
+		Addr:        ":" + conf.Port,
 		HostSigners: []ssh.Signer{privateKey},
 		Handler: ssh.Handler(func(s ssh.Session) {
 			defer s.Close()
@@ -74,8 +74,6 @@ func Listen(conf Config) {
 	}()
 }
 
-
-
 func readKey(path string) (ssh.Signer, error) {
 
 	privateBytes, err := ioutil.ReadFile(path)
@@ -87,7 +85,8 @@ func readKey(path string) (ssh.Signer, error) {
 }
 
 var auto = []string{"help", "exit", "blog", "projects"}
-func autocomplete (s ssh.Session) func(line string, pos int, key rune) (newLine string, newPos int, ok bool) {
+
+func autocomplete(s ssh.Session) func(line string, pos int, key rune) (newLine string, newPos int, ok bool) {
 	return func(line string, pos int, key rune) (newLine string, newPos int, ok bool) {
 		if key == 3 {
 			_ = s.Close()

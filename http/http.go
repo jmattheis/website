@@ -46,8 +46,8 @@ func Listen(conf Config, manager *autocert.Manager) {
 		Msg("https/*")
 	go func() {
 		server := &http.Server{
-			Addr: ":" + conf.SSLPort,
-			Handler: handle(conf.SSLPort),
+			Addr:      ":" + conf.SSLPort,
+			Handler:   handle(conf.SSLPort),
 			TLSConfig: &tls.Config{},
 		}
 		if manager == nil {

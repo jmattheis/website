@@ -8,7 +8,6 @@ import (
 type SingleText struct {
 	Protocol      string
 	Port          string
-	Prefix        string
 	Split         string
 	ForceBanner   string
 	CommandPrefix string
@@ -29,6 +28,8 @@ Read more:
   %sblog       show my blog posts
 `, i.CommandPrefix, i.CommandPrefix, i.CommandPrefix)
 	switch words[0] {
+	case "start":
+		fallthrough
 	case "":
 		if i.ForceBanner == "" {
 			return StartTXT(rdmBanner(), i.Protocol, i.Port) + more
@@ -51,6 +52,11 @@ Read more:
 	case "cat":
 		return Cat + more
 	default:
-		return fmt.Sprintf(`error: %s doesn't exist`, words[0]) + more
+		return fmt.Sprintf(`error: %s doesn't exist
+`, words[0]) + more
 	}
+}
+
+func (i SingleText) Commands() []string {
+	return []string{"blog", "projects", "start", "cat"}
 }

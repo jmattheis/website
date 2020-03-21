@@ -21,7 +21,7 @@ This server abuses various protocols to
 transfer content of my website.
 
 Currently supported are: 
-  dns(tcp), ftp, http/https, imap, pop3,
+  dict, dns(tcp), ftp, http/https, imap, pop3,
   ssh, telnet/tcp, websocket and whois
 
 You can find the source code on GitHub:
@@ -29,11 +29,13 @@ You can find the source code on GitHub:
 
 Try one of the following commands for connecting to this service.
 
+  curl  dict://jmattheis.de/show:server
   curl   ftp://jmattheis.de
   curl  http://jmattheis.de
   curl https://jmattheis.de
   curl "imap://jmattheis.de/INBOX;UID=1" -u ":"
   curl  pop3://jmattheis.de/1
+  dict -h      jmattheis.de -I
   dig         @jmattheis.de +tcp +short
   netcat       jmattheis.de 23
   ssh          jmattheis.de

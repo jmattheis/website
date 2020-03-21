@@ -89,4 +89,3 @@ func (driver *ClientDriver) DeleteFile(cc server.ClientContext, path string) err
 func (driver *ClientDriver) RenameFile(cc server.ClientContext, from, to string) error {
 	return errors.New("not supported")
 }
-

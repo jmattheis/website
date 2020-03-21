@@ -8,7 +8,7 @@ import (
 )
 
 type Config struct {
-	Port    string
+	Port string
 }
 
 func Listen(conf Config) {
@@ -19,9 +19,9 @@ func Listen(conf Config) {
 	}
 
 	tty := &content.SingleText{
-		Protocol: "whois",
-		Port:     conf.Port,
-		Split:    ".",
+		Protocol:      "whois",
+		Port:          conf.Port,
+		Split:         ".",
 		CommandPrefix: "whois -h jmattheis.de ",
 	}
 
