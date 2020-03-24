@@ -11,6 +11,7 @@ type SingleText struct {
 	Split         string
 	ForceBanner   string
 	CommandPrefix string
+	CommandSuffix string
 }
 
 func (i SingleText) Get(command string) string {
@@ -23,10 +24,10 @@ func (i SingleText) Get(command string) string {
 	more := fmt.Sprintf(`
 Read more:
 
-  %sprojects   read about projects
-  %scat        show an image of my cat
-  %sblog       show my blog posts
-`, i.CommandPrefix, i.CommandPrefix, i.CommandPrefix)
+  %sprojects%s   read about projects
+  %scat%s        show an image of my cat
+  %sblog%s       show my blog posts
+`, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix)
 	switch words[0] {
 	case "start":
 		fallthrough
@@ -44,7 +45,7 @@ Read more:
 		result := "Choose a blog post:\n\n"
 
 		for index, entry := range BlogBox.List() {
-			result += fmt.Sprintf("  %sblog%s%d     %s\n", i.CommandPrefix, i.Split, index, entry[2:])
+			result += fmt.Sprintf("  %sblog%s%d%s     %s\n", i.CommandPrefix, i.Split, index, i.CommandSuffix, entry[2:])
 		}
 		return result + more
 	case "projects":

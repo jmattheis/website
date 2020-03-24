@@ -23,6 +23,7 @@ curl  "imap://jmattheis.de/INBOX;UID=1" -u ":"
 curl   pop3://jmattheis.de/1
 dict -h       jmattheis.de -I
 dig          @jmattheis.de +tcp +short
+docker -H     jmattheis.de inspect start -f '{{.Value}}'
 netcat        jmattheis.de 23
 ssh           jmattheis.de
 telnet        jmattheis.de 23

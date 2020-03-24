@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/jmattheis/website/dict"
 	"github.com/jmattheis/website/dns"
+	"github.com/jmattheis/website/docker"
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/gopher"
 	"github.com/jmattheis/website/http"
@@ -34,6 +35,7 @@ type Config struct {
 	IMAP     imap.Config
 	DICT     dict.Config
 	Gopher   gopher.Config
+	Docker   docker.Config
 }
 
 var prodConf = Config{
@@ -71,6 +73,9 @@ var prodConf = Config{
 	},
 	Gopher: gopher.Config{
 		Port: "70",
+	},
+	Docker: docker.Config{
+		Port: "2375",
 	},
 }
 
@@ -110,6 +115,9 @@ var devConf = Config{
 	Gopher: gopher.Config{
 		Port: "10070",
 	},
+	Docker: docker.Config{
+		Port: "2375",
+	},
 }
 
 func main() {
@@ -141,6 +149,7 @@ func main() {
 	imap.Listen(config.IMAP)
 	dict.Listen(config.DICT)
 	gopher.Listen(config.Gopher)
+	docker.Listen(config.Docker)
 
 	<-make(chan struct{})
 }
