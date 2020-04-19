@@ -2,14 +2,16 @@ package http
 
 import (
 	"crypto/tls"
+	"net/http"
+	"strings"
+
+	"github.com/NYTimes/gziphandler"
 	"github.com/jmattheis/website/http/html"
 	"github.com/jmattheis/website/http/text"
 	"github.com/jmattheis/website/http/websocket"
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/acme/autocert"
-	"net/http"
-	"strings"
 )
 
 type Config struct {
@@ -25,7 +27,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 
 	go func() {
 
-		var handler http.Handler = handle(conf.Port)
+		var handler http.Handler = gziphandler.GzipHandler(handle(conf.Port))
 		if manager != nil {
 			handler = manager.HTTPHandler(handler)
 		}
@@ -47,7 +49,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 	go func() {
 		server := &http.Server{
 			Addr:      ":" + conf.SSLPort,
-			Handler:   handle(conf.SSLPort),
+			Handler:   gziphandler.GzipHandler(handle(conf.SSLPort)),
 			TLSConfig: &tls.Config{},
 		}
 		if manager == nil {

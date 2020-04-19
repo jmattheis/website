@@ -4,6 +4,7 @@ go 1.14
 
 require (
 	github.com/DevelHell/popgun v0.0.0-20170926125504-2c5552e4bf74
+	github.com/NYTimes/gziphandler v1.1.1
 	github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239 // indirect
 	github.com/emersion/go-imap v1.0.4
 	github.com/emersion/go-message v0.11.1
