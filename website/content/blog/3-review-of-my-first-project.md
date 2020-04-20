@@ -12,9 +12,9 @@ date = "2020-04-19"
 
 ## Intro
 
-In 2012 I (13 years old) started learing coding. I didn't read books or anything,
+In 2012 I (13 years old) started learning coding. I didn't read books or anything,
 I mostly copied stuff from YouTube tutorials. This lead to my first bigger project.
-A social network clone, which should be similar to facebook.
+A social network clone, which should be similar to Facebook.
 
 In this blog post, I'll review my now 8 year old code.
 Partly to amuse myself what kind of errors I made and
@@ -34,8 +34,8 @@ It looks like this:
 
 ![](/img/3-header.png)
 
-Yes, most of the stuff is in german, but I'll rename variables
-and strings in code examples to english.
+Yes, most of the stuff is in German, but I'll rename variables
+and strings in code examples to English.
 
 ## Code Style/Quality
 
@@ -95,7 +95,7 @@ F.ex. in tests I prefer having all the relevant
 test setup inside the actual test method and not extracting
 it to another method.
 
-In my project, there is alot copied code. I think the main reason was,
+In my project, there is a lot copied code. I think the main reason was,
 that I really rarely used `return` in functions and
 rather just `echo`'ed/printed them out.
 
@@ -134,7 +134,7 @@ Obviously I didn't wrote tests. Why should I?
 Most of the YouTube tutorials only specified how to write something,
 not how to write good maintainable code. Tests verify that your code *really* works.
 Here is a good summary why writing tests rocks!
-[stackoverflow: Is Unit Testing worth the effort?](https://stackoverflow.com/a/67500/4244993)
+[StackOverflow: Is Unit Testing worth the effort?](https://stackoverflow.com/a/67500/4244993)
 
 In [gotify/server](https://github.com/gotify/server) 
 I've written unit, integration and end to end tests from the start.
@@ -145,7 +145,7 @@ because the code is properly tested.
 
 ### SQL Injection
 
-Basically every SQL statement in that project is vurnable. Example, email verification:
+Basically every SQL statement in that project is vulnerable. Example, email verification:
 ```php
 mysql_query("UPDATE user SET activated = '1' WHERE id='".$_GET['code']."'");
 ```
@@ -165,7 +165,7 @@ mysql_query("INSERT INTO post_comment ( post_id, name, comment, date) VALUES ('"
    .$date."')")or die(mysql_error());
 ```
 Escaping the message is good, but `$id` is also user supplied. I think I can safely say,
-that nealy all inputs on that website are vurnable.
+that nearly all inputs on that website are vulnerable.
 
 SQL Injection is on place 1 on the [OWASP top ten security risks](https://owasp.org/www-project-top-ten/).
 Without knowledge it is pretty easy to allow SQL injection and
@@ -188,7 +188,7 @@ $statement->execute([$_GET['code']]);
 In a CSRF attack, the attacker tries to let the victim submit a malicious web request without knowing it.
 This could be to gain access to administration stuff or in my case add a new post to the timeline.
 
-Here a vurnable form:
+Here a vulnerable form:
 ```php
 <form action="index.php" method="post">
     <textarea name="posttext"></textarea>
@@ -258,7 +258,7 @@ if ($_POST["posten"]) {
 ### Cross-Site-Scripting (XSS)
 
 Cross-Site-Scripting means the attacker injects HTML/JavaScript into the website.
-The vurnable part of my project is the comment section of posts.
+The vulnerable part of my project is the comment section of posts.
 The content of the actual post is secured, guess I partly knew what I was doing.
 
 ![](/img/3-cross-site-scripting.gif)
@@ -457,7 +457,7 @@ echo loginUser($form_email, $formPassword);
 ## Conclusion
 
 As expected my social network delivered,
-many security vurnablities, bad code quality and some WTF moments.
+many security vulnerabilities, bad code quality and some WTF moments.
 I enjoyed looking over it. It was a fun ride through the past :D.
 Thank you 13 year old me, for saving this project on cloud storage
 and even creating a sql dump from the database. Much appreciated.
