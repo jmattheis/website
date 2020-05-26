@@ -21,7 +21,7 @@ func Listen(conf Config) {
 	tty := &content.SingleText{
 		Protocol:      "http@docker",
 		Port:          conf.Port,
-		Split:         "/",
+		Split:         ".",
 		CommandPrefix: "docker -H jmattheis.de inspect -f '{{.Value}}' ",
 	}
 
