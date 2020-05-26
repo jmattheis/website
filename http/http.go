@@ -2,6 +2,7 @@ package http
 
 import (
 	"crypto/tls"
+	"io"
 	"net/http"
 	"strings"
 
@@ -74,6 +75,12 @@ func handle(port string) http.HandlerFunc {
 	t := text.Handle(port)
 
 	return func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/ssh" || r.URL.Path == "/key" || r.URL.Path == "/keys" {
+			w.Header().Add("content-type", "text/plain")
+			io.WriteString(w, "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpgcVSnqwvdtBz8Vw0PAdP2sMelg5DsYpFbQdXqmxT ssh@jmattheis.de")
+			return
+		}
+
 		if containsHeader(r, "connection", "upgrade") &&
 			containsHeader(r, "upgrade", "websocket") {
 			ws(w, r)
