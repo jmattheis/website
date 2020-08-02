@@ -119,7 +119,7 @@ Let's check our configuration. Start the core DNS server with:
 $ sudo ./coredns
 ```
 CoreDNS requires sudo because we use port 53, you can work around this by 
-changing this to an unused port which is over 1000.
+changing this to an unused port which is over 1024.
 
 With a started server, we can make a test request with dig:
 
