@@ -39,7 +39,7 @@ type Config struct {
 }
 
 var prodConf = Config{
-	AutoCert: true,
+	AutoCert: false,
 	Domain:   "jmattheis.de",
 	PubIP:    "78.47.104.216",
 	Telnet: telnet.Config{
@@ -59,8 +59,8 @@ var prodConf = Config{
 		PrivateKeyPath: "./privkey",
 	},
 	HTTP: http.Config{
-		Port:    "80",
-		SSLPort: "443",
+		Port:    "8080",
+		SSLPort: "8083",
 	},
 	POP: pop.Config{
 		Port: "110",

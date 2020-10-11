@@ -37,6 +37,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 		if err != nil {
 			log.Fatal().
 				Str("on", "init").
+				Err(err).
 				Str("port", conf.Port).
 				Msg("http/*")
 		}
@@ -62,6 +63,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 		if err := server.ListenAndServeTLS("", ""); err != nil {
 			log.Fatal().
 				Str("on", "init").
+				Err(err).
 				Str("port", conf.SSLPort).
 				Msg("https/*")
 			return
