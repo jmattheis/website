@@ -91,6 +91,13 @@ It features:
 Source:  https://github.com/gotify
 Website: https://gotify.net
 
+# Screego
+
+A self-hostable screen sharing app that uses WebRTC.
+
+Source:  https://github.com/screego/server
+Website: https://screego.net
+
 # Traggo
 
 Traggo is a tag-based time tracking tool written in Go.
