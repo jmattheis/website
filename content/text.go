@@ -9,6 +9,19 @@ import (
 
 var BlogBox = packr.New("blog", "../website/content/blog")
 
+var Donate = `Thanks for supporting my work!
+
+You can donate to me via the following services:
+
+  Monthly:
+    https://patreon.com/jmattheis
+    https://github.com/sponsors/jmattheis
+
+  One-time:
+    https://paypal.me/jmattheis
+    ETH: 0x8f81078456e10a51c93d18fa2093BFFA3D8fA273
+`
+
 func StartTXT(banner, protocol, port string) string {
 	return fmt.Sprintf(`%s
 
@@ -16,12 +29,11 @@ Hey there! You've connected via %s to jmattheis.de:%s.
 
 I'm Jannis Mattheis, a developer from Germany.
 
-This is one of my projects. 
-This server abuses various protocols to 
+This server abuses various protocols to
 transfer content of my website.
 
-Currently supported are: 
-  dict, dns(tcp), ftp, gopher, http/https, imap, 
+Currently supported are:
+  dict, dns(tcp), ftp, gopher, http/https, imap,
   pop3, ssh, telnet/tcp, websocket and whois
 
 You can find the source code on GitHub:

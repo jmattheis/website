@@ -30,3 +30,5 @@ telnet        jmattheis.de 23
 whois -h      jmattheis.de .
 wscat -c      jmattheis.de
 ```
+
+Support me by [donating](/donate).
