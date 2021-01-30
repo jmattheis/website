@@ -7,11 +7,10 @@ import (
 	"strconv"
 )
 
-var BlogBox = packr.New("blog", "../website/content/blog")
+var BlogBox = packr.New("blog", "../assets/blog")
 
-var Donate = `Thanks for supporting my work!
-
-You can donate to me via the following services:
+var Donate = `If you or your company use any of my projects, consider supporting me so I can
+continue maintaining them.
 
   Monthly:
     https://patreon.com/jmattheis
@@ -26,21 +25,19 @@ You can donate to me via the following services:
 func StartTXT(banner, protocol, port string) string {
 	return fmt.Sprintf(`%s
 
-Hey there! You've connected via %s to jmattheis.de:%s.
+Hey there! I'm a software engineer from Berlin, Germany. Since 2018, I'm
+creating and maintaining privacy focused open-source projects. I enjoy writing
+simple, maintainable and testable code.
 
-I'm Jannis Mattheis, a developer from Germany.
+Besides programming, I'm also heavily invested into mechanical keyboards. My
+daily driver is a DZ60 with MX Clear switches and SP SA Chalk keycaps, but I'm
+working on a split keyboard (lily58) with Zealios V2 switches.
 
-This server abuses various protocols to
-transfer content of my website.
+This website is available via various protocols, which may or may not be
+intended to be used that way. Currently, there is support for: dict, dns(tcp),
+ftp, gopher, http/https, imap, pop3, ssh, telnet/tcp, websocket and whois.
 
-Currently supported are:
-  dict, dns(tcp), ftp, gopher, http/https, imap,
-  pop3, ssh, telnet/tcp, websocket and whois
-
-You can find the source code on GitHub:
-  https://github.com/jmattheis/website
-
-Try one of the following commands for connecting to this service.
+Try one of the following commands in your terminal:
 
   curl   dict://jmattheis.de/show:server
   curl    ftp://jmattheis.de
@@ -60,7 +57,7 @@ Try one of the following commands for connecting to this service.
 
 If you think there are protocols missing,
 send me a mail to hello@jmattheis.de :D
-`, banner, protocol, port)
+`, banner)
 }
 func txtBlogs() string {
 	result := ""

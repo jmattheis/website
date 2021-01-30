@@ -1,0 +1,47 @@
+{{ define "start"}}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Jannis Mattheis" />
+    <meta name="description" content="{{ .Description }}" />
+
+    <meta property="og:url" content="{{ .URL }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ .Title }}" />
+    <meta property="og:description" content="{{ .Description }}" />
+    <meta property="og:image" content="https://jmattheis.de/avatar.jpg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content="jmattheis.de" />
+    <meta property="twitter:url" content="{{ .URL }}" />
+    <meta name="twitter:title" content="{{ .Title }}" />
+    <meta name="twitter:description" content="{{ .Description }}" />
+    <meta name="twitter:image" content="https://jmattheis.de/avatar.jpg" />
+
+    <link rel="me" href="https://github.com/jmattheis" />
+    <link rel="me" href="mailto:hello@jmattheis.de" />
+    <link rel="me" href="https://stackoverflow.com/users/4244993/jmattheis" />
+
+    <title>{{ .Title }}</title>
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <div class="container">
+      {{ end }}
+      {{define "end"}}
+      <br />
+      <hr />
+      <p style="text-align: center">Made with ❤ by Jannis Mattheis</p>
+    </div>
+  </body>
+</html>
+{{ end }}

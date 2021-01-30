@@ -1,0 +1,115 @@
+body {
+  font-family: "JetBrains Mono", monospace;
+  line-height: 1.5;
+  background: #282828;
+  color: #bfbfbf;
+  font-size: 16px;
+}
+.avatar-container {
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 40px;
+}
+.avatar {
+  border-radius: 100px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #bdae93;
+}
+.container {
+  margin: 0 auto;
+  max-width: 600px;
+  max-width: 68ch;
+  width: 100%;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+p {
+  text-align: justify;
+}
+h1,
+h2 {
+  text-align: center;
+  color: #d65d0e;
+}
+h2 {
+  margin-top: 40px;
+}
+a {
+  color: #ebdbb2;
+}
+code pre {
+  margin: 0;
+  background: #1d2021;
+  padding: 15px 20px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+hr {
+  color: #928374;
+}
+.lang {
+  background: #1d2021;
+  padding: 3px 8px;
+}
+
+.show-more {
+  position: relative;
+  margin-bottom: 45px;
+}
+.show-more-text {
+  height: 90px;
+  overflow: hidden;
+}
+.show-more label {
+  position: absolute;
+  text-align: right;
+  margin: -35px 0 0 -15px;
+  padding: 5px;
+  cursor: pointer;
+  top: 100%;
+  width: 100%;
+  color: #fe8019;
+}
+@media (max-width: 450px) {
+  .show-more label {
+    margin: 0 0 0 -15px;
+  }
+}
+@media (max-width: 590px) {
+  .lang {
+    display: none;
+  }
+}
+.show-more input {
+  display: none;
+}
+.show-more label:after {
+  content: "show more";
+}
+.show-more input:checked + label:after {
+  content: "show less";
+}
+.show-more input:checked ~ label {
+}
+.show-more input:checked ~ div {
+  height: auto;
+}
+.markdown pre {
+  margin: 0;
+  background: #1d2021;
+  padding: 15px 20px;
+  overflow-x: auto;
+  border-radius: 8px;
+}
+.markdown pre code {
+  margin: 0;
+  background: transparent;
+  padding: 0;
+  overflow-x: none;
+}
+.markdown code {
+  background: #1d2021;
+  padding: 3px 8px;
+}

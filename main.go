@@ -100,7 +100,7 @@ var devConf = Config{
 		PrivateKeyPath: "./privkey",
 	},
 	HTTP: http.Config{
-		Port:    "10080",
+		Port:    "8080",
 		SSLPort: "10443",
 	},
 	POP: pop.Config{

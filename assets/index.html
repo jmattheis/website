@@ -1,0 +1,125 @@
+{{template "start" .}}
+<div class="avatar-container">
+  <img src="avatar.jpg" class="avatar" />
+</div>
+<h1>Jannis Mattheis</h1>
+<p>
+  <b>Hey there!</b> I'm a software engineer from Berlin, Germany. Since 2018,
+  I'm creating and maintaining privacy focused open-source projects. I enjoy
+  writing simple, maintainable and testable code.
+</p>
+<p>
+  Besides programming, I'm also heavily invested into mechanical keyboards. My
+  daily driver is a DZ60 with MX Clear switches and SP SA Chalk keycaps, but I'm
+  working on a split keyboard (lily58) with Zealios V2 switches.
+</p>
+<p>
+  Contact me on
+  <a rel="me" href="mailto:hello@jmattheis.de">hello@jmattheis.de</a> and find
+  me on <a rel="me" href="https://github.com/jmattheis">GitHub</a>.
+</p>
+<h2>Hacky</h2>
+<p>
+  This website is available via various protocols, which may or may not be
+  intended to be used that way. Currently, there is support for: dict, dns(tcp),
+  ftp, gopher, http/https, imap, pop3, ssh, telnet/tcp, websocket and whois.
+</p>
+<p>Try one of the following commands in your terminal:</p>
+<div class="show-more">
+  <input id="ch" type="checkbox" />
+  <label for="ch"></label>
+  <div class="show-more-text">
+    <code>
+      <pre>
+$ curl   dict://jmattheis.de/show:server
+$ curl    ftp://jmattheis.de
+$ curl gopher://jmattheis.de
+$ curl   http://jmattheis.de
+$ curl  https://jmattheis.de
+$ curl  "imap://jmattheis.de/INBOX;UID=1" -u ":"
+$ curl   pop3://jmattheis.de/1
+$ dict -h       jmattheis.de -I
+$ dig          @jmattheis.de +tcp +short
+$ docker -H     jmattheis.de inspect start -f '{{.Value}}'
+$ netcat        jmattheis.de 23
+$ ssh           jmattheis.de
+$ telnet        jmattheis.de 23
+$ whois -h      jmattheis.de .
+$ wscat -c      jmattheis.de</pre
+      >
+    </code>
+  </div>
+</div>
+<h2>Projects</h2>
+<p>
+  <a href="https://github.com/gotify/server">gotify/server</a>
+  (<a href="https://gotify.net">Docs</a>)
+  <span class="lang">Go</span>
+  <span class="lang">TypeScript</span>
+  <span class="lang">React</span>
+  <span class="lang">WebSocket</span>
+  <br />
+  A simple server for sending and receiving messages in real-time per WebSocket.
+</p>
+<p>
+  <a href="https://github.com/gotify/android">gotify/android</a>
+  (<a href="https://play.google.com/store/apps/details?id=com.github.gotify"
+    >PlayStore</a
+  >, <a href="https://f-droid.org/de/packages/com.github.gotify/">F-Droid</a>)
+  <span class="lang">Java</span>
+  <span class="lang">Android</span>
+  <br />
+  An app that creates push notifications for new messages posted to
+  gotify/server.
+</p>
+<p>
+  <a href="https://github.com/gotify/cli">gotify/cli</a>
+  <span class="lang">Go</span>
+  <br />
+  A cli for pushing messages to gotify/server.
+</p>
+<p>
+  <a href="https://github.com/screego/server">screego</a> (<a
+    href="https://screego.net"
+    >Docs</a
+  >, <a href="https://app.screego.net">Demo</a>)
+  <span class="lang">Go</span>
+  <span class="lang">TypeScript</span>
+  <span class="lang">React</span>
+  <span class="lang">WebRTC</span>
+  <br />
+  screen sharing for developers.
+</p>
+<p>
+  <a href="https://github.com/traggo/server">traggo</a>
+  (<a href="https://traggo.net">Docs</a>)
+  <span class="lang">Go</span>
+  <span class="lang">TypeScript</span>
+  <span class="lang">GraphQL</span>
+  <span class="lang">Apollo</span>
+  <br />
+  A self-hosted tag-based time tracking server.
+</p>
+<p>
+  ???/???
+  <span class="lang">Rust</span>
+  <span class="lang">TypeScript</span>
+  <span class="lang">React</span>
+  <span class="lang">Postgres</span>
+  <br />
+  A self-hosted podcast player and manager.
+</p>
+<p>
+  <br />
+  I create and maintain these projects in my free time besides my full time job.
+  If you want to ensure that I can continue maintaining them then you can donate
+  to me:
+  <a href="/donate">jmattheis.de/donate</a>
+</p>
+<h2>Blog</h2>
+{{ range.Blogs }}
+<p>
+  {{.Date}} <a href="/{{ .URL }}">{{ .Title }}</a>
+</p>
+{{ end }}
+{{template "end"}}

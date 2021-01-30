@@ -75,6 +75,7 @@ func Listen(conf Config, manager *autocert.Manager) {
 func handle(port string) http.HandlerFunc {
 	ws := websocket.Handle(port)
 	t := text.Handle(port)
+    htmll := html.Handler()
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/ssh" || r.URL.Path == "/key" || r.URL.Path == "/keys" {
@@ -96,7 +97,7 @@ func handle(port string) http.HandlerFunc {
 			return
 		}
 
-		html.Handle(w, r)
+		htmll(w, r)
 	}
 }
 
