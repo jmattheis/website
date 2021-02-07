@@ -14,7 +14,9 @@ require (
 	github.com/gliderlabs/ssh v0.2.2
 	github.com/gobuffalo/packr/v2 v2.8.0
 	github.com/gomarkdown/markdown v0.0.0-20201113031856-722100d81a8e
+	github.com/gorilla/feeds v1.1.1
 	github.com/gorilla/websocket v1.4.1
+	github.com/grokify/html-strip-tags-go v0.0.1
 	github.com/karrick/godirwalk v1.15.5 // indirect
 	github.com/miekg/dns v1.1.28
 	github.com/prologic/go-gopher v0.0.0-20191226035442-664dbdb49f44

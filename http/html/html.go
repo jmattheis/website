@@ -4,48 +4,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gernest/front"
-	"github.com/gobuffalo/packr/v2"
-	"github.com/gomarkdown/markdown"
-	"github.com/gomarkdown/markdown/html"
 	"github.com/jmattheis/website/content"
 )
 
-type Blog struct {
-    Title string
-    Description string
-    Date string
-    Content []byte
-    URL string
-}
-
 func Handler() http.HandlerFunc {
-    m := front.NewMatter()
-	m.Handle("---", front.YAMLHandler)
-
-    htmlFlags := html.CommonFlags | html.HrefTargetBlank
-    opts := html.RendererOptions{Flags: htmlFlags}
-    renderer := html.NewRenderer(opts)
-
-    blogLookup := map[string]Blog{}
-    displayBlog := []Blog{}
-
-    content.Assets.WalkPrefix("blog/", func(name string, file packr.File) error {
-        tags, data, _ := m.Parse(file)
-        md := markdown.ToHTML([]byte(data), nil, renderer)
-        b := Blog {
-            Title: tags["title"].(string),
-            Description: tags["description"].(string),
-            Date: tags["date"].(string),
-            Content: md,
-            URL: tags["url"].([]interface{})[0].(string),
-        }
-        displayBlog = append(displayBlog, b)
-        for _, url := range tags["url"].([]interface{}) {
-            blogLookup[url.(string)] = b
-        }
-        return nil
-    })
+    displayBlog, blogLookup := content.ParseBlogs()
 
 	return func(w http.ResponseWriter, r *http.Request) {
         resource := strings.TrimPrefix(r.URL.Path, "/")

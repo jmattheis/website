@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/NYTimes/gziphandler"
+	"github.com/gorilla/feeds"
+	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/http/html"
 	"github.com/jmattheis/website/http/text"
 	"github.com/jmattheis/website/http/websocket"
@@ -75,12 +77,24 @@ func Listen(conf Config, manager *autocert.Manager) {
 func handle(port string) http.HandlerFunc {
 	ws := websocket.Handle(port)
 	t := text.Handle(port)
-    htmll := html.Handler()
+	htmll := html.Handler()
+
+	feed := feeds.Atom{content.BlogsRss()}
+	atom, err := feed.ToAtom()
+	if err != nil {
+		panic(err)
+	}
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/ssh" || r.URL.Path == "/key" || r.URL.Path == "/keys" {
 			w.Header().Add("content-type", "text/plain")
 			io.WriteString(w, "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAxpgcVSnqwvdtBz8Vw0PAdP2sMelg5DsYpFbQdXqmxT ssh@jmattheis.de")
+			return
+		}
+
+		if r.URL.Path == "/feed.xml" || r.URL.Path == "/blog/index.xml" { //
+			w.Header().Add("content-type", "application/xml; charset=utf-8")
+			io.WriteString(w, atom)
 			return
 		}
 
