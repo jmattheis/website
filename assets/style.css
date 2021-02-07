@@ -11,9 +11,9 @@ body {
   margin-top: 40px;
 }
 .avatar {
-  border-radius: 100px;
-  width: 200px;
-  height: 200px;
+  border-radius: 125px;
+  width: 250px;
+  height: 250px;
   border: 2px solid #bdae93;
 }
 .container {
