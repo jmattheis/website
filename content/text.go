@@ -9,19 +9,6 @@ import (
 
 var BlogBox = packr.New("blog", "../assets/blog")
 
-var Donate = `If you or your company use any of my projects, consider supporting me so I can
-continue maintaining them.
-
-  Monthly:
-    https://patreon.com/jmattheis
-    https://github.com/sponsors/jmattheis
-
-  One-time:
-    https://paypal.me/jmattheis
-    https://www.buymeacoffee.com/jmattheis
-    ETH: 0x8f81078456e10a51c93d18fa2093BFFA3D8fA273
-`
-
 func StartTXT(banner, protocol, port string) string {
 	return fmt.Sprintf(`%s
 
@@ -30,8 +17,8 @@ creating and maintaining privacy focused open-source projects. I enjoy writing
 simple, maintainable and testable code.
 
 Besides programming, I'm also heavily invested into mechanical keyboards. My
-daily driver is a DZ60 with MX Clear switches and SP SA Chalk keycaps, but I'm
-working on a split keyboard (lily58) with Zealios V2 switches.
+daily driver is a Lily58. This is an ortholinear split keyboard that I've
+equipped with Zealios V2 switches and DSA Vilebloom keycaps.
 
 This website is available via various protocols, which may or may not be
 intended to be used that way. Currently, there is support for: dict, dns(tcp),

@@ -27,8 +27,7 @@ Read more:
   %sprojects%s   read about projects
   %scat%s        show an image of my cat
   %sblog%s       show my blog posts
-  %sdonate%s     show donation info
-`, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix)
+`, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix)
 	switch words[0] {
 	case "start":
 		fallthrough
@@ -49,8 +48,6 @@ Read more:
 			result += fmt.Sprintf("  %sblog%s%d%s     %s\n", i.CommandPrefix, i.Split, index, i.CommandSuffix, entry[2:])
 		}
 		return result + more
-	case "donate":
-		return Donate + more
 	case "projects":
 		return ProjectsTXT + more
 	case "cat":

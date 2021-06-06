@@ -29,7 +29,6 @@ write 'help' to show the available commands.
 blog      - show a list of my blog posts
 blog <id> - show a blog post
 cat       - show an ascii image of my cat
-donate    - show donation info
 exit      - terminate the connection
 help      - show help
 projects  - show my projects
@@ -50,8 +49,6 @@ Example: blog 1
 %s`, txtBlogs(), i.Prompt), false
 	case "cat":
 		return Cat + "\n" + i.Prompt, false
-	case "donate":
-		return Donate + "\n" + i.Prompt, false
 	case "projects":
 		return "\n" + ProjectsTXT + "\n" + i.Prompt, false
 	case "exit":
