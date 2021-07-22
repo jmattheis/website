@@ -36,6 +36,7 @@ func Listen(conf Config) {
 	p := path.Join(cwd, "gemini_cache")
 	os.MkdirAll(p, 0755)
 	certificates.SetPath(p)
+	certificates.Load(p)
 	certificates.Register("jmattheis.de")
 	certificates.Register("localhost")
 

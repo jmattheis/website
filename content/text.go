@@ -22,7 +22,8 @@ equipped with Zealios V2 switches and DSA Vilebloom keycaps.
 
 This website is available via various protocols, which may or may not be
 intended to be used that way. Currently, there is support for: dict, dns(tcp),
-ftp, gopher, http/https, imap, pop3, ssh, telnet/tcp, websocket and whois.
+ftp, gemini, gopher, http/https, imap, pop3, redis, ssh, telnet/tcp, websocket,
+and whois.
 
 Try one of the following commands in your terminal:
 
@@ -31,7 +32,7 @@ Try one of the following commands in your terminal:
   curl   gopher://jmattheis.de
   curl     http://jmattheis.de
   curl    https://jmattheis.de
-  curl    'imap://jmattheis.de/INBOX;UID=1' -u ''
+  curl    'imap://jmattheis.de/INBOX;UID=1' -u ':'
   curl     pop3://jmattheis.de/1
   dict -h         jmattheis.de -I
   dig            @jmattheis.de +tcp +short
