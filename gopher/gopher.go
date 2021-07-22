@@ -2,7 +2,7 @@ package gopher
 
 import (
 	"github.com/jmattheis/website/content"
-	"github.com/prologic/go-gopher"
+	"git.mills.io/prologic/go-gopher"
 	"github.com/rs/zerolog/log"
 	"strings"
 )
