@@ -11,6 +11,7 @@ import (
 	"github.com/jmattheis/website/imap"
 	"github.com/jmattheis/website/logger"
 	"github.com/jmattheis/website/pop"
+	"github.com/jmattheis/website/redis"
 	"github.com/jmattheis/website/ssh"
 	"github.com/jmattheis/website/telnet"
 	"github.com/jmattheis/website/whois"
@@ -38,6 +39,7 @@ type Config struct {
 	Gopher   gopher.Config
 	Docker   docker.Config
 	Gemini   gemini.Config
+	Redis    redis.Config
 }
 
 var prodConf = Config{
@@ -81,6 +83,9 @@ var prodConf = Config{
 	},
 	Docker: docker.Config{
 		Port: "2375",
+	},
+	Redis: redis.Config{
+		Port: "6379",
 	},
 }
 
@@ -126,6 +131,9 @@ var devConf = Config{
 	Docker: docker.Config{
 		Port: "2375",
 	},
+	Redis: redis.Config{
+		Port: "6379",
+	},
 }
 
 func main() {
@@ -159,6 +167,7 @@ func main() {
 	gopher.Listen(config.Gopher)
 	docker.Listen(config.Docker)
 	gemini.Listen(config.Gemini)
+	redis.Listen(config.Redis)
 
 	<-make(chan struct{})
 }

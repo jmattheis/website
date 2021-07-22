@@ -38,6 +38,7 @@ Try one of the following commands in your terminal:
   docker -H       jmattheis.de inspect -f '{{.Value}}' start
   gemget gemini://jmattheis.de/ -o-
   netcat          jmattheis.de 23
+  redis-cli -h    jmattheis.de lrange start 0 0
   ssh             jmattheis.de
   telnet          jmattheis.de 23
   whois -h        jmattheis.de .
