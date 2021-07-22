@@ -51,7 +51,7 @@ func Listen(conf Config) {
 		Addr:           ":" + conf.Port,
 		Handler:        mux,
 		ReadTimeout:    3 * time.Second,
-		WriteTimeout:   3 * time.Minute,
+		WriteTimeout:   3 * time.Second,
 		GetCertificate: certificates.Get,
 	}
 	go server.ListenAndServe(context.Background())
