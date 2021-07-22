@@ -6,12 +6,13 @@ import (
 )
 
 type SingleText struct {
-	Protocol      string
-	Port          string
-	Split         string
-	ForceBanner   string
-	CommandPrefix string
-	CommandSuffix string
+	Protocol       string
+	Port           string
+	Split          string
+	ForceBanner    string
+	CommandPrefix  string
+	CommandSuffix  string
+	DisablePadding bool
 }
 
 func (i SingleText) Get(command string) string {
@@ -21,13 +22,18 @@ func (i SingleText) Get(command string) string {
 		return i.Get("")
 	}
 
+    prefix := i.CommandPrefix
+    if !i.DisablePadding {
+        prefix = "  " + prefix
+    }
+
 	more := fmt.Sprintf(`
 Read more:
 
-  %sprojects%s   read about projects
-  %scat%s        show an image of my cat
-  %sblog%s       show my blog posts
-`, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix, i.CommandPrefix, i.CommandSuffix)
+%sprojects%s   read about projects
+%scat%s        show an image of my cat
+%sblog%s       show my blog posts
+`, prefix, i.CommandSuffix, prefix, i.CommandSuffix, prefix, i.CommandSuffix)
 	switch words[0] {
 	case "start":
 		fallthrough
@@ -45,7 +51,7 @@ Read more:
 		result := "Choose a blog post:\n\n"
 
 		for index, entry := range BlogBox.List() {
-			result += fmt.Sprintf("  %sblog%s%d%s     %s\n", i.CommandPrefix, i.Split, index, i.CommandSuffix, entry[2:])
+			result += fmt.Sprintf("%sblog%s%d%s     %s\n", prefix, i.Split, index, i.CommandSuffix, entry[2:])
 		}
 		return result + more
 	case "projects":

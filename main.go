@@ -5,6 +5,7 @@ import (
 	"github.com/jmattheis/website/dns"
 	"github.com/jmattheis/website/docker"
 	"github.com/jmattheis/website/ftp"
+	"github.com/jmattheis/website/gemini"
 	"github.com/jmattheis/website/gopher"
 	"github.com/jmattheis/website/http"
 	"github.com/jmattheis/website/imap"
@@ -36,6 +37,7 @@ type Config struct {
 	DICT     dict.Config
 	Gopher   gopher.Config
 	Docker   docker.Config
+	Gemini   gemini.Config
 }
 
 var prodConf = Config{
@@ -73,6 +75,9 @@ var prodConf = Config{
 	},
 	Gopher: gopher.Config{
 		Port: "70",
+	},
+	Gemini: gemini.Config{
+		Port: "1965",
 	},
 	Docker: docker.Config{
 		Port: "2375",
@@ -115,6 +120,9 @@ var devConf = Config{
 	Gopher: gopher.Config{
 		Port: "10070",
 	},
+	Gemini: gemini.Config{
+		Port: "1965",
+	},
 	Docker: docker.Config{
 		Port: "2375",
 	},
@@ -150,6 +158,7 @@ func main() {
 	dict.Listen(config.DICT)
 	gopher.Listen(config.Gopher)
 	docker.Listen(config.Docker)
+	gemini.Listen(config.Gemini)
 
 	<-make(chan struct{})
 }

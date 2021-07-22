@@ -3,6 +3,8 @@ module github.com/jmattheis/website
 go 1.14
 
 require (
+	git.mills.io/prologic/go-gopher v0.0.0-20210712135410-b7ebb55feece
+	git.sr.ht/~adnano/go-gemini v0.2.2
 	github.com/DevelHell/popgun v0.0.0-20170926125504-2c5552e4bf74
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239 // indirect
@@ -19,10 +21,8 @@ require (
 	github.com/grokify/html-strip-tags-go v0.0.1
 	github.com/karrick/godirwalk v1.15.5 // indirect
 	github.com/miekg/dns v1.1.28
-	git.mills.io/prologic/go-gopher v0.0.0-20191226035442-664dbdb49f44
 	github.com/rs/zerolog v1.18.0
 	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4
-	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect
-	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527 // indirect
+	golang.org/x/net v0.0.0-20210716203947-853a461950ff // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
