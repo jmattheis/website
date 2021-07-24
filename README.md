@@ -11,7 +11,7 @@ curl      ftp://jmattheis.de
 curl   gopher://jmattheis.de
 curl     http://jmattheis.de
 curl    https://jmattheis.de
-curl    'imap://jmattheis.de/INBOX;UID=1' -u ''
+curl    'imap://jmattheis.de/INBOX;UID=1' -u ':'
 curl     pop3://jmattheis.de/1
 dict -h         jmattheis.de -I
 dig            @jmattheis.de +tcp +short
