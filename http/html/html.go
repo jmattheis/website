@@ -34,6 +34,17 @@ func Handler() http.HandlerFunc {
 				return
 			}
 		}
+		if strings.HasSuffix(r.URL.Path, ".svg") {
+			w.Header().Set("Content-Type", "image/svg+xml")
+			w.Header().Set("Cache-Control", "max-age=84600, public")
+			c, err := content.Assets.Find(r.URL.Path)
+			if err != nil {
+				resource = "404"
+			} else {
+				w.Write(c)
+				return
+			}
+		}
 		if strings.HasSuffix(r.URL.Path, ".css") {
 			w.Header().Set("Content-Type", "text/css")
 			w.Header().Set("Cache-Control", "max-age=84600, public")
@@ -54,6 +65,11 @@ func Handler() http.HandlerFunc {
 			resource = "index"
 		}
 
+		if resource == "404" {
+			w.WriteHeader(404)
+			return
+		}
+
 		if strings.HasPrefix(resource, "blog") {
 			b, ok := blogLookup[resource]
 			if !ok {
@@ -68,6 +84,7 @@ func Handler() http.HandlerFunc {
 
 		_, err := content.Assets.Find(resource + ".html")
 		if err != nil {
+
 			w.Write([]byte("no thanks"))
 			return
 		}
