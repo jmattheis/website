@@ -60,6 +60,7 @@ func Handler() http.HandlerFunc {
 		title := "Jannis Mattheis"
 		description := "I'm a software engineer from Berlin, Germany. Since 2018, I'm creating and maintaining privacy focused open-source projects."
 		blogContent := ""
+		url := "https://jmattheis.de"
 
 		if resource == "" {
 			resource = "index"
@@ -74,24 +75,25 @@ func Handler() http.HandlerFunc {
 			b, ok := blogLookup[resource]
 			if !ok {
 				resource = "404"
+				url += "/404"
 			} else {
 				resource = "blog"
 				blogContent = string(b.Content)
 				description = b.Description
 				title = b.Title
+				url += "/" + b.URL
 			}
 		}
 
 		_, err := content.Assets.Find(resource + ".html")
 		if err != nil {
-
 			w.Write([]byte("no thanks"))
 			return
 		}
 
 		err = content.HtmlTemplates.ExecuteTemplate(w, resource+".html", map[string]interface{}{
 			"Title":       title,
-			"URL":         "https://jmattheis.de" + r.URL.Path,
+			"URL":         url,
 			"Description": description,
 			"Blogs":       displayBlog,
 			"Content":     blogContent,
