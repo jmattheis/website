@@ -36,9 +36,9 @@ func Handler() http.HandlerFunc {
 		}
 
 		_, err := content.Assets.Find(resource + ".html")
-		if err != nil {
-			w.Write([]byte("no thanks"))
-			return
+		if err != nil || resource == "resume" {
+			resource = "404"
+			w.WriteHeader(404)
 		}
 
 		err = content.HtmlTemplates.ExecuteTemplate(w, resource+".html", map[string]interface{}{

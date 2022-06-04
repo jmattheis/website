@@ -2,7 +2,6 @@ package http
 
 import (
 	"crypto/tls"
-	"fmt"
 	"io"
 	"mime"
 	"net/http"
@@ -116,8 +115,6 @@ func handle(port string) http.HandlerFunc {
 				http.Error(w, "not found", 404)
 				return
 			}
-			fmt.Println(r.URL.Path, m, ext)
-
 			w.Header().Add("content-type", m)
 			w.WriteHeader(200)
 

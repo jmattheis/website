@@ -1,0 +1,294 @@
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf8" />
+    <title>jmattheis-cv</title>
+    <style type="text/css">
+      #page {
+        width: 21cm;
+        display: block;
+        font-family: Arial;
+        margin: 10mm auto;
+        font-size: 13px;
+        line-height: 15px;
+        background: white;
+        -webkit-text-size-adjust: 100%;
+        -webkit-font-smoothing: subpixel-antialiased;
+        font-smoothing: subpixel-antialiased;
+      }
+      body {
+        margin: 0;
+      }
+      @media screen {
+        body {
+          background: #e0e0e0;
+        }
+        #page {
+          padding: 15mm;
+          background: white;
+          box-shadow: 0 0.5mm 2mm rgba(0, 0, 0, 0.3);
+          margin: 10mm auto;
+        }
+      }
+      @media print {
+        @page {
+          size: A4 portrait;
+          margin: 15mm;
+          padding: 0;
+        }
+        #page {
+          margin: 0;
+          padding: 0mm;
+        }
+      }
+
+      a {
+        color: #d65d0e;
+      }
+      p {
+        line-height: 120%;
+        text-align: justify;
+        background: transparent;
+      }
+      h1 {
+        padding: 0;
+        margin: 0;
+        font-family: monospace;
+        font-size: 50px;
+        line-height: 50px;
+        height: 50px;
+      }
+      h2 {
+        margin: 20px 0 10px 0;
+        font-size: 24px;
+        line-height: 24px;
+        height: 24px;
+      }
+      h3 {
+        font-size: 18px;
+        line-height: 25px;
+        height: 25px;
+        margin: 15px 0 0px 0;
+      }
+      b {
+        font-weight: bolder;
+      }
+      ul {
+        line-height: 23px;
+        margin-left: -20px;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <div>
+          <a style="display: block" href="mailto:work@jmattheis.de">
+            work@jmattheis.de
+          </a>
+          <a
+            style="display: block"
+            href="https://www.linkedin.com/in/jmattheis/"
+          >
+            linkedin.com/in/jmattheis/
+          </a>
+        </div>
+        <h1>Jannis Mattheis</h1>
+        <div style="text-align: right">
+          <div>
+            <a href="https://github.com/jmattheis">github.com/jmattheis</a>
+          </div>
+          <div>
+            <a href="https://jmattheis.de">jmattheis.de</a>
+          </div>
+        </div>
+      </div>
+      <h2>Work Experience</h2>
+      <h3>Omikron Data Quality GmbH, Berlin</h3>
+      <div style="display: flex">
+        <span style="flex: 1"> Software Developer </span>
+        <span>2017-06 - Present</span>
+      </div>
+      <div style="display: flex">
+        <span style="flex: 1">
+          Apprenticeship: Specialized Computer Scientist, Software Development
+        </span>
+        <span>2014-07 - 2017-06</span>
+      </div>
+      <ul>
+        <li>
+          Created a tool for creating and filtering change log in TypeScript /
+          <b>Node.js</b>.
+          <a href="https://github.com/FACT-Finder/snage">
+            github.com/FACT-Finder/snage
+          </a>
+        </li>
+        <li>
+          Developed analytics <b>microservices</b> in <b>Go</b> that replicated
+          commonly used functions of the full-fledged analytics at low resource
+          cost.
+        </li>
+        <li>
+          Automated server deployment with <b>Ansible</b>, <b>Docker</b> and
+          <b>GitLab</b>/<b>Jenkins</b> on
+          <b title="btw I use arch">Arch Linux</b> and <b>Ubuntu</b>.
+        </li>
+        <li>
+          Built an availability proxy in <b>Rust</b> that returned fallback
+          responses when services are unavailable.
+        </li>
+        <li>
+          Designed, implemented and documented a <b>REST-API</b> with
+          <b>Spring-Web</b> and <b>Swagger</b>/<b>OpenAPI</b>.
+        </li>
+        <li>
+          Tested performance with <b>K6</b> and added dashboards for visualizing
+          the performance over time.
+        </li>
+        <li>
+          Improved <b>code reviews</b> by creating a <b>GitLab</b> Webhook for
+          automatic reviewer selection to distribute pull requests.
+        </li>
+        <li>
+          Migrated a complex <b>Jenkins CI</b> Pipeline to <b>GitLab CI</b> with
+          conditional builds.
+        </li>
+        <li>
+          Mentored new colleagues and created documentation for setting up
+          development systems.
+        </li>
+        <li>
+          Added authentication and authorization with
+          <b>Spring Security</b> with <b>OAuth2</b> / <b>JWT</b> support.
+        </li>
+        <li>
+          Migrated a <b>JavaScript</b> <b>React</b> frontend to
+          <b>TypeScript</b> and added static code analysis with
+          <b>ESLint</b> and unit tests with <b>Jest</b>.
+        </li>
+        <li>
+          Moved a multimodule <b>Maven</b> project to <b>Gradle</b> and created
+          an automated integration test suite with <b>JUnit</b>.
+        </li>
+        <li>
+          Maintained a legacy <b>Java</b>, <b>Spring</b>, and
+          <b>RabbitMQ</b> code base managed with <b>Git</b>.
+        </li>
+      </ul>
+      <h3>CloudRadar</h3>
+      <div style="display: flex">
+        <span style="flex: 1">Software Developer (freelancing)</span>
+        <span>2021-08 - 2021-10</span>
+      </div>
+      <ul>
+        <li>
+          Planned and implemented an interface for a server remote control
+          backend.
+          <a href="https://github.com/cloudradar-monitoring/plexus">
+            github.com/cloudradar-monitoring/plexus
+          </a>
+        </li>
+        <li>
+          Reverse engineered a binary protocol to emulate a client in a client
+          server architecture system.
+        </li>
+      </ul>
+      <h2>Projects</h2>
+      <h3>Gotify</h3>
+      <ul>
+        <li>
+          Created a web server in <b>Go</b> for sending and receiving messages
+          in real-time per <b>WebSocket</b>.
+          <a href="https://github.com/gotify/server">
+            github.com/gotify/server
+          </a>
+        </li>
+        <li>
+          Implemented and designed a web frontend in <b>TypeScript</b>,
+          <b>React</b>, <b>Mobx</b> with <b>Material UI</b> design.
+        </li>
+        <li>
+          Built an <b>Android</b> app that connects to the WebSocket and
+          push-notification for messages.
+          <a href="https://github.com/gotify/android">
+            github.com/gotify/android
+          </a>
+        </li>
+        <li>
+          Enforced code quality through static code analysis, <b>unit tests</b>,
+          <b>end-to-end tests</b> with <b>Puppeteer</b> and code reviews.
+        </li>
+        <li>
+          Utilized continuous integration with a comprehensive build pipeline on
+          <b>Travis-CI</b> / <b>GitHub Actions</b>.
+        </li>
+        <li>
+          Wrote documentation for the API via <b>OpenAPI</b> and installing /
+          configuring gotify. <a href="https://gotify.net">gotify.net</a>
+        </li>
+      </ul>
+      <h3>Miscellaneous</h3>
+      <ul>
+        <li>
+          Planned, managed and executed multiple open-source projects. Triaged
+          over 500 issues and reviewed over 150 pull requests.
+        </li>
+        <li>
+          Created a secure screen-sharing web application with low latency and
+          high quality using WebSocket, <b>WebRTC</b> and a built-in
+          <b>TURN</b> server for transmitting the video stream.
+          <a href="https://github.com/screego/server">
+            github.com/screego/server
+          </a>
+          | <a href="https://screego.net">screego.net</a>
+        </li>
+        <li>
+          Built a time tracking app with <b>Go</b>, <b>GraphQL</b>,
+          <b>SQLite</b>, <b>TypeScript</b>, <b>React</b>, and <b>Apollo</b>.
+          <a href="https://github.com/traggo/server">
+            github.com/traggo/server
+          </a>
+          |
+          <a href="https://traggo.net">traggo.net</a>
+        </li>
+        <li>
+          Automated converter creation with a <b>Go</b> code generator.
+          <a href="https://github.com/jmattheis/goverter">
+            github.com/jmattheis/goverter
+          </a>
+        </li>
+        <li>
+          Made my website available through various protocols like IMAP, SSH and
+          DNS.
+          <a href="https://github.com/jmattheis/website">
+            github.com/jmattheis/website
+          </a>
+        </li>
+        <li>
+          Built a podcast listening web application with <b>Rust</b>,
+          <b>Rocket</b>, <b>Diesel</b>, <b>Postgres</b>, and an
+          <b>Android</b> app written in <b>Kotlin</b>.
+        </li>
+      </ul>
+      <h2>Other</h2>
+      <ul>
+        <li>Languages: German (native language), English</li>
+        <li>Mentored programming newbies via codingcoach.io.</li>
+        <li>
+          Fluent on the Linux command line. Tools I use daily: <b>Neovim</b>,
+          <b>tmux</b>, <b>zsh</b>, and <b>tig</b>.
+        </li>
+        <li>
+          Interested in Mechanical Keyboards, running and sci-fi novels.
+        </li>
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2 @@
+User-agent: *
+Disallow: /jmattheis-resume.pdf
