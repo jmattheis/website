@@ -11,64 +11,14 @@ func Handler() http.HandlerFunc {
 	displayBlog, blogLookup := content.ParseBlogs()
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		resource := strings.TrimPrefix(r.URL.Path, "/")
-		if strings.HasSuffix(r.URL.Path, ".jpg") {
-			w.Header().Set("Content-Type", "image/jpeg")
-			w.Header().Set("Cache-Control", "max-age=84600, public")
-			c, err := content.Assets.Find(r.URL.Path)
-			if err != nil {
-				resource = "404"
-			} else {
-				w.Write(c)
-				return
-			}
-		}
-		if strings.HasSuffix(r.URL.Path, ".ico") {
-			w.Header().Set("Content-Type", "image/x-icon")
-			w.Header().Set("Cache-Control", "max-age=84600, public")
-			c, err := content.Assets.Find(r.URL.Path)
-			if err != nil {
-				resource = "404"
-			} else {
-				w.Write(c)
-				return
-			}
-		}
-		if strings.HasSuffix(r.URL.Path, ".svg") {
-			w.Header().Set("Content-Type", "image/svg+xml")
-			w.Header().Set("Cache-Control", "max-age=84600, public")
-			c, err := content.Assets.Find(r.URL.Path)
-			if err != nil {
-				resource = "404"
-			} else {
-				w.Write(c)
-				return
-			}
-		}
-		if strings.HasSuffix(r.URL.Path, ".css") {
-			w.Header().Set("Content-Type", "text/css")
-			w.Header().Set("Cache-Control", "max-age=84600, public")
-			c, err := content.Assets.Find(r.URL.Path)
-			if err != nil {
-				resource = "404"
-			} else {
-				w.Write(c)
-				return
-			}
-		}
-
 		title := "Jannis Mattheis"
 		description := "I'm a software engineer from Berlin, Germany. Since 2018, I'm creating and maintaining privacy focused open-source projects."
 		blogContent := ""
 		url := "https://jmattheis.de"
 
+		resource := strings.TrimPrefix(r.URL.Path, "/")
 		if resource == "" {
 			resource = "index"
-		}
-
-		if resource == "404" {
-			w.WriteHeader(404)
-			return
 		}
 
 		if strings.HasPrefix(resource, "blog") {

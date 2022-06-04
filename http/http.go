@@ -2,8 +2,11 @@ package http
 
 import (
 	"crypto/tls"
+	"fmt"
 	"io"
+	"mime"
 	"net/http"
+	"path"
 	"strings"
 
 	"github.com/NYTimes/gziphandler"
@@ -79,7 +82,7 @@ func handle(port string) http.HandlerFunc {
 	t := text.Handle(port)
 	htmll := html.Handler()
 
-	feed := feeds.Atom{content.BlogsRss()}
+	feed := feeds.Atom{Feed: content.BlogsRss()}
 	atom, err := feed.ToAtom()
 	if err != nil {
 		panic(err)
@@ -101,6 +104,24 @@ func handle(port string) http.HandlerFunc {
 		if containsHeader(r, "connection", "upgrade") &&
 			containsHeader(r, "upgrade", "websocket") {
 			ws(w, r)
+			return
+		}
+
+		ext := path.Ext(r.URL.Path)
+		if ext != "" && ext != ".html" {
+			m := mime.TypeByExtension(ext)
+
+			content, err := content.Assets.Find(r.URL.Path)
+			if err != nil {
+				http.Error(w, "not found", 404)
+				return
+			}
+			fmt.Println(r.URL.Path, m, ext)
+
+			w.Header().Add("content-type", m)
+			w.WriteHeader(200)
+
+			_, _ = w.Write(content)
 			return
 		}
 
