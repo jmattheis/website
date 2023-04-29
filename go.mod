@@ -22,7 +22,7 @@ require (
 	github.com/karrick/godirwalk v1.15.5 // indirect
 	github.com/miekg/dns v1.1.28
 	github.com/rs/zerolog v1.18.0
-	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4
-	golang.org/x/net v0.0.0-20210716203947-853a461950ff // indirect
+	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/net v0.7.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
