@@ -1,9 +1,11 @@
 package dns
 
 import (
+	"strings"
+
 	"github.com/jmattheis/website/content"
 	"github.com/miekg/dns"
-	"strings"
+	"github.com/rs/zerolog/log"
 )
 
 type Config struct {
@@ -18,6 +20,7 @@ func Listen(conf Config) {
 		ForceBanner:   content.DnsSafeBanner,
 		CommandPrefix: "dig @jmattheis.de +tcp +short ",
 	}
+	log.Info().Str("on", "init").Str("port", conf.Port).Msg("dns")
 	go func() {
 		mux := dns.NewServeMux()
 		mux.HandleFunc(".", func(w dns.ResponseWriter, msg *dns.Msg) {

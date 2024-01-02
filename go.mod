@@ -3,26 +3,22 @@ module github.com/jmattheis/website
 go 1.14
 
 require (
-	git.mills.io/prologic/go-gopher v0.0.0-20210712135410-b7ebb55feece
-	git.sr.ht/~adnano/go-gemini v0.2.2
+	git.mills.io/prologic/go-gopher v0.0.0-20220331140345-72e36e5710a1
+	git.sr.ht/~adnano/go-gemini v0.2.3
 	github.com/DevelHell/popgun v0.0.0-20170926125504-2c5552e4bf74
 	github.com/NYTimes/gziphandler v1.1.1
-	github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239 // indirect
-	github.com/emersion/go-imap v1.0.4
-	github.com/emersion/go-message v0.11.1
+	github.com/emersion/go-imap v1.2.1
+	github.com/emersion/go-message v0.17.0
 	github.com/fclairamb/ftpserver v0.0.0-20200221221851-84e5d668e655
-	github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568 // indirect
-	github.com/gernest/front v0.0.0-20181129160812-ed80ca338b88
-	github.com/gliderlabs/ssh v0.2.2
-	github.com/gobuffalo/packr/v2 v2.8.0
-	github.com/gomarkdown/markdown v0.0.0-20201113031856-722100d81a8e
-	github.com/gorilla/feeds v1.1.1
-	github.com/gorilla/websocket v1.4.1
-	github.com/grokify/html-strip-tags-go v0.0.1
-	github.com/karrick/godirwalk v1.15.5 // indirect
-	github.com/miekg/dns v1.1.28
-	github.com/rs/zerolog v1.18.0
-	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4
-	golang.org/x/net v0.0.0-20210716203947-853a461950ff // indirect
-	gopkg.in/yaml.v2 v2.4.0 // indirect
+	github.com/gernest/front v0.0.0-20210301115436-8a0b0a782d0a
+	github.com/gliderlabs/ssh v0.3.6
+	github.com/gobuffalo/packr/v2 v2.8.3
+	github.com/gomarkdown/markdown v0.0.0-20231222211730-1d6d20845b47
+	github.com/gorilla/feeds v1.1.2
+	github.com/gorilla/websocket v1.5.1
+	github.com/grokify/html-strip-tags-go v0.1.0
+	github.com/miekg/dns v1.1.57
+	github.com/rs/zerolog v1.31.0
+	github.com/stretchr/testify v1.8.1 // indirect
+	golang.org/x/crypto v0.17.0
 )
