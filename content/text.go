@@ -2,12 +2,10 @@ package content
 
 import (
 	"fmt"
-	"github.com/gobuffalo/packr/v2"
-	"github.com/rs/zerolog/log"
 	"strconv"
-)
 
-var BlogBox = packr.New("blog", "../assets/blog")
+	"github.com/jmattheis/website/assets"
+)
 
 func StartTXT(banner, protocol, port string) string {
 	return fmt.Sprintf(`%s
@@ -52,7 +50,7 @@ send me a mail to hello@jmattheis.de :D
 func txtBlogs() string {
 	result := ""
 
-	for i, entry := range BlogBox.List() {
+	for i, entry := range assets.BlogList {
 		result += fmt.Sprintf("%d: %s\n", i, entry[2:])
 	}
 
@@ -69,15 +67,10 @@ func txtBlog(id string) string {
 }
 
 func TXTBlogByNR(nr int) string {
-	if len(BlogBox.List()) <= nr || nr < 0 {
+	if len(assets.BlogList) <= nr || nr < 0 {
 		return "blog not found"
 	}
-	content, err := BlogBox.FindString(BlogBox.List()[nr])
-	if err != nil {
-		log.Error().Err(err).Msg("get blog")
-		return "something bad happend :/"
-	}
-	return content + "\n"
+	return assets.BlogContent[nr] + "\n"
 }
 
 var ProjectsTXT = `# Gotify

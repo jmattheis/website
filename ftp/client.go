@@ -3,10 +3,11 @@ package ftp
 import (
 	"errors"
 	"fmt"
-	"github.com/fclairamb/ftpserver/server"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/fclairamb/ftpserver/server"
 )
 
 // ClientDriver defines a very basic client driver
@@ -47,7 +48,6 @@ func (driver *ClientDriver) ListFiles(cc server.ClientContext, directory string)
 // OpenFile opens a file in 3 possible modes: read, write, appending write (use appropriate flags)
 func (driver *ClientDriver) OpenFile(cc server.ClientContext, path string, flag int) (server.FileStream, error) {
 	for _, file := range driver.Files {
-
 		if path == filepath.Join(file.dir, file.name) {
 			return &virtualFile{content: file.content}, nil
 		}
@@ -58,7 +58,7 @@ func (driver *ClientDriver) OpenFile(cc server.ClientContext, path string, flag 
 // GetFileInfo gets some info around a file or a directory
 func (driver *ClientDriver) GetFileInfo(cc server.ClientContext, path string) (os.FileInfo, error) {
 	for _, file := range driver.Files {
-		if path == file.dir+file.name {
+		if path == filepath.Join(file.dir, file.name) {
 			return file, nil
 		}
 	}

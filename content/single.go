@@ -3,6 +3,8 @@ package content
 import (
 	"fmt"
 	"strings"
+
+	"github.com/jmattheis/website/assets"
 )
 
 type SingleText struct {
@@ -22,10 +24,10 @@ func (i SingleText) Get(command string) string {
 		return i.Get("")
 	}
 
-    prefix := i.CommandPrefix
-    if !i.DisablePadding {
-        prefix = "  " + prefix
-    }
+	prefix := i.CommandPrefix
+	if !i.DisablePadding {
+		prefix = "  " + prefix
+	}
 
 	more := fmt.Sprintf(`
 Read more:
@@ -50,7 +52,7 @@ Read more:
 	case "blogs":
 		result := "Choose a blog post:\n\n"
 
-		for index, entry := range BlogBox.List() {
+		for index, entry := range assets.BlogList {
 			result += fmt.Sprintf("%sblog%s%d%s     %s\n", prefix, i.Split, index, i.CommandSuffix, entry[2:])
 		}
 		return result + more

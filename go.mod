@@ -1,6 +1,6 @@
 module github.com/jmattheis/website
 
-go 1.22
+go 1.21
 
 require (
 	git.mills.io/prologic/go-gopher v0.0.0-20220331140345-72e36e5710a1

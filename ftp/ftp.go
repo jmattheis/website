@@ -1,17 +1,16 @@
 package ftp
 
 import (
-	"bytes"
 	"crypto/tls"
 	"fmt"
+	"os"
+	"sync/atomic"
+
+	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/crypto/acme/autocert"
-	"io/ioutil"
-	"net/http"
-	"os"
-	"sync/atomic"
 
 	"github.com/fclairamb/ftpserver/server"
 )
@@ -47,8 +46,8 @@ func getFiles(conf Config) []*virtualFileInfo {
 			content: []byte(content.Cat),
 		},
 	}
-	for _, entry := range content.BlogBox.List() {
-		value, _ := content.BlogBox.FindString(entry)
+	for i, entry := range assets.BlogList {
+		value := assets.BlogContent[i]
 		files = append(files, &virtualFileInfo{
 			dir:     "/blog",
 			name:    entry[2:],
@@ -100,7 +99,7 @@ func dirs(files []*virtualFileInfo) []string {
 		m[file.dir] = struct{}{}
 	}
 	dirs := []string{}
-	for dir, _ := range m {
+	for dir := range m {
 		dirs = append(dirs, dir)
 	}
 	return dirs
@@ -146,25 +145,4 @@ func (driver *MainDriver) AuthUser(server.ClientContext, string, string) (server
 // UserLeft is called when the user disconnects, even if he never authenticated
 func (driver *MainDriver) UserLeft(server.ClientContext) {
 	atomic.AddInt32(&driver.nbClients, -1)
-}
-
-func externalIP() (string, error) {
-	// If you need to take a bet, amazon is about as reliable & sustainable a service as you can get
-	rsp, err := http.Get("http://checkip.amazonaws.com")
-	if err != nil {
-		return "", err
-	}
-
-	defer func() {
-		if errClose := rsp.Body.Close(); errClose != nil {
-			fmt.Println("Problem closing checkip connection, err:", errClose)
-		}
-	}()
-
-	buf, err := ioutil.ReadAll(rsp.Body)
-	if err != nil {
-		return "", err
-	}
-
-	return string(bytes.TrimSpace(buf)), nil
 }

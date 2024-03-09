@@ -1,14 +1,16 @@
 package content
 
 import (
-	"github.com/gernest/front"
-	strip "github.com/grokify/html-strip-tags-go"
-	"time"
 	"fmt"
-	"github.com/gobuffalo/packr/v2"
+	"strings"
+	"time"
+
+	"github.com/gernest/front"
 	"github.com/gomarkdown/markdown"
 	"github.com/gomarkdown/markdown/html"
 	"github.com/gorilla/feeds"
+	strip "github.com/grokify/html-strip-tags-go"
+	"github.com/jmattheis/website/assets"
 )
 
 type Blog struct {
@@ -30,8 +32,9 @@ func ParseBlogs() ([]Blog, map[string]Blog) {
 	blogLookup := map[string]Blog{}
 	displayBlog := []Blog{}
 
-	Assets.WalkPrefix("blog/", func(name string, file packr.File) error {
-		tags, data, _ := m.Parse(file)
+	for i := range assets.BlogList {
+		content := assets.BlogContent[i]
+		tags, data, _ := m.Parse(strings.NewReader(content))
 		md := markdown.ToHTML([]byte(data), nil, renderer)
 		b := Blog{
 			Title:       tags["title"].(string),
@@ -44,39 +47,38 @@ func ParseBlogs() ([]Blog, map[string]Blog) {
 		for _, url := range tags["url"].([]interface{}) {
 			blogLookup[url.(string)] = b
 		}
-		return nil
-	})
+	}
 
 	return displayBlog, blogLookup
 }
 
 func BlogsRss() *feeds.Feed {
-    f := feeds.Feed {
-        Title: "Jannis Mattheis Blog",
-        Author: &feeds.Author{
-            Name: "Jannis Mattheis",
-            Email: "hello@jmattheis.de",
-        },
-        Link: &feeds.Link{
-            Href: "https://jmattheis.de/",
-            Type: "website",
-        },
-    }
-    blogs, _ :=ParseBlogs()
-    for _, b := range blogs {
-        t, _ := time.Parse("2006-01-02", b.Date)
-        f.Items = append(f.Items, &feeds.Item{
-            Title: b.Title,
-            Author: &feeds.Author{
-                Name: "Jannis Mattheis",
-                Email: "hello@jmattheis.de",
-            },
-            Link: &feeds.Link{Href: fmt.Sprintf("https://jmattheis.de/%s", b.URL)},
-            Id: fmt.Sprintf("https://jmattheis.de/%s", b.URL),
-            Created: t,
-            Description: strip.StripTags(string(b.Content))[:500],
-            Content: string(b.Content),
-        })
-    }
-    return &f
+	f := feeds.Feed{
+		Title: "Jannis Mattheis Blog",
+		Author: &feeds.Author{
+			Name:  "Jannis Mattheis",
+			Email: "hello@jmattheis.de",
+		},
+		Link: &feeds.Link{
+			Href: "https://jmattheis.de/",
+			Type: "website",
+		},
+	}
+	blogs, _ := ParseBlogs()
+	for _, b := range blogs {
+		t, _ := time.Parse("2006-01-02", b.Date)
+		f.Items = append(f.Items, &feeds.Item{
+			Title: b.Title,
+			Author: &feeds.Author{
+				Name:  "Jannis Mattheis",
+				Email: "hello@jmattheis.de",
+			},
+			Link:        &feeds.Link{Href: fmt.Sprintf("https://jmattheis.de/%s", b.URL)},
+			Id:          fmt.Sprintf("https://jmattheis.de/%s", b.URL),
+			Created:     t,
+			Description: strip.StripTags(string(b.Content))[:500],
+			Content:     string(b.Content),
+		})
+	}
+	return &f
 }

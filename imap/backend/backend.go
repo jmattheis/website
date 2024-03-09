@@ -3,9 +3,11 @@ package backend
 
 import (
 	"fmt"
-	"github.com/jmattheis/website/content"
 	"strings"
 	"time"
+
+	"github.com/jmattheis/website/assets"
+	"github.com/jmattheis/website/content"
 
 	"github.com/emersion/go-imap"
 	"github.com/emersion/go-imap/backend"
@@ -24,7 +26,7 @@ func New(port string) *Backend {
 
 	blog := `Choose a blog post:
 `
-	for i, entry := range content.BlogBox.List() {
+	for i, entry := range assets.BlogList {
 		blog += fmt.Sprintf("  curl -u \":\" \"imap://jmattheis.de/INBOX;UID=%d\"    %s\n", i+5, entry[2:])
 	}
 
@@ -39,9 +41,8 @@ func New(port string) *Backend {
 		},
 	}
 
-	for i, entry := range content.BlogBox.List() {
-		val, _ := content.BlogBox.FindString(entry)
-		user.mailbox.Messages = append(user.mailbox.Messages, build(i+5, val))
+	for i, content := range assets.BlogContent {
+		user.mailbox.Messages = append(user.mailbox.Messages, build(i+5, content))
 	}
 	return &Backend{
 		user: user,

@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
 )
 
@@ -35,10 +36,11 @@ func Handler() http.HandlerFunc {
 			}
 		}
 
-		_, err := content.Assets.Find(resource + ".html")
+		_, err := assets.Assets.ReadFile(resource + ".html")
 		if err != nil || resource == "resume" {
 			resource = "404"
 			w.WriteHeader(404)
+			return
 		}
 
 		err = content.HtmlTemplates.ExecuteTemplate(w, resource+".html", map[string]interface{}{

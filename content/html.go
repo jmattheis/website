@@ -1,32 +1,25 @@
 package content
 
 import (
-	"github.com/gobuffalo/packr/v2"
+	"io"
+	"io/fs"
 	"strings"
 	"text/template"
+
+	"github.com/jmattheis/website/assets"
 )
 
-var Assets = packr.New("html", "../assets")
-
-var HtmlTemplates = MustLoadBoxedTemplate(Assets);
+var HtmlTemplates = MustLoadBoxedTemplate()
 
 // https://github.com/gobuffalo/packr/issues/16#issuecomment-354905578
-func MustLoadBoxedTemplate(b *packr.Box) *template.Template {
+func MustLoadBoxedTemplate() *template.Template {
 	t := template.New("")
-	err := b.Walk(func(p string, f packr.File) error {
-		if p == "" {
-			return nil
-		}
-		var err error
-		var csz int64
-		if finfo, err := f.FileInfo(); err != nil {
+	err := fs.WalkDir(assets.Assets, ".", func(p string, d fs.DirEntry, err error) error {
+		if err != nil {
 			return err
-		}else{
-			// skip directory path
-			if finfo.IsDir() {
-				return nil
-			}
-			csz= finfo.Size()
+		}
+		if p == "" || d.IsDir() {
+			return nil
 		}
 
 		// skip all files except .html
@@ -42,19 +35,23 @@ func MustLoadBoxedTemplate(b *packr.Box) *template.Template {
 		// replace windows path seperator \ to normalized /
 		n = strings.Replace(n, "\\", "/", -1)
 
-		var h = make([]byte, 0, csz)
-
-		if h, err = b.Find(p); err != nil {
+		x, err := assets.Assets.Open(n)
+		if err != nil {
+			return err
+		}
+		defer x.Close()
+		b, err := io.ReadAll(x)
+		if err != nil {
 			return err
 		}
 
-		if _, err = t.New(n).Parse(string(h)); err != nil {
+		if _, err = t.New(n).Parse(string(b)); err != nil {
 			return err
 		}
 		return nil
 	})
 	if err != nil {
-		panic("error loading template")
+		panic("error loading template" + err.Error())
 	}
 	return t
 }

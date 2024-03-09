@@ -2,6 +2,8 @@ package backends
 
 import (
 	"fmt"
+
+	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
 )
 
@@ -64,7 +66,7 @@ func (b ContentProvider) content(msgId int) string {
 		result := `Choose a blog post:
 
 `
-		for i, entry := range content.BlogBox.List() {
+		for i, entry := range assets.BlogList {
 			result += fmt.Sprintf("  curl pop3://jmattheis.de/%d    %s\n", i+5, entry[2:])
 		}
 

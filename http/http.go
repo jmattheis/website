@@ -10,6 +10,7 @@ import (
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/gorilla/feeds"
+	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/http/html"
 	"github.com/jmattheis/website/http/text"
@@ -77,9 +78,9 @@ func Listen(conf Config, manager *autocert.Manager) {
 }
 
 func handle(port string) http.HandlerFunc {
-	ws := websocket.Handle(port)
-	t := text.Handle(port)
-	htmll := html.Handler()
+	handleWS := websocket.Handle(port)
+	handleText := text.Handle(port)
+	handleHTML := html.Handler()
 
 	feed := feeds.Atom{Feed: content.BlogsRss()}
 	atom, err := feed.ToAtom()
@@ -102,7 +103,7 @@ func handle(port string) http.HandlerFunc {
 
 		if containsHeader(r, "connection", "upgrade") &&
 			containsHeader(r, "upgrade", "websocket") {
-			ws(w, r)
+			handleWS(w, r)
 			return
 		}
 
@@ -110,7 +111,7 @@ func handle(port string) http.HandlerFunc {
 		if ext != "" && ext != ".html" {
 			m := mime.TypeByExtension(ext)
 
-			content, err := content.Assets.Find(r.URL.Path)
+			content, err := assets.Assets.ReadFile(r.URL.Path)
 			if err != nil {
 				http.Error(w, "not found", 404)
 				return
@@ -125,11 +126,11 @@ func handle(port string) http.HandlerFunc {
 		if containsHeader(r, "user-agent", "httpie") ||
 			containsHeader(r, "user-agent", "curl") ||
 			containsHeader(r, "accept", "text/plain") {
-			t(w, r)
+			handleText(w, r)
 			return
 		}
 
-		htmll(w, r)
+		handleHTML(w, r)
 	}
 }
 

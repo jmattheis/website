@@ -1,6 +1,4 @@
 resources
-*-packr.go
-packrd
 .idea
 privkey
 privkey.pub
