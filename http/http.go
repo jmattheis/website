@@ -111,7 +111,7 @@ func handle(port string) http.HandlerFunc {
 		if ext != "" && ext != ".html" {
 			m := mime.TypeByExtension(ext)
 
-			content, err := assets.Assets.ReadFile(r.URL.Path)
+			content, err := assets.Assets.ReadFile(strings.TrimPrefix(r.URL.Path, "/"))
 			if err != nil {
 				http.Error(w, "not found", 404)
 				return
