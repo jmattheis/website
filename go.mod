@@ -4,11 +4,11 @@ go 1.21
 
 require (
 	git.mills.io/prologic/go-gopher v0.0.0-20220331140345-72e36e5710a1
-	git.sr.ht/~adnano/go-gemini v0.2.3
+	git.sr.ht/~adnano/go-gemini v0.2.4
 	github.com/DevelHell/popgun v0.0.0-20170926125504-2c5552e4bf74
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/emersion/go-imap v1.2.1
-	github.com/emersion/go-message v0.17.0
+	github.com/emersion/go-message v0.18.0
 	github.com/fclairamb/ftpserver v0.0.0-20200221221851-84e5d668e655
 	github.com/gernest/front v0.0.0-20210301115436-8a0b0a782d0a
 	github.com/gliderlabs/ssh v0.3.6
@@ -17,9 +17,9 @@ require (
 	github.com/gorilla/feeds v1.1.2
 	github.com/gorilla/websocket v1.5.1
 	github.com/grokify/html-strip-tags-go v0.1.0
-	github.com/miekg/dns v1.1.57
-	github.com/rs/zerolog v1.31.0
-	golang.org/x/crypto v0.17.0
+	github.com/miekg/dns v1.1.58
+	github.com/rs/zerolog v1.32.0
+	golang.org/x/crypto v0.21.0
 )
 
 require (
@@ -40,11 +40,11 @@ require (
 	github.com/sasha-s/go-deadlock v0.3.1 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/stretchr/testify v1.8.1 // indirect
-	golang.org/x/mod v0.12.0 // indirect
-	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.13.0 // indirect
+	golang.org/x/tools v0.17.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
