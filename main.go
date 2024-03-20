@@ -4,6 +4,7 @@ import (
 	"github.com/jmattheis/website/dict"
 	"github.com/jmattheis/website/dns"
 	"github.com/jmattheis/website/docker"
+	"github.com/jmattheis/website/finger"
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/gemini"
 	"github.com/jmattheis/website/gopher"
@@ -20,7 +21,7 @@ import (
 )
 
 var (
-	Mode = "dev"
+	Mode = "prod"
 )
 
 type Config struct {
@@ -140,6 +141,7 @@ func main() {
 	logger.Init(zerolog.DebugLevel)
 
 	var config Config
+	prod := Mode == "prod"
 
 	if Mode == "prod" {
 		config = prodConf
@@ -168,6 +170,7 @@ func main() {
 	docker.Listen(config.Docker)
 	gemini.Listen(config.Gemini)
 	redis.Listen(config.Redis)
+	finger.Listen(prod)
 
 	<-make(chan struct{})
 }
