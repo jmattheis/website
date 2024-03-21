@@ -7,7 +7,7 @@ import (
 	"github.com/jmattheis/website/assets"
 )
 
-func StartTXT(banner, protocol, port string) string {
+func StartTXT(banner string) string {
 	return fmt.Sprintf(`%s
 
 Hey there! I'm a software engineer from Berlin, Germany. Since 2018, I'm

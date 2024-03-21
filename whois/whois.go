@@ -2,30 +2,27 @@ package whois
 
 import (
 	"bufio"
-	"github.com/jmattheis/website/content"
-	"github.com/rs/zerolog/log"
 	"net"
+
+	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
+	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
-	listener, err := net.Listen("tcp", ":"+conf.Port)
+func Listen() {
+    port := util.PortOf(43)
+	listener, err := net.Listen("tcp", port.Addr)
 
 	if err != nil {
-		log.Fatal().Str("on", "init").Str("port", conf.Port).Err(err).Msg("whois")
+		log.Fatal().Str("on", "init").Str("port", port.S).Err(err).Msg("whois")
 	}
 
 	tty := &content.SingleText{
-		Protocol:      "whois",
-		Port:          conf.Port,
 		Split:         ".",
 		CommandPrefix: "whois -h jmattheis.de ",
 	}
 
-	log.Info().Str("on", "init").Str("port", conf.Port).Msg("whois")
+	log.Info().Str("on", "init").Str("port", port.S).Msg("whois")
 	go func() {
 		for {
 			conn, err := listener.Accept()

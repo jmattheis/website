@@ -7,8 +7,6 @@ import (
 
 type InteractiveText struct {
 	Prompt   string
-	Protocol string
-	Port     string
 }
 
 func (i InteractiveText) Exec(command string) (string, bool) {
@@ -23,7 +21,7 @@ func (i InteractiveText) Exec(command string) (string, bool) {
 		return fmt.Sprintf(`%s
 This is an interactive text interface,
 write 'help' to show the available commands.
-%s`, StartTXT(rdmBanner(), i.Protocol, i.Port), i.Prompt), false
+%s`, StartTXT(rdmBanner()), i.Prompt), false
 	case "help":
 		return fmt.Sprintf(`
 blog      - show a list of my blog posts

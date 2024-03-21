@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Handle(port string) http.HandlerFunc {
+func Handle() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("content-type", "text/plain")
 
@@ -15,8 +15,6 @@ func Handle(port string) http.HandlerFunc {
 			cmd = "http"
 		}
 		tty := &content.SingleText{
-			Protocol:      r.Proto,
-			Port:          port,
 			Split:         "/",
 			CommandPrefix: cmd + " jmattheis.de/",
 		}

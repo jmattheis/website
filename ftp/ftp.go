@@ -10,13 +10,12 @@ import (
 	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/acme/autocert"
 
 	"github.com/fclairamb/ftpserver/server"
 )
 
-func getFiles(conf Config) []*virtualFileInfo {
-	start := content.StartTXT(content.DnsSafeBanner, "ftp", conf.Port)
+func getFiles() []*virtualFileInfo {
+	start := content.StartTXT(content.DnsSafeBanner)
 	files := []*virtualFileInfo{
 		{
 			dir:  "/",
@@ -59,16 +58,13 @@ func getFiles(conf Config) []*virtualFileInfo {
 	return files
 }
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config, manager *autocert.Manager, ip string) {
-	files := getFiles(conf)
+func Listen(ip string) {
+	files := getFiles()
+	port := util.PortOf(21)
 	drv := &MainDriver{
 		Server: server.Settings{
 			PublicHost: ip,
-			ListenAddr: ":" + conf.Port,
+			ListenAddr: port.Addr,
 			PassiveTransferPortRange: &server.PortRange{
 				Start: 50000,
 				End:   52999,
@@ -80,12 +76,8 @@ func Listen(conf Config, manager *autocert.Manager, ip string) {
 			NextProtos: []string{"ftp"},
 		},
 	}
-	if manager == nil {
-		drv.tlsConfig.Certificates = []tls.Certificate{*util.NewUntrustedCert()}
-	} else {
-		drv.tlsConfig.GetCertificate = manager.GetCertificate
-	}
-	log.Info().Str("on", "init").Str("port", conf.Port).Msg("ftp")
+	drv.tlsConfig.Certificates = []tls.Certificate{*util.NewUntrustedCert()}
+	log.Info().Str("on", "init").Str("port", port.S).Msg("ftp")
 	go func() {
 		if err := server.NewFtpServer(drv).ListenAndServe(); err != nil {
 			log.Fatal().Err(err).Msg("ftp")

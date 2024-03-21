@@ -8,8 +8,6 @@ import (
 )
 
 type SingleText struct {
-	Protocol       string
-	Port           string
 	Split          string
 	ForceBanner    string
 	CommandPrefix  string
@@ -41,9 +39,9 @@ Read more:
 		fallthrough
 	case "":
 		if i.ForceBanner == "" {
-			return StartTXT(rdmBanner(), i.Protocol, i.Port) + more
+			return StartTXT(rdmBanner()) + more
 		}
-		return StartTXT(i.ForceBanner, i.Protocol, i.Port) + more
+		return StartTXT(i.ForceBanner) + more
 	case "blog":
 		if len(words) > 1 {
 			return txtBlog(words[1]) + more

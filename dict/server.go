@@ -16,7 +16,7 @@ type Client struct {
 	tty      *content.SingleText
 }
 
-func newClient(port string) *Client {
+func newClient() *Client {
 	commands := make(map[string]Executable)
 
 	commands["QUIT"] = QuitCommand{}
@@ -31,8 +31,6 @@ func newClient(port string) *Client {
 	commands["SASLAUTH"] = NotImplementedCommand{}
 
 	text := content.SingleText{
-		Protocol:      "dict",
-		Port:          port,
 		Split:         ".",
 		CommandPrefix: "dict -h jmattheis.de ",
 	}
@@ -98,7 +96,7 @@ func (s Server) Start(port string) error {
 				continue
 			}
 
-			c := newClient(port)
+			c := newClient()
 			go c.handle(conn)
 		}
 	}()

@@ -1,7 +1,6 @@
 package http
 
 import (
-	"crypto/tls"
 	"io"
 	"mime"
 	"net/http"
@@ -17,69 +16,32 @@ import (
 	"github.com/jmattheis/website/http/websocket"
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
-	"golang.org/x/crypto/acme/autocert"
 )
 
-type Config struct {
-	Port    string
-	SSLPort string
-}
-
-func Listen(conf Config, manager *autocert.Manager) {
+func Listen() {
+	port := util.PortOf(8080)
 	log.Info().
 		Str("on", "init").
-		Str("port", conf.Port).
+		Str("port", port.S).
 		Msg("http/*")
 
 	go func() {
+		var handler http.Handler = gziphandler.GzipHandler(handle())
 
-		var handler http.Handler = gziphandler.GzipHandler(handle(conf.Port))
-		if manager != nil {
-			handler = manager.HTTPHandler(handler)
-		}
-
-		err := http.ListenAndServe(":"+conf.Port, handler)
+		err := http.ListenAndServe(port.Addr, handler)
 		if err != nil {
 			log.Fatal().
 				Str("on", "init").
 				Err(err).
-				Str("port", conf.Port).
+				Str("port", port.S).
 				Msg("http/*")
 		}
 	}()
-
-	log.Info().
-		Str("on", "init").
-		Bool("autocert", manager != nil).
-		Str("port", conf.SSLPort).
-		Msg("https/*")
-	go func() {
-		server := &http.Server{
-			Addr:      ":" + conf.SSLPort,
-			Handler:   gziphandler.GzipHandler(handle(conf.SSLPort)),
-			TLSConfig: &tls.Config{},
-		}
-		if manager == nil {
-			server.TLSConfig.Certificates = []tls.Certificate{*util.NewUntrustedCert()}
-		} else {
-			server.TLSConfig.GetCertificate = manager.GetCertificate
-		}
-
-		if err := server.ListenAndServeTLS("", ""); err != nil {
-			log.Fatal().
-				Str("on", "init").
-				Err(err).
-				Str("port", conf.SSLPort).
-				Msg("https/*")
-			return
-		}
-
-	}()
 }
 
-func handle(port string) http.HandlerFunc {
-	handleWS := websocket.Handle(port)
-	handleText := text.Handle(port)
+func handle() http.HandlerFunc {
+	handleWS := websocket.Handle()
+	handleText := text.Handle()
 	handleHTML := html.Handler()
 
 	feed := feeds.Atom{Feed: content.BlogsRss()}

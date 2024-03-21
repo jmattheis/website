@@ -10,22 +10,18 @@ import (
 	"git.sr.ht/~adnano/go-gemini"
 	"git.sr.ht/~adnano/go-gemini/certificate"
 	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
+func Listen() {
+    port := util.PortOf(1965)
 	log.Info().
 		Str("on", "init").
-		Str("port", conf.Port).
+		Str("port", port.S).
 		Msg("gemini")
 
 	tty := &content.SingleText{
-		Protocol:       "gemini",
-		Port:           conf.Port,
 		Split:          "/",
 		CommandPrefix:  "=> gemini://jmattheis.de/",
 		DisablePadding: true,
@@ -48,7 +44,7 @@ func Listen(conf Config) {
 	}))
 
 	server := &gemini.Server{
-		Addr:           ":" + conf.Port,
+		Addr:           ":" + port.S,
 		Handler:        mux,
 		ReadTimeout:    3 * time.Second,
 		WriteTimeout:   3 * time.Second,

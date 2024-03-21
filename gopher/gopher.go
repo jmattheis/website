@@ -1,21 +1,18 @@
 package gopher
 
 import (
-	"github.com/jmattheis/website/content"
-	"git.mills.io/prologic/go-gopher"
-	"github.com/rs/zerolog/log"
 	"strings"
+
+	"git.mills.io/prologic/go-gopher"
+	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
+	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
+func Listen() {
+    port := util.PortOf(70)
 
 	tty := &content.SingleText{
-		Protocol:      "gopher",
-		Port:          conf.Port,
 		Split:         "/",
 		CommandPrefix: "curl gopher://jmattheis.de/0",
 	}
@@ -26,13 +23,13 @@ func Listen(conf Config) {
 	})
 	log.Info().
 		Str("on", "init").
-		Str("port", conf.Port).
+		Str("port", port.S).
 		Msg("gopher")
 	go func() {
-		if err := gopher.ListenAndServe(":"+conf.Port, mux); err != nil {
+		if err := gopher.ListenAndServe(port.Addr, mux); err != nil {
 			log.Fatal().
 				Str("on", "init").
-				Str("port", conf.Port).
+				Str("port", port.S).
 				Err(err).
 				Msg("gopher")
 		}

@@ -4,23 +4,19 @@ import (
 	"strings"
 
 	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
 	"github.com/miekg/dns"
 	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
+func Listen() {
+	port := util.PortOf(53)
 	tty := &content.SingleText{
-		Protocol:      "dns",
-		Port:          conf.Port,
 		Split:         ".",
 		ForceBanner:   content.DnsSafeBanner,
 		CommandPrefix: "dig @jmattheis.de +tcp +short ",
 	}
-	log.Info().Str("on", "init").Str("port", conf.Port).Msg("dns")
+	log.Info().Str("on", "init").Str("port", port.S).Msg("dns")
 	go func() {
 		mux := dns.NewServeMux()
 		mux.HandleFunc(".", func(w dns.ResponseWriter, msg *dns.Msg) {
@@ -37,7 +33,7 @@ func Listen(conf Config) {
 
 			_ = w.WriteMsg(reply)
 		})
-		if err := dns.ListenAndServe(":"+conf.Port, "tcp", mux); err != nil {
+		if err := dns.ListenAndServe(port.Addr, "tcp", mux); err != nil {
 			return
 		}
 	}()

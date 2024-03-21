@@ -2,41 +2,38 @@ package ssh
 
 import (
 	"fmt"
-	"github.com/gliderlabs/ssh"
-	"github.com/jmattheis/website/content"
-	"github.com/rs/zerolog/log"
-	xssh "golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
 	"io"
 	"io/ioutil"
 	"strings"
 	"time"
+
+	"github.com/gliderlabs/ssh"
+	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
+	"github.com/rs/zerolog/log"
+	xssh "golang.org/x/crypto/ssh"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
-type Config struct {
-	Port           string
-	PrivateKeyPath string
-}
+type Config struct {}
 
-func Listen(conf Config) {
-	privateKey, err := readKey(conf.PrivateKeyPath)
+func Listen() {
+	port := util.PortOf(22)
+	privateKey, err := readKey("./privkey")
 	if err != nil {
 		log.Fatal().
 			Str("on", "init").
-			Str("port", conf.Port).
+			Str("port", port.S).
 			Err(fmt.Errorf("reading private key %s", err)).
 			Msg("ssh")
 	}
 
-	tty := &content.InteractiveText{
-		Protocol: "ssh",
-		Port:     conf.Port,
-	}
+	tty := &content.InteractiveText{}
 
 	server := ssh.Server{
 		IdleTimeout: time.Minute,
 		MaxTimeout:  time.Minute * 10,
-		Addr:        ":" + conf.Port,
+		Addr:        port.Addr,
 		HostSigners: []ssh.Signer{privateKey},
 		Handler: ssh.Handler(func(s ssh.Session) {
 			defer s.Close()
@@ -65,7 +62,7 @@ func Listen(conf Config) {
 	}
 	log.Info().
 		Str("on", "init").
-		Str("port", conf.Port).
+		Str("port", port.S).
 		Msg("ssh")
 	go func() {
 		if err := server.ListenAndServe(); err != nil {

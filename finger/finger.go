@@ -3,32 +3,27 @@ package finger
 import (
 	"bufio"
 	"net"
-	"strconv"
 
 	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 )
 
-func Listen(prod bool) {
-	port := 79
-	if !prod {
-		port = 10079
-	}
-	listener, err := net.Listen("tcp", ":"+strconv.Itoa(port))
+func Listen() {
+	port := util.PortOf(79)
+	listener, err := net.Listen("tcp", port.Addr)
 
 	if err != nil {
-		log.Fatal().Str("on", "init").Int("port", port).Err(err).Msg("finger")
+		log.Fatal().Str("on", "init").Int("port", port.I).Err(err).Msg("finger")
 	}
 
 	tty := &content.SingleText{
-		Protocol:      "finger",
-		Port:          strconv.Itoa(port),
 		Split:         ".",
 		CommandPrefix: "finger ",
 		CommandSuffix: "@jmattheis.de",
 	}
 
-	log.Info().Str("on", "init").Int("port", port).Err(err).Msg("finger")
+	log.Info().Str("on", "init").Int("port", port.I).Err(err).Msg("finger")
 	go func() {
 		for {
 			conn, err := listener.Accept()

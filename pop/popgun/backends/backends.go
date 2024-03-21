@@ -17,9 +17,7 @@ func (a NoAuth) Authorize(user, pass string) bool {
 }
 
 // ContentProvider is a fake backend interface implementation used for test
-type ContentProvider struct {
-	Port string
-}
+type ContentProvider struct {}
 
 // Returns total message count and total mailbox size in bytes (octets).
 // Deleted messages are ignored.
@@ -57,7 +55,7 @@ Read more:
 func (b ContentProvider) content(msgId int) string {
 	switch msgId {
 	case 1:
-		return content.StartTXT(content.DnsSafeBanner, "pop3", b.Port)
+		return content.StartTXT(content.DnsSafeBanner)
 	case 2:
 		return content.ProjectsTXT
 	case 3:

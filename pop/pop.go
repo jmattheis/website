@@ -3,18 +3,16 @@ package pop
 import (
 	"github.com/jmattheis/website/pop/popgun"
 	"github.com/jmattheis/website/pop/popgun/backends"
+	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
-	server := popgun.NewServer(popgun.Config{ListenInterface: ":" + conf.Port}, backends.NoAuth{}, backends.ContentProvider{Port: conf.Port})
+func Listen() {
+	port := util.PortOf(110)
+	server := popgun.NewServer(popgun.Config{ListenInterface: port.Addr}, backends.NoAuth{}, backends.ContentProvider{})
 	log.Info().
 		Str("on", "init").
-		Str("port", conf.Port).
+		Str("port", port.S).
 		Msg("pop3")
 	go func() {
 		if err := server.Start(); err != nil {

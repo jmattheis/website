@@ -8,11 +8,9 @@ import (
 
 var upgrader = websocket.Upgrader{}
 
-func Handle(port string) http.HandlerFunc {
+func Handle() http.HandlerFunc {
 	tty := &content.InteractiveText{
 		Prompt:   "",
-		Protocol: "websocket",
-		Port:     port,
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		conn, err := upgrader.Upgrade(w, r, nil)

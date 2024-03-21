@@ -21,7 +21,7 @@ func (be *Backend) Login(_ *imap.ConnInfo, username, password string) (backend.U
 	return be.user, nil
 }
 
-func New(port string) *Backend {
+func New() *Backend {
 	user := &User{username: "guest", password: "abcde"}
 
 	blog := `Choose a blog post:
@@ -34,7 +34,7 @@ func New(port string) *Backend {
 		name: "INBOX",
 		user: user,
 		Messages: []*Message{
-			build(1, content.StartTXT(content.DnsSafeBanner, "imap", port)),
+			build(1, content.StartTXT(content.DnsSafeBanner)),
 			build(2, content.ProjectsTXT),
 			build(3, content.Cat),
 			build(4, blog),

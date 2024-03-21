@@ -1,20 +1,18 @@
 package dict
 
 import (
+	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 )
 
-type Config struct {
-	Port string
-}
-
-func Listen(conf Config) {
+func Listen() {
+    port := util.PortOf(2628)
 	server := NewServer()
 
-	log.Info().Str("on", "init").Str("port", conf.Port).Msg("dict")
+	log.Info().Str("on", "init").Str("port", port.S).Msg("dict")
 	go func() {
-		if err := server.Start(conf.Port); err != nil {
-			log.Fatal().Str("on", "init").Str("port", conf.Port).Err(err).Msg("dict")
+		if err := server.Start(port.S); err != nil {
+			log.Fatal().Str("on", "init").Str("port", port.S).Err(err).Msg("dict")
 		}
 	}()
 }
