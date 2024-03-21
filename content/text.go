@@ -32,6 +32,7 @@ Try one of the following commands in your terminal:
   curl    https://jmattheis.de
   curl    'imap://jmattheis.de/INBOX;UID=1' -u ':'
   curl     pop3://jmattheis.de/1
+  curl     tftp://jmattheis.de
   dict -h         jmattheis.de -I
   dig            @jmattheis.de +tcp +short
   docker -H       jmattheis.de inspect -f '{{.Value}}' start
