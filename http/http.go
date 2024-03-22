@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/feeds"
 	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
+	dockerregistry "github.com/jmattheis/website/docker/registry"
 	"github.com/jmattheis/website/http/html"
 	"github.com/jmattheis/website/http/text"
 	"github.com/jmattheis/website/http/websocket"
@@ -43,6 +44,7 @@ func handle() http.HandlerFunc {
 	handleWS := websocket.Handle()
 	handleText := text.Handle()
 	handleHTML := html.Handler()
+	registry := dockerregistry.Handler()
 
 	feed := feeds.Atom{Feed: content.BlogsRss()}
 	atom, err := feed.ToAtom()
@@ -60,6 +62,11 @@ func handle() http.HandlerFunc {
 		if r.URL.Path == "/feed.xml" || r.URL.Path == "/blog/index.xml" { //
 			w.Header().Add("content-type", "application/xml; charset=utf-8")
 			io.WriteString(w, atom)
+			return
+		}
+
+		if strings.HasPrefix(r.URL.Path, "/v2") { //
+			registry.ServeHTTP(w, r)
 			return
 		}
 

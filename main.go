@@ -5,7 +5,7 @@ import (
 
 	"github.com/jmattheis/website/dict"
 	"github.com/jmattheis/website/dns"
-	"github.com/jmattheis/website/docker"
+	dockersocket "github.com/jmattheis/website/docker/socket"
 	"github.com/jmattheis/website/finger"
 	"github.com/jmattheis/website/ftp"
 	"github.com/jmattheis/website/gemini"
@@ -44,7 +44,7 @@ func main() {
 	imap.Listen()
 	dict.Listen()
 	gopher.Listen()
-	docker.Listen()
+	dockersocket.Listen()
 	gemini.Listen()
 	redis.Listen()
 	finger.Listen()

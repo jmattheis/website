@@ -1,4 +1,4 @@
-package docker
+package socket
 
 import (
 	"encoding/json"

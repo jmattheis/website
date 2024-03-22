@@ -5,3 +5,5 @@ privkey.pub
 public
 build
 assets/jmattheis-resume.pdf
+docker/registry/busybox/
+gemini_cache/

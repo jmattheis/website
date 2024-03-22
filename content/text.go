@@ -36,6 +36,7 @@ Try one of the following commands in your terminal:
   dict -h         jmattheis.de -I
   dig            @jmattheis.de +tcp +short
   docker -H       jmattheis.de inspect -f '{{.Value}}' start
+  docker run --rm jmattheis.de/start
   finger          jmattheis.de
   gemget gemini://jmattheis.de/ -o-
   netcat          jmattheis.de 23
