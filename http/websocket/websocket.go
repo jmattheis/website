@@ -1,18 +1,21 @@
 package websocket
 
 import (
+	"net/http"
+
 	"github.com/gorilla/websocket"
 	"github.com/jmattheis/website/content"
-	"net/http"
+	"github.com/jmattheis/website/util"
 )
 
 var upgrader = websocket.Upgrader{}
 
 func Handle() http.HandlerFunc {
-	tty := &content.InteractiveText{
-		Prompt:   "",
-	}
 	return func(w http.ResponseWriter, r *http.Request) {
+		tty := &content.InteractiveText{
+			Prompt:     "",
+			RemoteAddr: util.GetRemoteAddr(r),
+		}
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
 			return

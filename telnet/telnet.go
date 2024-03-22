@@ -17,10 +17,6 @@ func Listen() {
 		log.Fatal().Str("on", "init").Str("port", port.S).Err(err).Msg("tcp")
 	}
 
-	tty := &content.InteractiveText{
-		Prompt:   "\nguest@jmattheis.de > ",
-	}
-
 	log.Info().Str("on", "init").Str("port", port.S).Msg("tcp")
 	go func() {
 		for {
@@ -28,6 +24,11 @@ func Listen() {
 
 			if err != nil {
 				continue
+			}
+
+			tty := &content.InteractiveText{
+				Prompt:     "\nguest@jmattheis.de > ",
+				RemoteAddr: conn.RemoteAddr().String(),
 			}
 
 			go accept(conn, tty)

@@ -10,16 +10,11 @@ import (
 )
 
 func Listen() {
-    port := util.PortOf(43)
+	port := util.PortOf(43)
 	listener, err := net.Listen("tcp", port.Addr)
 
 	if err != nil {
 		log.Fatal().Str("on", "init").Str("port", port.S).Err(err).Msg("whois")
-	}
-
-	tty := &content.SingleText{
-		Split:         ".",
-		CommandPrefix: "whois -h jmattheis.de ",
 	}
 
 	log.Info().Str("on", "init").Str("port", port.S).Msg("whois")
@@ -29,6 +24,12 @@ func Listen() {
 
 			if err != nil {
 				continue
+			}
+
+			tty := &content.SingleText{
+				Split:         ".",
+				CommandPrefix: "whois -h jmattheis.de ",
+				RemoteAddr:    conn.RemoteAddr().String(),
 			}
 
 			go accept(conn, tty)

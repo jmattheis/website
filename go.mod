@@ -1,6 +1,8 @@
 module github.com/jmattheis/website
 
-go 1.21
+go 1.21.4
+
+toolchain go1.22.1
 
 require (
 	git.mills.io/prologic/go-gopher v0.0.0-20220331140345-72e36e5710a1
@@ -24,6 +26,7 @@ require (
 	github.com/pin/tftp/v3 v3.1.0
 	github.com/rs/zerolog v1.32.0
 	golang.org/x/crypto v0.21.0
+	golang.org/x/term v0.18.0
 )
 
 require (
@@ -40,8 +43,8 @@ require (
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/sys v0.18.0 // indirect
-	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/tools v0.17.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

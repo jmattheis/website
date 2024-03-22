@@ -3,10 +3,11 @@ package dict
 import (
 	"bufio"
 	"fmt"
-	"github.com/jmattheis/website/content"
 	"net"
 	"strings"
 	"time"
+
+	"github.com/jmattheis/website/content"
 )
 
 type Client struct {
@@ -42,6 +43,7 @@ func newClient() *Client {
 }
 
 func (c Client) handle(conn net.Conn) {
+	c.tty.RemoteAddr = conn.RemoteAddr().String()
 	defer conn.Close()
 	conn.SetReadDeadline(time.Now().Add(1 * time.Minute))
 	c.printer = NewPrinter(conn)
@@ -77,8 +79,7 @@ type Server struct {
 }
 
 func NewServer() *Server {
-	return &Server{
-	}
+	return &Server{}
 }
 
 func (s Server) Start(port string) error {

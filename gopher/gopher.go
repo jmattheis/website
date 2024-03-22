@@ -10,14 +10,15 @@ import (
 )
 
 func Listen() {
-    port := util.PortOf(70)
+	port := util.PortOf(70)
 
-	tty := &content.SingleText{
-		Split:         "/",
-		CommandPrefix: "curl gopher://jmattheis.de/0",
-	}
 	mux := gopher.NewServeMux()
 	mux.HandleFunc("/", func(w gopher.ResponseWriter, r *gopher.Request) {
+		tty := &content.SingleText{
+			Split:         "/",
+			CommandPrefix: "curl gopher://jmattheis.de/0",
+			RemoteAddr:    "unknown",
+		}
 		value := tty.Get(strings.TrimPrefix(r.Selector, "/"))
 		_, _ = w.Write([]byte(value))
 	})

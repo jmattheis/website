@@ -19,12 +19,6 @@ func Listen() {
 		log.Fatal().Str("on", "init").Str("port", port.S).Err(err).Msg("tcp")
 	}
 
-	tty := &content.SingleText{
-		Split:         ".",
-		CommandPrefix: "redis-cli -h jmattheis.de lrange ",
-		CommandSuffix: " 0 0",
-	}
-
 	log.Info().Str("on", "init").Str("port", port.S).Msg("redis")
 	go func() {
 		for {
@@ -32,6 +26,12 @@ func Listen() {
 
 			if err != nil {
 				continue
+			}
+			tty := &content.SingleText{
+				Split:         ".",
+				CommandPrefix: "redis-cli -h jmattheis.de lrange ",
+				CommandSuffix: " 0 0",
+				RemoteAddr:    conn.RemoteAddr().String(),
 			}
 
 			go accept(conn, tty)

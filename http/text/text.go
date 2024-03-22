@@ -1,9 +1,11 @@
 package text
 
 import (
-	"github.com/jmattheis/website/content"
 	"net/http"
 	"strings"
+
+	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
 )
 
 func Handle() http.HandlerFunc {
@@ -17,6 +19,7 @@ func Handle() http.HandlerFunc {
 		tty := &content.SingleText{
 			Split:         "/",
 			CommandPrefix: cmd + " jmattheis.de/",
+			RemoteAddr:    util.GetRemoteAddr(r),
 		}
 
 		value := tty.Get(strings.TrimPrefix(r.URL.Path, "/"))

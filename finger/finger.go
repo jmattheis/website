@@ -17,12 +17,6 @@ func Listen() {
 		log.Fatal().Str("on", "init").Int("port", port.I).Err(err).Msg("finger")
 	}
 
-	tty := &content.SingleText{
-		Split:         ".",
-		CommandPrefix: "finger ",
-		CommandSuffix: "@jmattheis.de",
-	}
-
 	log.Info().Str("on", "init").Int("port", port.I).Err(err).Msg("finger")
 	go func() {
 		for {
@@ -30,6 +24,13 @@ func Listen() {
 
 			if err != nil {
 				continue
+			}
+
+			tty := &content.SingleText{
+				Split:         ".",
+				CommandPrefix: "finger ",
+				CommandSuffix: "@jmattheis.de",
+				RemoteAddr:    conn.RemoteAddr().String(),
 			}
 
 			go accept(conn, tty)

@@ -16,6 +16,7 @@ func Listen() {
 	tty := &content.SingleText{
 		Split:         "/",
 		CommandPrefix: "curl tftp://jmattheis.de/",
+		RemoteAddr:    "unknown",
 	}
 
 	svr := tftp.NewServer(func(filename string, rf io.ReaderFrom) error {

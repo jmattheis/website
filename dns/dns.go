@@ -11,11 +11,6 @@ import (
 
 func Listen() {
 	port := util.PortOf(53)
-	tty := &content.SingleText{
-		Split:         ".",
-		ForceBanner:   content.DnsSafeBanner,
-		CommandPrefix: "dig @jmattheis.de +tcp +short ",
-	}
 	log.Info().Str("on", "init").Str("port", port.S).Msg("dns")
 	go func() {
 		mux := dns.NewServeMux()
@@ -26,6 +21,13 @@ func Listen() {
 			question := ""
 			if len(reply.Question) > 0 {
 				question = strings.TrimSuffix(reply.Question[0].Name, ".")
+			}
+
+			tty := &content.SingleText{
+				Split:         ".",
+				ForceBanner:   content.DnsSafeBanner,
+				CommandPrefix: "dig @jmattheis.de +tcp +short ",
+				RemoteAddr:    w.RemoteAddr().String(),
 			}
 
 			exec := tty.Get(question)

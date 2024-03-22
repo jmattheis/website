@@ -15,17 +15,11 @@ import (
 )
 
 func Listen() {
-    port := util.PortOf(1965)
+	port := util.PortOf(1965)
 	log.Info().
 		Str("on", "init").
 		Str("port", port.S).
 		Msg("gemini")
-
-	tty := &content.SingleText{
-		Split:          "/",
-		CommandPrefix:  "=> gemini://jmattheis.de/",
-		DisablePadding: true,
-	}
 
 	cwd, _ := os.Getwd()
 	certificates := &certificate.Store{}
@@ -39,6 +33,14 @@ func Listen() {
 	mux := &gemini.Mux{}
 	mux.Handle("/", gemini.HandlerFunc(func(c context.Context, rw gemini.ResponseWriter, r *gemini.Request) {
 		rw.WriteHeader(gemini.StatusSuccess, "text/gemini")
+
+		tty := &content.SingleText{
+			Split:          "/",
+			CommandPrefix:  "=> gemini://jmattheis.de/",
+			DisablePadding: true,
+			RemoteAddr:     r.Conn().RemoteAddr().String(),
+		}
+
 		value := tty.Get(strings.TrimPrefix(r.URL.EscapedPath(), "/"))
 		rw.Write([]byte(value))
 	}))

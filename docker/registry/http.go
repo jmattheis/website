@@ -9,22 +9,25 @@ import (
 
 	lru "github.com/hashicorp/golang-lru/v2"
 	"github.com/jmattheis/website/content"
+	"github.com/jmattheis/website/util"
 )
 
 var pattern = regexp.MustCompile(`\/v2\/(.+)\/(blobs|manifests)\/([a-z0-9:]+)`)
 
 func Handler() http.HandlerFunc {
-	tty := content.SingleText{
-		Split:         "/",
-		CommandPrefix: "docker run --rm jmattheis.de/",
-	}
 
-	successCache, err := lru.New[string, map[string]Entry](50)
-	check(err)
-	errorCache, err := lru.New[string, map[string]Entry](20)
-	check(err)
+	static := map[string]Entry{}
+	RegisterLayers(func(s string, e Entry) { static[s] = e })
+
+	dynamicCache, _ := lru.New[string, Entry](200)
 
 	return func(w http.ResponseWriter, r *http.Request) {
+		tty := content.SingleText{
+			Split:         "/",
+			CommandPrefix: "docker run --rm jmattheis.de/",
+			RemoteAddr:    util.GetRemoteAddr(r),
+		}
+
 		matches := pattern.FindStringSubmatch(r.URL.Path)
 
 		if matches == nil {
@@ -35,38 +38,42 @@ func Handler() http.HandlerFunc {
 
 		cmd, t, hash := matches[1], matches[2], matches[3]
 
-		content := tty.Get(cmd)
+		content, dynamic := tty.GetVerbose(cmd)
 
-		cache := successCache
-		if strings.HasPrefix(content, "error") {
-			cache = errorCache
-		}
+		var result Entry
+		var ok bool
 
-		store, ok := cache.Get(cmd)
-		if !ok {
-			store = DockerStdout(content)
-			cache.Add(cmd, store)
-		}
-
-		entry, ok := store[hash]
-		if !ok {
-			if strings.HasPrefix(hash, "sha256:") {
-				w.WriteHeader(404)
-				io.WriteString(w, "unknown hash")
-				return
+		if !strings.HasPrefix(hash, "sha256:") {
+			ok = true
+			result = DockerStdout(func(s string, e Entry) {
+				if dynamic {
+					dynamicCache.Add(s, e)
+				} else {
+					static[s] = e
+				}
+			}, content)
+		} else {
+			result, ok = static[hash]
+			if !ok {
+				result, ok = dynamicCache.Get(hash)
 			}
-			entry, _ = store["latest"]
 		}
 
-		w.Header().Add("content-type", entry.MediaType)
-		w.Header().Add("content-length", fmt.Sprint(len(entry.Content)))
-		w.Header().Add("etag", `"`+entry.Digest.String()+`"`)
+		if !ok {
+			w.WriteHeader(404)
+			io.WriteString(w, "unknown reference")
+			return
+		}
+
+		w.Header().Add("content-type", result.MediaType)
+		w.Header().Add("content-length", fmt.Sprint(len(result.Content)))
+		w.Header().Add("etag", `"`+result.Digest.String()+`"`)
 		if t == "manifests" {
-			w.Header().Add("Docker-Content-Digest", entry.Digest.String())
+			w.Header().Add("Docker-Content-Digest", result.Digest.String())
 		}
 		w.WriteHeader(200)
 		if r.Method != "HEAD" {
-			w.Write(entry.Content)
+			w.Write(result.Content)
 		}
 	}
 }

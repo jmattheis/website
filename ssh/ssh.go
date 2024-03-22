@@ -3,7 +3,7 @@ package ssh
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
+	"os"
 	"strings"
 	"time"
 
@@ -12,10 +12,8 @@ import (
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
 	xssh "golang.org/x/crypto/ssh"
-	"golang.org/x/crypto/ssh/terminal"
+	"golang.org/x/term"
 )
-
-type Config struct {}
 
 func Listen() {
 	port := util.PortOf(22)
@@ -28,16 +26,17 @@ func Listen() {
 			Msg("ssh")
 	}
 
-	tty := &content.InteractiveText{}
-
 	server := ssh.Server{
 		IdleTimeout: time.Minute,
 		MaxTimeout:  time.Minute * 10,
 		Addr:        port.Addr,
 		HostSigners: []ssh.Signer{privateKey},
 		Handler: ssh.Handler(func(s ssh.Session) {
+			tty := &content.InteractiveText{
+				RemoteAddr: s.RemoteAddr().String(),
+			}
 			defer s.Close()
-			term := terminal.NewTerminal(s, "\nguest@jmattheis.de > ")
+			term := term.NewTerminal(s, "\nguest@jmattheis.de > ")
 			term.AutoCompleteCallback = autocomplete(s)
 			exec, _ := tty.Exec("")
 
@@ -72,8 +71,7 @@ func Listen() {
 }
 
 func readKey(path string) (ssh.Signer, error) {
-
-	privateBytes, err := ioutil.ReadFile(path)
+	privateBytes, err := os.ReadFile(path)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +79,7 @@ func readKey(path string) (ssh.Signer, error) {
 	return xssh.ParsePrivateKey(privateBytes)
 }
 
-var auto = []string{"help", "exit", "blog", "projects"}
+var auto = []string{"help", "exit", "blog", "projects", "ip", "time"}
 
 func autocomplete(s ssh.Session) func(line string, pos int, key rune) (newLine string, newPos int, ok bool) {
 	return func(line string, pos int, key rune) (newLine string, newPos int, ok bool) {

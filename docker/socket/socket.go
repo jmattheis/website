@@ -17,11 +17,6 @@ func Listen() {
 		Str("port", port.S).
 		Msg("docker")
 
-	tty := &content.SingleText{
-		Split:         ".",
-		CommandPrefix: "docker -H jmattheis.de inspect -f '{{.Value}}' ",
-	}
-
 	go func() {
 
 		mux := http.NewServeMux()
@@ -37,6 +32,12 @@ func Listen() {
 			if len(split) < 3 {
 				w.WriteHeader(404)
 				return
+			}
+
+			tty := &content.SingleText{
+				Split:         ".",
+				CommandPrefix: "docker -H jmattheis.de inspect -f '{{.Value}}' ",
+				RemoteAddr:    r.RemoteAddr,
 			}
 
 			help := struct {
