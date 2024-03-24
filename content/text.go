@@ -78,41 +78,28 @@ func TXTBlogByNR(nr int) string {
 
 var ProjectsTXT = `# Gotify
 
-A self-hostable push notification service written in Go.
-It features:
-* a rest api for creating messages 
-* a webui written in React with material ui design
-* an android app
-
-Source:  https://github.com/gotify
-Website: https://gotify.net
+A simple server for sending and receiving messages in real-time per WebSocket.
+https://github.com/gotify | https://gotify.net
 
 # Screego
 
 A self-hostable screen sharing app that uses WebRTC.
-
-Source:  https://github.com/screego/server
-Website: https://screego.net
+https://github.com/screego/server | https://screego.net
 
 # Traggo
 
-Traggo is a tag-based time tracking tool written in Go.
-It features:
-* a GraphQL API
-* time tracking (lol)
-* customizable dashboards with diagrams
-* calendar and list views
-* a web ui with multiple themes
+A self-hosted tag-based time tracking server.
+https://github.com/traggo | https://traggo.net
 
-Source:  https://github.com/traggo
-Website: https://traggo.net
+# Goverter
 
-# My Website
+A type-safe Go converters generator.
+https://github.com/jmattheis/goverter | https://goverter.jmattheis.de/
 
-This service :D
+# This Website
 
-Source:  https://github.com/jmattheis/website
-Website: https://jmattheis.de/
+A server that abuses various protocols to transmit content.
+https://github.com/jmattheis/website | https://jmattheis.de/
 `
 
 const Cat = `                                                                     :=~,                           
