@@ -38,9 +38,13 @@ func Listen() {
 			defer s.Close()
 			term := term.NewTerminal(s, "\nguest@jmattheis.de > ")
 			term.AutoCompleteCallback = autocomplete(s)
-			exec, _ := tty.Exec("")
+			exec, _ := tty.Exec(s.RawCommand())
 
 			if _, err := io.WriteString(term, exec); err != nil {
+				return
+			}
+
+			if s.RawCommand() != "" {
 				return
 			}
 
