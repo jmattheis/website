@@ -96,6 +96,11 @@ https://github.com/traggo | https://traggo.net
 A type-safe Go converters generator.
 https://github.com/jmattheis/goverter | https://goverter.jmattheis.de/
 
+# prog.fan
+
+Statistics about book series mentions in social media.
+https://prog.fan
+
 # This Website
 
 A server that abuses various protocols to transmit content.
