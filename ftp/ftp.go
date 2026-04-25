@@ -6,12 +6,11 @@ import (
 	"os"
 	"sync/atomic"
 
+	ftpserver "github.com/fclairamb/ftpserverlib"
 	"github.com/jmattheis/website/assets"
 	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/util"
 	"github.com/rs/zerolog/log"
-
-	"github.com/fclairamb/ftpserver/server"
 )
 
 func getFiles() []*virtualFileInfo {
@@ -62,10 +61,10 @@ func Listen(ip string) {
 	files := getFiles()
 	port := util.PortOf(21)
 	drv := &MainDriver{
-		Server: server.Settings{
+		Server: ftpserver.Settings{
 			PublicHost: ip,
 			ListenAddr: port.Addr,
-			PassiveTransferPortRange: &server.PortRange{
+			PassiveTransferPortRange: &ftpserver.PortRange{
 				Start: 50000,
 				End:   52999,
 			},
@@ -79,7 +78,7 @@ func Listen(ip string) {
 	drv.tlsConfig.Certificates = []tls.Certificate{*util.NewUntrustedCert()}
 	log.Info().Str("on", "init").Str("port", port.S).Msg("ftp")
 	go func() {
-		if err := server.NewFtpServer(drv).ListenAndServe(); err != nil {
+		if err := ftpserver.NewFtpServer(drv).ListenAndServe(); err != nil {
 			log.Fatal().Err(err).Msg("ftp")
 		}
 	}()
@@ -99,15 +98,15 @@ func dirs(files []*virtualFileInfo) []string {
 
 // MainDriver defines a very basic ftpserver driver
 type MainDriver struct {
-	tlsConfig *tls.Config     // TLS config (if applies)
-	Server    server.Settings // Our settings
-	nbClients int32           // Number of clients
+	tlsConfig *tls.Config          // TLS config (if applies)
+	Server    ftpserver.Settings   // Our settings
+	nbClients int32               // Number of clients
 	Files     []*virtualFileInfo
 	Dirs      []string
 }
 
 // GetSettings returns some general settings around the server setup
-func (driver *MainDriver) GetSettings() (*server.Settings, error) {
+func (driver *MainDriver) GetSettings() (*ftpserver.Settings, error) {
 	return &driver.Server, nil
 }
 
@@ -116,8 +115,8 @@ func (driver *MainDriver) GetTLSConfig() (*tls.Config, error) {
 	return driver.tlsConfig, nil
 }
 
-// WelcomeUser is called to send the very first welcome message
-func (driver *MainDriver) WelcomeUser(cc server.ClientContext) (string, error) {
+// ClientConnected is called to send the very first welcome message
+func (driver *MainDriver) ClientConnected(cc ftpserver.ClientContext) (string, error) {
 	nbClients := atomic.AddInt32(&driver.nbClients, 1)
 	if nbClients > 1000 {
 		return "Cannot accept any additional client", fmt.Errorf(
@@ -130,11 +129,11 @@ func (driver *MainDriver) WelcomeUser(cc server.ClientContext) (string, error) {
 }
 
 // AuthUser authenticates the user and selects an handling driver
-func (driver *MainDriver) AuthUser(server.ClientContext, string, string) (server.ClientHandlingDriver, error) {
-	return &ClientDriver{BaseDir: "/", Dirs: driver.Dirs, Files: driver.Files}, nil
+func (driver *MainDriver) AuthUser(cc ftpserver.ClientContext, user, pass string) (ftpserver.ClientDriver, error) {
+	return &ClientDriver{Files: driver.Files, Dirs: driver.Dirs}, nil
 }
 
-// UserLeft is called when the user disconnects, even if he never authenticated
-func (driver *MainDriver) UserLeft(server.ClientContext) {
+// ClientDisconnected is called when the user disconnects, even if he never authenticated
+func (driver *MainDriver) ClientDisconnected(ftpserver.ClientContext) {
 	atomic.AddInt32(&driver.nbClients, -1)
 }

@@ -2,90 +2,87 @@ package ftp
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/fclairamb/ftpserver/server"
+	"github.com/spf13/afero"
 )
 
-// ClientDriver defines a very basic client driver
+var errReadOnly = errors.New("read-only filesystem")
+
+// ClientDriver implements afero.Fs as a read-only virtual filesystem
 type ClientDriver struct {
-	BaseDir string // Base directory from which to server file
-	Files   []*virtualFileInfo
-	Dirs    []string
+	Files []*virtualFileInfo
+	Dirs  []string
 }
 
-// ChangeDirectory changes the current working directory
-func (driver *ClientDriver) ChangeDirectory(cc server.ClientContext, directory string) error {
-	for _, dir := range driver.Dirs {
-		if directory == dir {
-			return nil
+func (d *ClientDriver) Name() string { return "virtual" }
+
+func (d *ClientDriver) Create(name string) (afero.File, error)                      { return nil, errReadOnly }
+func (d *ClientDriver) Mkdir(name string, perm os.FileMode) error                   { return errReadOnly }
+func (d *ClientDriver) MkdirAll(path string, perm os.FileMode) error                { return errReadOnly }
+func (d *ClientDriver) Remove(name string) error                                    { return errReadOnly }
+func (d *ClientDriver) RemoveAll(path string) error                                 { return errReadOnly }
+func (d *ClientDriver) Rename(oldname, newname string) error                        { return errReadOnly }
+func (d *ClientDriver) Chmod(name string, mode os.FileMode) error                   { return errReadOnly }
+func (d *ClientDriver) Chown(name string, uid, gid int) error                       { return errReadOnly }
+func (d *ClientDriver) Chtimes(name string, atime time.Time, mtime time.Time) error { return errReadOnly }
+
+func (d *ClientDriver) Stat(name string) (os.FileInfo, error) {
+	// Check if it's a directory
+	for _, dir := range d.Dirs {
+		if name == dir {
+			return &virtualFileInfo{
+				dir:  filepath.Dir(name),
+				name: filepath.Base(name),
+				size: 4096,
+				mode: 0666 | os.ModeDir,
+			}, nil
 		}
 	}
-	return errors.New("directory does not exist " + directory)
-}
-
-// MakeDirectory creates a directory
-func (driver *ClientDriver) MakeDirectory(server.ClientContext, string) error {
-	return errors.New("mhhmm, don't do it.")
-}
-
-// ListFiles lists the files of a directory
-func (driver *ClientDriver) ListFiles(cc server.ClientContext, directory string) ([]os.FileInfo, error) {
-	visible := []os.FileInfo{}
-
-	for _, file := range driver.Files {
-		if file.dir == directory {
-			visible = append(visible, file)
-		}
-	}
-
-	return visible, nil
-}
-
-// OpenFile opens a file in 3 possible modes: read, write, appending write (use appropriate flags)
-func (driver *ClientDriver) OpenFile(cc server.ClientContext, path string, flag int) (server.FileStream, error) {
-	for _, file := range driver.Files {
-		if path == filepath.Join(file.dir, file.name) {
-			return &virtualFile{content: file.content}, nil
-		}
-	}
-	return nil, fmt.Errorf("file does not exist %s", path)
-}
-
-// GetFileInfo gets some info around a file or a directory
-func (driver *ClientDriver) GetFileInfo(cc server.ClientContext, path string) (os.FileInfo, error) {
-	for _, file := range driver.Files {
-		if path == filepath.Join(file.dir, file.name) {
+	// Check files
+	for _, file := range d.Files {
+		if name == filepath.Join(file.dir, file.name) {
 			return file, nil
 		}
 	}
-	return nil, fmt.Errorf("file does not exist %s", path)
+	return nil, os.ErrNotExist
 }
 
-// SetFileMtime changes file mtime
-func (driver *ClientDriver) SetFileMtime(cc server.ClientContext, path string, mtime time.Time) error {
-	return errors.New("not supported")
+func (d *ClientDriver) Open(name string) (afero.File, error) {
+	return d.OpenFile(name, os.O_RDONLY, 0)
 }
 
-// CanAllocate gives the approval to allocate some data
-func (driver *ClientDriver) CanAllocate(cc server.ClientContext, size int) (bool, error) {
-	return true, nil
+func (d *ClientDriver) OpenFile(name string, flag int, perm os.FileMode) (afero.File, error) {
+	if flag&(os.O_WRONLY|os.O_RDWR|os.O_CREATE|os.O_TRUNC) != 0 {
+		return nil, errReadOnly
+	}
+
+	// Check if it's a directory
+	for _, dir := range d.Dirs {
+		if name == dir {
+			return &virtualDir{
+				info:  &virtualFileInfo{dir: filepath.Dir(name), name: filepath.Base(name), size: 4096, mode: 0666 | os.ModeDir},
+				files: d.filesInDir(name),
+			}, nil
+		}
+	}
+	// Check files
+	for _, file := range d.Files {
+		if name == filepath.Join(file.dir, file.name) {
+			return &virtualFile{info: file, content: file.content}, nil
+		}
+	}
+	return nil, os.ErrNotExist
 }
 
-// ChmodFile changes the attributes of the file
-func (driver *ClientDriver) ChmodFile(cc server.ClientContext, path string, mode os.FileMode) error {
-	return errors.New("not supported")
-}
-
-// DeleteFile deletes a file or a directory
-func (driver *ClientDriver) DeleteFile(cc server.ClientContext, path string) error {
-	return errors.New("not supported")
-}
-
-// RenameFile renames a file or a directory
-func (driver *ClientDriver) RenameFile(cc server.ClientContext, from, to string) error {
-	return errors.New("not supported")
+func (d *ClientDriver) filesInDir(dir string) []os.FileInfo {
+	var result []os.FileInfo
+	for _, file := range d.Files {
+		if file.dir == dir {
+			result = append(result, file)
+		}
+	}
+	return result
 }
