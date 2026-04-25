@@ -17,7 +17,7 @@ func Listen() {
 		tty := &content.SingleText{
 			Split:         "/",
 			CommandPrefix: "curl gopher://jmattheis.de/0",
-			RemoteAddr:    "unknown",
+			RemoteAddr:    r.RemoteAddr,
 		}
 		value := tty.Get(strings.TrimPrefix(r.Selector, "/"))
 		_, _ = w.Write([]byte(value))

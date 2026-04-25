@@ -17,7 +17,7 @@ type Backend struct {
 	user *User
 }
 
-func (be *Backend) Login(_ *imap.ConnInfo, username, password string) (backend.User, error) {
+func (be *Backend) Login(x *imap.ConnInfo, username, password string) (backend.User, error) {
 	return be.user, nil
 }
 
