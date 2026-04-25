@@ -6,7 +6,7 @@ import (
 )
 
 func GetRemoteAddr(r *http.Request) string {
-	forwarded := r.Header.Get("x-real-ip")
+	forwarded := r.Header.Get("X-Forwarded-For")
 	if forwarded == "" {
 		forwarded = r.RemoteAddr
 	}
