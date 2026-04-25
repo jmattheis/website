@@ -20,7 +20,7 @@ import (
 )
 
 func Listen() {
-	port := util.PortOf(8080)
+	port := util.PortOf(10080)
 	log.Info().
 		Str("on", "init").
 		Str("port", port.S).
@@ -29,7 +29,7 @@ func Listen() {
 	go func() {
 		var handler http.Handler = gziphandler.GzipHandler(handle())
 
-		err := http.ListenAndServe(port.Addr, handler)
+		err := http.ListenAndServe("127.0.0.1"+port.Addr, handler)
 		if err != nil {
 			log.Fatal().
 				Str("on", "init").
