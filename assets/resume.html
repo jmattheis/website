@@ -1,20 +1,21 @@
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Resume - Jannis Mattheis</title>
     <style type="text/css">
       #page {
         width: 21cm;
         height: 32.5cm;
         display: block;
-        font-family: Arial;
+        font-family: Arial, Helvetica, sans-serif;
         margin: 10mm auto;
         font-size: 13px;
         line-height: 16px;
         background: white;
         -webkit-text-size-adjust: 100%;
         -webkit-font-smoothing: subpixel-antialiased;
-        font-smoothing: subpixel-antialiased;
       }
       body {
         margin: 0;
@@ -113,6 +114,15 @@
           </div>
         </div>
       </div>
+      <h2>Summary</h2>
+      <p>
+        Software developer with 9+ years building backend services in
+        <b>Go</b>, <b>Java</b>, and <b>Kotlin</b>, focused on long-term
+        maintainability. Staying at each company for years, I've seen my own
+        decisions play out and learned which ones hold up. In my free time, I
+        build and maintain open-source projects like Gotify and screego
+        (combined 25k+ GitHub stars) to keep learning and improving my skills.
+      </p>
       <h2>Work Experience</h2>
       <h3>Next Kraftwerke, Cologne</h3>
       <div style="display: flex">
@@ -121,21 +131,26 @@
       </div>
       <ul>
         <li>
-          Worked within a <b>scrum</b> team to integrate balancing services into
-          the Virtual Power Plant with a <b>Java</b>, <b>Kotlin</b>, and
-          <b>RabbitMQ</b> stack.
+          Built the integration layer between Transmission System Operators
+          (TSOs) and internal teams in <b>Java</b>, <b>Kotlin</b>, and
+          <b>RabbitMQ</b>.
         </li>
         <li>
-          Implemented and aligned cross-team balancing services processes
-          handling energy volume planning, bidding, and auction results.
+          Aligned balancing-service processes across teams for energy volume
+          planning, bidding, and auction results.
         </li>
         <li>
-          Designed <b>Kubernetes</b> services in a multi-cluster and multi-zone
-          environment meeting "Critical Infrastructures" regulations.
+          Designed <b>Kubernetes</b> services in a multi-cluster environment
+          compliant with the German <b>KRITIS</b> (Critical Infrastructures)
+          regulation.
         </li>
         <li>
-          Improved deployment safety by providing diffing, dry-run capabilities,
-          alerting, and configuration validation.
+          Improved deployment safety by adding diffing, dry-runs, configuration
+          validation, and alerting.
+        </li>
+        <li>
+          Conducted technical interviews and onboarded new hires with mentoring
+          and feedback sessions in their first months.
         </li>
       </ul>
       <h3>FactFinder, Berlin</h3>
@@ -151,12 +166,13 @@
       </div>
       <ul>
         <li>
-          Completed my apprenticeship as Computer Scientist, Software
-          Development with an 88% GPA.
+          Developed a B2B search and product discovery solution for e-commerce
+          shops using <b>Java</b>, <b>Spring</b> <b>TypeScript</b>, and
+          <b>React</b>.
         </li>
         <li>
-          Created a tool for creating and filtering change log in
-          <b>TypeScript</b> / <b>Node.js</b>.
+          Improved visibility of product changes by creating a change log tool
+          using <b>TypeScript</b> and <b>Node.js</b>.
           <a href="https://github.com/FACT-Finder/snage">
             github.com/FACT-Finder/snage
           </a>
@@ -167,12 +183,12 @@
           cost.
         </li>
         <li>
-          Automated server deployment with <b>Ansible</b>, <b>Docker</b> and
+          Automated server deployment with <b>Ansible</b>, <b>Docker</b>, and
           <b>GitLab</b>/<b>Jenkins</b> on
           <b title="btw I use arch">Arch Linux</b> and <b>Ubuntu</b>.
         </li>
         <li>
-          Built an availability proxy in <b>Rust</b> that returned fallback
+          Built an availability proxy in <b>Rust</b> that returns fallback
           responses when services are unavailable.
         </li>
         <li>
@@ -183,33 +199,20 @@
           </a>
         </li>
         <li>
-          Designed, implemented and documented a <b>REST-API</b> with
-          <b>Spring-Web</b> and <b>Swagger</b>/<b>OpenAPI</b>.
-        </li>
-        <li>
           Improved <b>code reviews</b> by creating a <b>GitLab</b> Webhook for
           automatic reviewer selection to distribute pull requests.
         </li>
         <li>
-          Migrated a complex <b>Jenkins CI</b> Pipeline to <b>GitLab CI</b> with
-          conditional builds.
+          Reduced CI build times from 90 minutes to 20 minutes by migrating from
+          <b>Jenkins</b> to <b>GitLab CI</b> with conditional builds.
         </li>
         <li>
-          Created a proxy with <b>Node.js</b> that migrates HTTP requests /
-          responses between different API versions.
+          Created a proxy with <b>Node.js</b> that migrates HTTP
+          requests/responses between different API versions.
         </li>
         <li>
           Added authentication and authorization with
           <b>Spring Security</b> with <b>OAuth2</b> / <b>JWT</b> support.
-        </li>
-        <li>
-          Migrated a <b>JavaScript</b> <b>React</b> frontend to
-          <b>TypeScript</b> and added static code analysis with
-          <b>ESLint</b> and unit tests with <b>Jest</b>.
-        </li>
-        <li>
-          Maintained a legacy <b>Java</b>, <b>Spring</b>, and
-          <b>RabbitMQ</b> code base managed with <b>Git</b>.
         </li>
       </ul>
       <h2>Projects</h2>
@@ -242,12 +245,9 @@
           <b>end-to-end tests</b> with <b>Puppeteer</b> and code reviews.
         </li>
         <li>
-          Utilized continuous integration with a comprehensive build pipeline on
-          <b>Travis-CI</b> / <b>GitHub Actions</b>.
-        </li>
-        <li>
-          Wrote documentation for the API via <b>OpenAPI</b> and installing /
-          configuring gotify. <a href="https://gotify.net">gotify.net</a>
+          Wrote documentation for the API via <b>OpenAPI</b> and
+          installing/configuring Gotify.
+          <a href="https://gotify.net">gotify.net</a>
         </li>
       </ul>
       <h3>Miscellaneous</h3>
@@ -266,7 +266,7 @@
           | <a href="https://screego.net">screego.net</a>
         </li>
         <li>
-          Built a time tracking app with <b>Go</b>, <b>GraphQL</b>,
+          Built a time-tracking app with <b>Go</b>, <b>GraphQL</b>,
           <b>SQLite</b>, <b>TypeScript</b>, <b>React</b>, and <b>Apollo</b>.
           <a href="https://github.com/traggo/server">
             github.com/traggo/server
@@ -288,22 +288,16 @@
           <a href="https://prog.fan/">prog.fan</a>
         </li>
         <li>
-          Made my website available through various protocols like IMAP, SSH and
-          DNS.
+          Made my website available through various protocols like IMAP, SSH,
+          and DNS.
           <a href="https://github.com/jmattheis/website">
             github.com/jmattheis/website
           </a>
-        </li>
-        <li>
-          Built a podcast listening web application with <b>Rust</b>,
-          <b>Rocket</b>, <b>Diesel</b>, <b>Postgres</b>, and an
-          <b>Android</b> app written in <b>Kotlin</b>.
         </li>
       </ul>
       <h2>Other</h2>
       <ul>
         <li>Languages: German (native language), English</li>
-        <li>Mentored programming newbies via codingcoach.io.</li>
         <li>
           Fluent on the Linux command line. Tools I use daily: <b>Neovim</b>,
           <b>tmux</b>, <b>fish</b>, and <b>tig</b>.
