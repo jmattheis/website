@@ -8,6 +8,7 @@ import (
 	"github.com/jmattheis/website/content"
 	"github.com/jmattheis/website/util"
 	"github.com/pin/tftp/v3"
+	"github.com/rs/zerolog/log"
 )
 
 func Listen() {
@@ -26,5 +27,10 @@ func Listen() {
 	}, func(filename string, wt io.WriterTo) error {
 		return fmt.Errorf("no thanks :P")
 	})
-	go svr.ListenAndServe(port.Addr)
+	go func() {
+		err := svr.ListenAndServe(port.Addr)
+		if err != nil {
+			log.Fatal().Err(err).Msg("tftp")
+		}
+	}()
 }

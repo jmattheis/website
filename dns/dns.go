@@ -36,7 +36,7 @@ func Listen() {
 			_ = w.WriteMsg(reply)
 		})
 		if err := dns.ListenAndServe(port.Addr, "tcp", mux); err != nil {
-			return
+			log.Error().Err(err).Str("port", port.S).Msg("dns")
 		}
 	}()
 }

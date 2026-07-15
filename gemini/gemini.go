@@ -52,6 +52,8 @@ func Listen() {
 		WriteTimeout:   3 * time.Second,
 		GetCertificate: certificates.Get,
 	}
-	go server.ListenAndServe(context.Background())
-
+	go func() {
+		err := server.ListenAndServe(context.Background())
+		log.Err(err).Msg("gemini")
+	}()
 }
