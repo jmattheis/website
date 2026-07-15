@@ -7,15 +7,13 @@
     <style type="text/css">
       #page {
         width: 21cm;
-        height: 32.5cm;
+        height: 31cm;
         display: block;
         font-family: Arial, Helvetica, sans-serif;
         margin: 10mm auto;
         font-size: 13px;
         line-height: 16px;
         background: white;
-        -webkit-text-size-adjust: 100%;
-        -webkit-font-smoothing: subpixel-antialiased;
       }
       body {
         margin: 0;
@@ -49,7 +47,6 @@
       }
       p {
         line-height: 120%;
-        text-align: justify;
         background: transparent;
       }
       h1 {
@@ -72,6 +69,18 @@
         line-height: 25px;
         height: 25px;
         margin: 5px 0 0 0;
+      }
+      h4 {
+        font-size: 15px;
+        line-height: 15px;
+        display: flex;
+        margin: 10px 0 0 0;
+      }
+      h4 .meta {
+        font-size: 11px;
+        padding-left: 7px;
+        line-height: 15px;
+        font-weight: normal;
       }
       b {
         font-weight: bolder;
@@ -119,9 +128,9 @@
         Software developer with 9+ years building backend services in
         <b>Go</b>, <b>Java</b>, and <b>Kotlin</b>, focused on long-term
         maintainability. Staying at each company for years, I've seen my own
-        decisions play out and learned which ones hold up. In my free time, I
-        build and maintain open-source projects like Gotify and screego
-        (combined 25k+ GitHub stars) to keep learning and improving my skills.
+        decisions play out and learned which ones hold up. I love solving
+        problems, having an impact, and contributing my own ideas. It's what led
+        me to build and maintain open-source projects like Gotify and Screego.
       </p>
       <h2>Work Experience</h2>
       <h3>Next Kraftwerke, Cologne</h3>
@@ -131,26 +140,30 @@
       </div>
       <ul>
         <li>
-          Built the integration layer between Transmission System Operators
-          (TSOs) and internal teams in <b>Java</b>, <b>Kotlin</b>, and
-          <b>RabbitMQ</b>.
+          Built the glue code connecting our internal platform to external
+          Transmission System Operator (TSO) APIs.
         </li>
         <li>
-          Aligned balancing-service processes across teams for energy volume
-          planning, bidding, and auction results.
+          Ran volume planning and settlement processes for balancing services
+          across Germany, the Netherlands, and Belgium.
         </li>
         <li>
-          Designed <b>Kubernetes</b> services in a multi-cluster environment
+          Implemented the microservices and user interfaces behind these
+          processes in <b>Java</b>, <b>Kotlin</b>, <b>Spring</b>, <b>React</b>,
+          and <b>JavaFX</b>.
+        </li>
+        <li>
+          Deployed them across a multi-cluster <b>Kubernetes</b> environment
           compliant with the German <b>KRITIS</b> (Critical Infrastructures)
           regulation.
         </li>
         <li>
-          Improved deployment safety by adding diffing, dry-runs, configuration
-          validation, and alerting.
+          Reduced deployment risk by introducing diffing and dry-runs, catching
+          misconfigurations before they reached production.
         </li>
         <li>
-          Conducted technical interviews and onboarded new hires with mentoring
-          and feedback sessions in their first months.
+          Conducted technical interviews and mentored new hires through their
+          first months.
         </li>
       </ul>
       <h3>FactFinder, Berlin</h3>
@@ -167,132 +180,143 @@
       <ul>
         <li>
           Developed a B2B search and product discovery solution for e-commerce
-          shops using <b>Java</b>, <b>Spring</b> <b>TypeScript</b>, and
+          shops, using <b>Java</b>, <b>Spring</b>, <b>TypeScript</b>, and
           <b>React</b>.
-        </li>
-        <li>
-          Improved visibility of product changes by creating a change log tool
-          using <b>TypeScript</b> and <b>Node.js</b>.
-          <a href="https://github.com/FACT-Finder/snage">
-            github.com/FACT-Finder/snage
-          </a>
-        </li>
-        <li>
-          Developed analytics <b>microservices</b> in <b>Go</b> that replicated
-          commonly used functions of the full-fledged analytics at low resource
-          cost.
-        </li>
-        <li>
-          Automated server deployment with <b>Ansible</b>, <b>Docker</b>, and
-          <b>GitLab</b>/<b>Jenkins</b> on
-          <b title="btw I use arch">Arch Linux</b> and <b>Ubuntu</b>.
-        </li>
-        <li>
-          Built an availability proxy in <b>Rust</b> that returns fallback
-          responses when services are unavailable.
-        </li>
-        <li>
-          Tested performance with <b>K6</b> and built a dashboard app for
-          visualizing the performance over time.
-          <a href="https://github.com/FACT-Finder/perfably">
-            github.com/FACT-Finder/perfably
-          </a>
-        </li>
-        <li>
-          Improved <b>code reviews</b> by creating a <b>GitLab</b> Webhook for
-          automatic reviewer selection to distribute pull requests.
         </li>
         <li>
           Reduced CI build times from 90 minutes to 20 minutes by migrating from
           <b>Jenkins</b> to <b>GitLab CI</b> with conditional builds.
         </li>
         <li>
-          Created a proxy with <b>Node.js</b> that migrates HTTP
-          requests/responses between different API versions.
+          Sped up import times by reimplementing the most-used functions of the
+          full analytics as lightweight <b>Go</b> <b>microservices</b>.
         </li>
         <li>
-          Added authentication and authorization with
-          <b>Spring Security</b> with <b>OAuth2</b> / <b>JWT</b> support.
-        </li>
-      </ul>
-      <h2>Projects</h2>
-      <h3>Gotify</h3>
-      <ul>
-        <li>
-          Created a web server in <b>Go</b> for sending and receiving messages
-          in real-time per <b>WebSocket</b>.
-          <a href="https://github.com/gotify/server">
-            github.com/gotify/server
+          Increased visibility of product changes by creating a change log tool
+          using <b>TypeScript</b> and <b>Node.js</b>.
+          <a href="https://github.com/FACT-Finder/snage">
+            github.com/FACT-Finder/snage
           </a>
         </li>
         <li>
-          Implemented and designed a web frontend in <b>TypeScript</b>,
-          <b>React</b>, <b>Mobx</b> with <b>Material UI</b> design.
+          Automated test-environment server deployment with <b>Ansible</b>,
+          <b>Docker</b>, and <b>GitLab</b>/<b>Jenkins</b> on
+          <b title="btw I use arch">Arch Linux</b> and <b>Ubuntu</b>.
         </li>
         <li>
-          Developed a CLI for sending messages to gotify/server.
-          <a href="https://github.com/gotify/cli">github.com/gotify/cli</a>
+          Kept services running during outages with a <b>Rust</b> availability
+          proxy that serves fallback responses.
         </li>
         <li>
-          Built an <b>Android</b> app that connects to the WebSocket and
-          push-notification for messages.
+          Prevented performance regressions in new features by load-testing with
+          <b>k6</b>, tracked on a dashboard.
+          <a href="https://github.com/FACT-Finder/perfably">
+            github.com/FACT-Finder/perfably
+          </a>
+        </li>
+        <li>
+          Built a <b>GitLab</b> Webhook that automatically picks the best
+          reviewer and distributes review load fairly.
+        </li>
+        <li>
+          Enabled older clients to keep working via a <b>Node.js</b> proxy
+          migrating HTTP requests/responses across API versions.
+        </li>
+      </ul>
+      <h2>Projects</h2>
+      <h4>
+        Gotify
+        <span class="meta">
+          <a href="https://gotify.net">gotify.net</a>
+          | <a href="https://github.com/gotify">github.com/gotify</a> | ★ 15k+
+        </span>
+      </h4>
+      <ul>
+        <li>
+          Implemented a web server in <b>Go</b> for sending and receiving
+          messages in real time over <b>WebSocket</b>.
+          <a href="https://github.com/gotify/server"
+            >github.com/gotify/server</a
+          >
+        </li>
+        <li>
+          Created a web UI to manage the application, using <b>TypeScript</b>,
+          <b>React</b>, <b>Material UI</b>, and <b>MobX</b>.
+        </li>
+        <li>
+          Built an <b>Android</b> app (10k active users) that delivers messages
+          via <b>WebSocket</b> and <b>push notifications</b>.
           <a href="https://github.com/gotify/android">
             github.com/gotify/android
           </a>
         </li>
         <li>
           Enforced code quality through static code analysis, <b>unit tests</b>,
-          <b>end-to-end tests</b> with <b>Puppeteer</b> and code reviews.
-        </li>
-        <li>
-          Wrote documentation for the API via <b>OpenAPI</b> and
-          installing/configuring Gotify.
-          <a href="https://gotify.net">gotify.net</a>
+          <b>end-to-end tests</b> with <b>Puppeteer</b>, and code reviews.
         </li>
       </ul>
-      <h3>Miscellaneous</h3>
+      <h4>
+        Screego
+        <span class="meta">
+          <a href="https://screego.net">screego.net</a> |
+          <a href="https://github.com/screego/server"
+            >github.com/screego/server</a
+          >
+          | ★ 10k+ | 600 daily users on public instance
+        </span>
+      </h4>
       <ul>
         <li>
-          Planned, managed and executed multiple open-source projects. Triaged
-          over 1000 issues and reviewed over 500 pull requests.
-        </li>
-        <li>
           Created a secure screen-sharing web application with low latency and
-          high quality using WebSocket, <b>WebRTC</b> and a built-in
+          high quality using <b>WebSocket</b>, <b>WebRTC</b>, and a built-in
           <b>TURN</b> server for transmitting the video stream.
-          <a href="https://github.com/screego/server">
-            github.com/screego/server
-          </a>
-          | <a href="https://screego.net">screego.net</a>
         </li>
+      </ul>
+      <h4>
+        Goverter
+        <span class="meta">
+          <a href="https://goverter.jmattheis.de">goverter.jmattheis.de</a> |
+          <a href="https://github.com/jmattheis/goverter"
+            >github.com/jmattheis/goverter</a
+          >
+          | ★ 800+
+        </span>
+      </h4>
+      <ul>
         <li>
-          Built a time-tracking app with <b>Go</b>, <b>GraphQL</b>,
-          <b>SQLite</b>, <b>TypeScript</b>, <b>React</b>, and <b>Apollo</b>.
-          <a href="https://github.com/traggo/server">
-            github.com/traggo/server
-          </a>
-          |
-          <a href="https://traggo.net">traggo.net</a>
+          Wrote a <b>Go</b> code generator that maps between Go structs without
+          runtime overhead.
         </li>
+      </ul>
+      <h4>
+        Traggo
+        <span class="meta">
+          <a href="https://traggo.net">traggo.net</a> |
+          <a href="https://github.com/traggo/server"
+            >github.com/traggo/server</a
+          >
+          | ★ 1k+
+        </span>
+      </h4>
+      <ul>
         <li>
-          Automated converter creation with a <b>Go</b> code generator.
-          <a href="https://github.com/jmattheis/goverter">
-            github.com/jmattheis/goverter
-          </a>
-          |
-          <a href="https://goverter.jmattheis.de">goverter.jmattheis.de</a>
+          Made a tag-based time-tracking app with customizable dashboards
+          written in <b>Go</b>, <b>GraphQL</b>, <b>SQLite</b>,
+          <b>TypeScript</b>, <b>React</b>, and <b>Apollo</b>.
         </li>
+      </ul>
+      <h4>
+        Book Stats
+        <span class="meta"
+          ><a href="https://prog.fan/">prog.fan</a> | 250 daily users | 2
+          million indexed comments</span
+        >
+      </h4>
+      <ul>
         <li>
-          Collected statistics for book series mentions in social media with
+          Built an automated pipeline that aggregates Reddit posts and comments
+          into book statistics with
           <b>Postgres</b>, <b>Go</b>, and <b>TypeScript</b>.
-          <a href="https://prog.fan/">prog.fan</a>
-        </li>
-        <li>
-          Made my website available through various protocols like IMAP, SSH,
-          and DNS.
-          <a href="https://github.com/jmattheis/website">
-            github.com/jmattheis/website
-          </a>
         </li>
       </ul>
       <h2>Other</h2>
@@ -301,6 +325,10 @@
         <li>
           Fluent on the Linux command line. Tools I use daily: <b>Neovim</b>,
           <b>tmux</b>, <b>fish</b>, and <b>tig</b>.
+        </li>
+        <li>
+          Planned, managed, and executed multiple open-source projects. Triaged
+          over 1000 issues and reviewed over 500 pull requests.
         </li>
       </ul>
     </div>
